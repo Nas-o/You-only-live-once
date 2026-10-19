@@ -119,7 +119,7 @@ Android：
 npm run dev:android      # 移动 Web 预览
 npm run build:android    # 构建 Web 资源
 npm run sync:android     # 同步到 Capacitor 原生工程
-npm run package:android  # 生成 debug APK
+npm run package:android  # 生成 debug APK（使用固定 debug keystore，可覆盖升级）
 ```
 
 iOS（需要 macOS + Xcode + CocoaPods）：
@@ -211,7 +211,7 @@ screenshots/           验收截图
 - Linux x64 / arm64：已构建 AppImage / deb。
 - Windows x64 / arm64：便携版已构建，尚未在真实 Windows 机器上验收 DPI、IME 与睡眠恢复；未代码签名。
 - macOS Intel / Apple Silicon：DMG / ZIP 未签名，首次打开需右键或系统设置放行。
-- Android：Universal Debug APK；尚未真机验收，上架需 release 签名。
+- Android：Universal Debug APK；使用仓库内固定 debug keystore，连续版本可覆盖安装，但这不是上架签名；上架需 release keystore。
 - iOS：未签名 IPA，需 AltStore / Sideloadly 等工具用自己的 Apple ID 重签；没有 Apple Developer 签名时不能直接安装或上架。iOS 的 AI Key 目前使用 Preferences，而不是 Keychain。
 - 完成提示音为预留开关，当前版本静音。
 - 数据为单 JSON / Preferences，v1 未加密；敏感信息不要写进报告。
@@ -222,8 +222,8 @@ screenshots/           验收截图
 推荐用 tag 触发 `.github/workflows/release.yml`：
 
 ```bash
-git tag -a v0.1.2 -m "YOLO v0.1.2"
-git push origin v0.1.2
+git tag -a v0.1.3 -m "YOLO v0.1.3"
+git push origin v0.1.3
 ```
 
 Actions 会并行构建 Linux、Windows、macOS、Android、iOS，并把以下文件挂到 GitHub Release：
