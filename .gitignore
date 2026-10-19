@@ -22,3 +22,8 @@ apps/android/android/.gradle/
 apps/android/android/app/build/
 apps/android/android/build/
 apps/android/android/local.properties
+
+# 本地临时参考/截图配置，不进入仓库
+.tmp-*/
+.tmp-*.html
+.tmp-*.mjs
