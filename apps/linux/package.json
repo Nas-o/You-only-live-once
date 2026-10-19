@@ -77,8 +77,7 @@
       },
       "syncDesktopName": true
     },
-    "electronVersion": "44.9.0",
-    "electronDist": "../../node_modules/electron/dist"
+    "electronVersion": "44.9.0"
   },
   "homepage": "https://example.com/you-only-live-once",
   "desktopName": "yolo.desktop"
