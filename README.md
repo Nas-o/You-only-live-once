@@ -148,7 +148,7 @@ npm run package:ios          # 生成未签名 IPA
 ## 验证
 
 ```bash
-npm run verify                 # typecheck + core 测试 + 三端构建
+npm run verify                 # typecheck + core 测试 + 全平台构建
 npm run test:ui                # 真实 Electron 交互回归
 npm run test:ai                # 本地 mock：访谈、计划评估、Key 隐私
 npm run test:language          # 四语切换与重启保留
@@ -180,7 +180,7 @@ Android: Capacitor Preferences（yolo-data-v1）
 iOS:     Capacitor Preferences（yolo-data-v1）
 ```
 
-桌面端保存前写 `yolo-data.backup.json`；三端 JSON 模型一致，可互相导入。数据只在本机，没有后端、账号、云同步或埋点。
+桌面端保存前写 `yolo-data.backup.json`；各端 JSON 模型一致，可互相导入。数据只在本机，没有后端、账号、云同步或埋点。
 
 ## 项目结构
 
