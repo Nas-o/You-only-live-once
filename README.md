@@ -175,6 +175,33 @@ screenshots/           验收截图
 - 完成提示音为预留开关，当前版本静音。
 - 数据为单 JSON / Preferences，v1 未加密；敏感信息不要写进报告。
 
+
+## 发布 Release
+
+推荐用 tag 触发 `.github/workflows/release.yml`：
+
+```bash
+git tag -a v0.1.0 -m "YOLO v0.1.0"
+git push origin v0.1.0
+```
+
+Actions 会依次完成类型检查、核心测试、三端构建，并把以下文件挂到 GitHub Release：
+
+```text
+apps/linux/release/YouOnlyLiveOnce-*-x86_64.AppImage
+apps/linux/release/YouOnlyLiveOnce-*-amd64.deb
+apps/windows/release/YouOnlyLiveOnce-*-win-x64-portable.zip
+apps/android/release/YouOnlyLiveOnce-*-android-debug.apk
+SHA256SUMS.txt
+```
+
+如果暂时不想配置 Actions，也可以在本机打包后，打开：
+**GitHub → Releases → Draft a new release → 选择 tag → 手动上传以上 5 个文件 → Publish release**。
+
+发布新版本时，记得同步修改 `package.json`、各子包版本号、Android `build.gradle` 的 `versionName`，再创建新的 tag。
+
+> 注意：当前项目标记为 `UNLICENSED`。公开提供下载前，请先决定并添加合适的 License；否则社区可以下载文件，但并没有使用授权。
+
 ## License
 
 私有项目，未授权分发。`UNLICENSED`。

@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fakeroot zip
+
+      - name: Typecheck, core tests and web builds
+        run: npm run verify
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android platform and build tools
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Package Linux
+        run: npm run package:linux
+
+      - name: Package Windows portable
+        run: npm run package:windows:portable
+
+      - name: Package Android
+        run: npm run package:android
+
+      - name: Write checksums
+        run: npm run checksums
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: YOLO ${{ github.ref_name }}
+          body_path: .github/release-notes.md
+          fail_on_unmatched_files: true
+          files: |
+            apps/linux/release/*.AppImage
+            apps/linux/release/*.deb
+            apps/windows/release/*-portable.zip
+            apps/android/release/*.apk
+            SHA256SUMS.txt
