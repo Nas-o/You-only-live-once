@@ -22,6 +22,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { useAppStore } from '../store/appStore';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import { BarChart } from '../components/charts/BarChart';
 import { Donut } from '../components/charts/Donut';
 import { Heatmap } from '../components/charts/Heatmap';
@@ -47,6 +48,7 @@ export function StatsPage() {
   const data = useAppStore((s) => s.data);
   const summary = totals(data);
   const series = daySeries(data.sessions, 14);
+  const compactChart = useMediaQuery('(max-width: 820px)');
   const barData = series.map((point, index) => ({
     label: point.label,
     value: point.minutes,
@@ -153,7 +155,7 @@ export function StatsPage() {
             <BarChart3 size={14} /> 14 天合计 {series.reduce((sum, point) => sum + point.minutes, 0)} 分钟
           </span>
         </div>
-        <BarChart data={barData} goal={goal} unit="分钟" />
+        <BarChart data={barData} goal={goal} unit="分钟" compact={compactChart} />
         <div className="chart-goal-legend">
           <span /> 虚线为每日目标 {goal} 分钟
         </div>

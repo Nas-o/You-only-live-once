@@ -11,10 +11,11 @@ interface BarChartProps {
   goal?: number;
   height?: number;
   tone?: string;
+  compact?: boolean;
 }
 
 /** 14 天专注柱状图（SVG，避免额外图表依赖） */
-export function BarChart({ data, unit = '分钟', goal, height = 220, tone = 'var(--chart-bar)' }: BarChartProps) {
+export function BarChart({ data, unit = '分钟', goal, height = 220, tone = 'var(--chart-bar)', compact = false }: BarChartProps) {
   const width = 760;
   const padX = 10;
   const padTop = 24;
@@ -59,6 +60,7 @@ export function BarChart({ data, unit = '分钟', goal, height = 220, tone = 'va
         const x = padX + index * (barWidth + gap);
         const barHeight = Math.max(datum.value > 0 ? 3 : 0, (datum.value / max) * chartHeight);
         const y = padTop + chartHeight - barHeight;
+        const label = compact ? datum.label.split('/').pop() ?? datum.label : datum.label;
         return (
           <g key={`${datum.label}-${index}`} className="bar-group">
             <title>{`${datum.hint ?? datum.label}：${datum.value} ${unit}`}</title>
@@ -73,7 +75,7 @@ export function BarChart({ data, unit = '分钟', goal, height = 220, tone = 'va
               />
             ) : null}
             {datum.value > 0 ? (
-              <text x={x + barWidth / 2} y={Math.max(12, y - 6)} textAnchor="middle" className="bar-value">
+              <text x={x + barWidth / 2} y={Math.max(12, y - 6)} textAnchor="middle" className={`bar-value ${compact ? 'is-compact' : ''}`}>
                 {datum.value}
               </text>
             ) : null}
@@ -81,9 +83,9 @@ export function BarChart({ data, unit = '分钟', goal, height = 220, tone = 'va
               x={x + barWidth / 2}
               y={height - 9}
               textAnchor="middle"
-              className={`bar-label ${datum.highlight ? 'is-highlight' : ''}`}
+              className={`bar-label ${compact ? 'is-compact' : ''} ${datum.highlight ? 'is-highlight' : ''}`}
             >
-              {datum.label}
+              {label}
             </text>
           </g>
         );

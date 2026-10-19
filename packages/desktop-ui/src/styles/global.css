@@ -8064,3 +8064,14 @@ input[type="range"].progress-slider:active::-webkit-slider-thumb {
   }
 }
 
+
+/* 手机端 14 天图表：只显示“日”，在相同宽度下把字放大 */
+@media (max-width: 820px) {
+  .bar-chart .bar-label.is-compact {
+    font-size: 24px;
+  }
+
+  .bar-chart .bar-value.is-compact {
+    font-size: 20px;
+  }
+}

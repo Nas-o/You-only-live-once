@@ -132,10 +132,11 @@ npm run package:ios          # 生成未签名 IPA
 
 ### 手机端信息层级
 
-- 顶栏压缩到 50px，只保留日期问候、主题、语言、设置和新建任务图标。
+- 顶栏压缩到 50px，只保留日期问候、主题、语言、设置和新建任务图标；Android 15+ 会自动避开状态栏、摄像头和底部系统导航。
 - 今日首页只保留「今日封面」；正在专注、今日任务、大目标、最近足迹和重复统计不再堆在首页，从底部导航进入对应功能查看。
 - 成长页把「成长阶段」「里程碑」「全部证据」收进点按弹层，主页面只保留摘要与入口。
 - 噜噜主题在手机端显示顶部小头像和角色卡片，不再只有背景。
+- 统计页的 14 天柱状图在手机端改用放大的「日」标签，避免日期挤在一起看不清。
 
 ## 构建与打包
 
@@ -222,8 +223,8 @@ screenshots/           验收截图
 推荐用 tag 触发 `.github/workflows/release.yml`：
 
 ```bash
-git tag -a v0.1.3 -m "YOLO v0.1.3"
-git push origin v0.1.3
+git tag -a v0.1.4 -m "YOLO v0.1.4"
+git push origin v0.1.4
 ```
 
 Actions 会并行构建 Linux、Windows、macOS、Android、iOS，并把以下文件挂到 GitHub Release：
