@@ -11,7 +11,10 @@ const config: CapacitorConfig = {
   },
   android: {
     allowMixedContent: false,
-    backgroundColor: '#0b0e13',
+    backgroundColor: '#f3eee4',
+    // Android 15+ edge-to-edge：让 Capacitor 给 WebView 加系统栏/刘海 margin，
+    // 避免顶栏压到状态栏和摄像头。
+    adjustMarginsForEdgeToEdge: 'force',
   },
 };
 

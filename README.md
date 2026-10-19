@@ -223,8 +223,8 @@ screenshots/           验收截图
 推荐用 tag 触发 `.github/workflows/release.yml`：
 
 ```bash
-git tag -a v0.1.4 -m "YOLO v0.1.4"
-git push origin v0.1.4
+git tag -a v0.1.5 -m "YOLO v0.1.5"
+git push origin v0.1.5
 ```
 
 Actions 会并行构建 Linux、Windows、macOS、Android、iOS，并把以下文件挂到 GitHub Release：

@@ -1,6 +1,6 @@
 {
   "name": "@yolo/windows",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "你只活一次 · Windows (x64) 桌面端",
   "main": "electron/main.cjs",
