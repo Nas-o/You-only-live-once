@@ -1,0 +1,15 @@
+YOLO artwork and brand assets
+
+Copyright (c) 2026 Nas-o. All rights reserved.
+
+The MIT License in LICENSE applies to the source code, not to the following
+character artwork and brand assets:
+
+- packages/desktop-ui/src/assets/lulu/*
+- app icons, splash screens, launcher icons, and other brand imagery under
+  apps/*/build/ and apps/android/android/app/src/main/res/
+
+You may use these assets as part of an unmodified build or distribution of
+this application. You may not extract, resell, redistribute, or use the
+character artwork or brand assets as standalone assets without prior written
+permission from the copyright holder.

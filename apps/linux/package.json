@@ -39,7 +39,7 @@
     "name": "YOLO Project",
     "email": "yolo@example.local"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "build": {
     "appId": "com.yolo.linux",
     "productName": "You Only Live Once",
@@ -66,7 +66,7 @@
       "icon": "build/icon.png",
       "executableName": "yolo",
       "synopsis": "以终为始的任务旅程",
-      "description": "你只活一次：任务表、启程侦查、并行计时、知识点星图与攀登式正反馈。",
+      "description": "你只活一次：任务表、启程侦查、单计时、知识点星图与成长证据。",
       "desktop": {
         "entry": {
           "Name": "你只活一次",

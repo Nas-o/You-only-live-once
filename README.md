@@ -200,8 +200,12 @@ SHA256SUMS.txt
 
 发布新版本时，记得同步修改 `package.json`、各子包版本号、Android `build.gradle` 的 `versionName`，再创建新的 tag。
 
-> 注意：当前项目标记为 `UNLICENSED`。公开提供下载前，请先决定并添加合适的 License；否则社区可以下载文件，但并没有使用授权。
+> 代码采用 MIT License；噜噜人物、应用图标等品牌素材不包含在 MIT 授权中，详见 [`LICENSE-ARTWORK`](LICENSE-ARTWORK)。
 
 ## License
 
-私有项目，未授权分发。`UNLICENSED`。
+- **代码**：MIT，见 [`LICENSE`](LICENSE)。
+- **噜噜人物、应用图标、启动图等品牌素材**：版权保留，见 [`LICENSE-ARTWORK`](LICENSE-ARTWORK)。可以随本应用的完整构建/发行版一起使用，但不能单独提取、转售或再分发。
+
+第三方依赖保留各自许可证。
+

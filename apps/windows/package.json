@@ -38,7 +38,7 @@
     "name": "YOLO Project",
     "email": "yolo@example.local"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://example.com/you-only-live-once",
   "build": {
     "appId": "com.yolo.windows",
