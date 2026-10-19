@@ -58,13 +58,31 @@ jobs:
           "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Package Linux
-        run: npm run package:linux
+        run: |
+          set -o pipefail
+          npm run package:linux 2>&1 | tee /tmp/package-linux.log
+
+      - name: Show Linux packaging failure
+        if: failure()
+        run: tail -120 /tmp/package-linux.log >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Package Windows portable
-        run: npm run package:windows:portable
+        run: |
+          set -o pipefail
+          npm run package:windows:portable 2>&1 | tee /tmp/package-windows.log
+
+      - name: Show Windows packaging failure
+        if: failure()
+        run: tail -120 /tmp/package-windows.log >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Package Android
-        run: npm run package:android
+        run: |
+          set -o pipefail
+          npm run package:android 2>&1 | tee /tmp/package-android.log
+
+      - name: Show Android packaging failure
+        if: failure()
+        run: tail -120 /tmp/package-android.log >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Write checksums
         run: npm run checksums
