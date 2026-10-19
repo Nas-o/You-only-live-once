@@ -30,6 +30,7 @@ export function TopBar() {
       </div>
 
       <div className="topbar-right">
+        {data.settings.theme === 'lulu' ? <span className="lulu-top-avatar" aria-hidden="true" /> : null}
         <LanguageSwitcher />
         <ThemeSwitcher />
         <button

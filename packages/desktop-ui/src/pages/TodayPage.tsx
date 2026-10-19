@@ -176,6 +176,15 @@ export function TodayPage() {
         />
       </div>
 
+      <section className="lulu-mobile-scene" aria-hidden="true">
+        <div className="lulu-mobile-scene-art" />
+        <div>
+          <span className="eyebrow" data-i18n-skip>LULU</span>
+          <p>慢一点，也是在向前。</p>
+          <small>softly forward</small>
+        </div>
+      </section>
+
       {missingReport > 0 ? (
         <button type="button" className="warning-callout" onClick={goMissingReports}>
           <span className="warning-callout-icon">

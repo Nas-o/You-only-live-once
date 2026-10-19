@@ -16,6 +16,12 @@ export const MANUAL_TRANSLATIONS: Record<string, ManualTranslation> = {
   '成就 · 洞若观火': { en: 'Achievement · Clear sight', ja: '実績 · 明察', ko: '업적 · 명철한 통찰' },
   '成就 · 专注成习': { en: 'Achievement · Focus habit', ja: '実績 · 集中の習慣', ko: '업적 · 집중 습관' },
 
+  '成长阶段': { en: 'Growth stages', ja: '成長段階', ko: '성장 단계' },
+  '里程碑': { en: 'Milestones', ja: 'マイルストーン', ko: '마일스톤' },
+  '证据链': { en: 'Evidence trail', ja: '証拠の連鎖', ko: '증거 체인' },
+  '查看全部证据': { en: 'View all evidence', ja: 'すべての証拠を見る', ko: '모든 증거 보기' },
+  '查看全部阶段': { en: 'View all stages', ja: 'すべての段階を見る', ko: '모든 단계 보기' },
+  '慢一点，也是在向前。': { en: 'Slow is still forward.', ja: 'ゆっくりでも、前へ。', ko: '느려도 앞으로 나아가는 중.' },
   // 报告
   '启程侦查': { en: 'Departure recon', ja: '出発偵察', ko: '출발 정찰' },
   '启程侦查 ·': { en: 'Departure recon ·', ja: '出発偵察 ·', ko: '출발 정찰 ·' },

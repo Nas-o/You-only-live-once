@@ -1,5 +1,6 @@
 import {
   ACHIEVEMENTS,
+  type AppData,
   GOAL_COLOR_HEX,
   GROWTH_STAGES,
   formatMinutes,
@@ -22,6 +23,8 @@ import {
   Trophy,
 } from 'lucide-react';
 import { useAppStore } from '../store/appStore';
+import { Modal } from '../components/ui/Modal';
+import { useState } from 'react';
 import { ACHIEVEMENT_ICONS } from '../lib/icons';
 import { ProgressBar } from '../components/ui/Progress';
 
@@ -45,6 +48,112 @@ const EVIDENCE_LABEL: Record<GrowthEvidenceKind, string> = {
   goal: '技能树',
 };
 
+type GrowthSummary = ReturnType<typeof growthSummary>;
+type GrowthStage = GrowthSummary['stage'];
+
+function StageTrack({ summary, stage }: { summary: GrowthSummary; stage: GrowthStage }) {
+  return (
+    <div className="growth-stage-track">
+      {GROWTH_STAGES.map((item) => {
+        const active = item.id === stage.current.id;
+        const passed = summary.evidenceCount >= item.minEvidence;
+        return (
+          <div key={item.id} className={`growth-stage-row ${active ? 'is-current' : ''} ${passed ? 'is-passed' : ''}`}>
+            <span className="growth-stage-node">{passed ? <CheckCircle2 size={12} /> : <span />}</span>
+            <div>
+              <strong>{item.name}</strong>
+              <small>{item.hint}</small>
+            </div>
+            <em>{item.minEvidence} 条</em>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function MilestoneGrid({ data }: { data: AppData }) {
+  return (
+    <div className="achievement-grid">
+      {ACHIEVEMENTS.map((achievement) => {
+        const unlockedAt = data.rewards.unlocked[achievement.id];
+        const unlocked = Boolean(unlockedAt);
+        const Icon = ACHIEVEMENT_ICONS[achievement.icon] ?? Trophy;
+        return (
+          <article key={achievement.id} className={`achievement ${unlocked ? 'is-unlocked' : 'is-locked'}`}>
+            <div className="achievement-icon">
+              <Icon size={20} />
+              {!unlocked ? (
+                <span className="achievement-lock">
+                  <Lock size={9} />
+                </span>
+              ) : null}
+            </div>
+            <div className="achievement-copy">
+              <strong>{achievement.name}</strong>
+              <p>{unlocked ? achievement.description : achievement.hint}</p>
+              {unlocked && unlockedAt ? (
+                <small>
+                  <CheckCircle2 size={11} /> {timeAgo(unlockedAt)}
+                </small>
+              ) : (
+                <small className="is-locked-hint">未解锁</small>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  );
+}
+
+function EvidenceList({
+  rows,
+  data,
+  onOpenTask,
+  onOpenGoal,
+}: {
+  rows: GrowthSummary['evidence'];
+  data: AppData;
+  onOpenTask: (id: string) => void;
+  onOpenGoal: (id: string) => void;
+}) {
+  return (
+    <div className="growth-evidence-list">
+      {rows.map((item) => {
+        const Icon = EVIDENCE_ICON[item.kind] ?? BookOpen;
+        const goal = item.goalId ? data.goals.find((entry) => entry.id === item.goalId) : undefined;
+        return (
+          <button
+            key={item.id}
+            type="button"
+            className="growth-evidence-row"
+            onClick={() => {
+              if (item.taskId) onOpenTask(item.taskId);
+              else if (item.goalId) onOpenGoal(item.goalId);
+            }}
+          >
+            <span className={`growth-evidence-icon is-${item.kind}`}>
+              <Icon size={14} />
+            </span>
+            <span className="growth-evidence-copy">
+              <strong>{item.title}</strong>
+              <small>
+                {item.detail ?? EVIDENCE_LABEL[item.kind]}
+                {goal ? ` · ${goal.title}` : ''}
+              </small>
+            </span>
+            <span className="growth-evidence-meta">
+              {item.minutes ? `${item.minutes} 分钟` : ''}
+              <small>{timeAgo(item.at)}</small>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function GrowthPage() {
   const data = useAppStore((s) => s.data);
   const openGoal = useAppStore((s) => s.openGoal);
@@ -57,6 +166,7 @@ export function GrowthPage() {
   const skillNodeTotal = skills.reduce((sum, item) => sum + item.total, 0);
   const skillNodeLit = skills.reduce((sum, item) => sum + item.lit, 0);
   const evidenceRows = summary.evidence.slice(0, 14);
+  const [mobilePanel, setMobilePanel] = useState<'stages' | 'milestones' | 'evidence' | null>(null);
 
   return (
     <div className="page-inner growth-page">
@@ -110,6 +220,24 @@ export function GrowthPage() {
           </div>
         </div>
       </section>
+
+      <div className="mobile-growth-links">
+        <button type="button" onClick={() => setMobilePanel('stages')}>
+          <span>
+            <strong>成长阶段</strong>
+            <small>{stage.current.name} · {summary.evidenceCount} 条证据</small>
+          </span>
+          <ChevronRight size={15} />
+        </button>
+        <button type="button" onClick={() => setMobilePanel('milestones')}>
+          <span>
+            <strong>里程碑</strong>
+            <small>{Object.keys(data.rewards.unlocked).length} / {ACHIEVEMENTS.length} 已解锁</small>
+          </span>
+          <ChevronRight size={15} />
+        </button>
+      </div>
+
 
       <section className="growth-section">
         <div className="growth-section-head">
@@ -182,7 +310,7 @@ export function GrowthPage() {
       </section>
 
       <div className="growth-two-col">
-        <section className="growth-section">
+        <section className="growth-section growth-evidence-main">
           <div className="growth-section-head">
             <div>
               <h2>证据链</h2>
@@ -191,70 +319,30 @@ export function GrowthPage() {
             <span className="growth-count">{summary.evidenceCount} 条</span>
           </div>
           {evidenceRows.length > 0 ? (
-            <div className="growth-evidence-list">
-              {evidenceRows.map((item) => {
-                const Icon = EVIDENCE_ICON[item.kind] ?? BookOpen;
-                const goal = item.goalId ? data.goals.find((entry) => entry.id === item.goalId) : undefined;
-                return (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className="growth-evidence-row"
-                    onClick={() => {
-                      if (item.taskId) openTask(item.taskId);
-                      else if (item.goalId) openGoal(item.goalId);
-                    }}
-                  >
-                    <span className={`growth-evidence-icon is-${item.kind}`}>
-                      <Icon size={14} />
-                    </span>
-                    <span className="growth-evidence-copy">
-                      <strong>{item.title}</strong>
-                      <small>
-                        {item.detail ?? EVIDENCE_LABEL[item.kind]}
-                        {goal ? ` · ${goal.title}` : ''}
-                      </small>
-                    </span>
-                    <span className="growth-evidence-meta">
-                      {item.minutes ? `${item.minutes} 分钟` : ''}
-                      <small>{timeAgo(item.at)}</small>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <EvidenceList rows={evidenceRows} data={data} onOpenTask={openTask} onOpenGoal={openGoal} />
           ) : (
             <p className="growth-muted">完成第一次专注，第一条证据就会出现。</p>
           )}
+          {summary.evidenceCount > 6 ? (
+            <button type="button" className="mobile-evidence-more" onClick={() => setMobilePanel('evidence')}>
+              <span>查看全部证据</span>
+              <small>{summary.evidenceCount} 条 <ChevronRight size={14} /></small>
+            </button>
+          ) : null}
         </section>
 
-        <section className="growth-section">
+        <section className="growth-section growth-stages-section">
           <div className="growth-section-head">
             <div>
               <h2>成长阶段</h2>
               <p>不是等级，是你看待自己的方式。</p>
             </div>
           </div>
-          <div className="growth-stage-track">
-            {GROWTH_STAGES.map((item) => {
-              const active = item.id === stage.current.id;
-              const passed = summary.evidenceCount >= item.minEvidence;
-              return (
-                <div key={item.id} className={`growth-stage-row ${active ? 'is-current' : ''} ${passed ? 'is-passed' : ''}`}>
-                  <span className="growth-stage-node">{passed ? <CheckCircle2 size={12} /> : <span />}</span>
-                  <div>
-                    <strong>{item.name}</strong>
-                    <small>{item.hint}</small>
-                  </div>
-                  <em>{item.minEvidence} 条</em>
-                </div>
-              );
-            })}
-          </div>
+          <StageTrack stage={stage} summary={summary} />
         </section>
       </div>
 
-      <section className="growth-section">
+      <section className="growth-section growth-milestones-section">
         <div className="growth-section-head">
           <div>
             <h2>里程碑</h2>
@@ -264,36 +352,7 @@ export function GrowthPage() {
             {Object.keys(data.rewards.unlocked).length} / {ACHIEVEMENTS.length}
           </span>
         </div>
-        <div className="achievement-grid">
-          {ACHIEVEMENTS.map((achievement) => {
-            const unlockedAt = data.rewards.unlocked[achievement.id];
-            const unlocked = Boolean(unlockedAt);
-            const Icon = ACHIEVEMENT_ICONS[achievement.icon] ?? Trophy;
-            return (
-              <article key={achievement.id} className={`achievement ${unlocked ? 'is-unlocked' : 'is-locked'}`}>
-                <div className="achievement-icon">
-                  <Icon size={20} />
-                  {!unlocked ? (
-                    <span className="achievement-lock">
-                      <Lock size={9} />
-                    </span>
-                  ) : null}
-                </div>
-                <div className="achievement-copy">
-                  <strong>{achievement.name}</strong>
-                  <p>{unlocked ? achievement.description : achievement.hint}</p>
-                  {unlocked && unlockedAt ? (
-                    <small>
-                      <CheckCircle2 size={11} /> {timeAgo(unlockedAt)}
-                    </small>
-                  ) : (
-                    <small className="is-locked-hint">未解锁</small>
-                  )}
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        <MilestoneGrid data={data} />
       </section>
 
       <div className="growth-foot">
@@ -301,6 +360,33 @@ export function GrowthPage() {
         <span><Sprout size={13} /> {summary.goalCount} 棵技能树完成</span>
         <span><ScrollText size={13} /> {summary.reportCount} 份启程侦查</span>
       </div>
+      <Modal
+        open={mobilePanel !== null}
+        onClose={() => setMobilePanel(null)}
+        size="lg"
+        eyebrow="GROWTH"
+        title={mobilePanel === 'milestones' ? '里程碑' : mobilePanel === 'evidence' ? '证据链' : '成长阶段'}
+        footer={
+          <button type="button" className="btn btn-primary" onClick={() => setMobilePanel(null)}>
+            关闭
+          </button>
+        }
+      >
+        <div className="mobile-growth-sheet">
+          {mobilePanel === 'milestones' ? (
+            <MilestoneGrid data={data} />
+          ) : mobilePanel === 'evidence' ? (
+            <EvidenceList
+              rows={summary.evidence.slice(0, 14)}
+              data={data}
+              onOpenTask={openTask}
+              onOpenGoal={openGoal}
+            />
+          ) : (
+            <StageTrack stage={stage} summary={summary} />
+          )}
+        </div>
+      </Modal>
     </div>
   );
 }
