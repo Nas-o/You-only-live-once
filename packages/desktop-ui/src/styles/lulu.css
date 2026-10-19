@@ -1,0 +1,448 @@
+/* ============================================================
+   噜噜 · Lulu
+   奶油黄、蜜橘、青叶；软纸边、圆角与贴纸式人物。
+   亮色是奶油纸，暗色是可可纸；不改变信息结构。
+   ============================================================ */
+
+html[data-theme='lulu'] {
+  --paper: #fff8e7;
+  --paper-raised: #fffdf6;
+  --paper-sunken: #f6e7c9;
+  --ink: #3e2b1c;
+  --ink-soft: #6b5138;
+  --ink-mute: #8a7359;
+
+  --bg: var(--paper);
+  --bg-deep: var(--paper-sunken);
+  --panel: var(--paper-raised);
+  --panel-2: #fff9ee;
+  --panel-3: #f9eed8;
+
+  --line: rgba(62, 43, 28, 0.14);
+  --line-strong: rgba(62, 43, 28, 0.3);
+
+  --text: var(--ink);
+  --text-dim: var(--ink-soft);
+  --text-mute: var(--ink-mute);
+
+  --gold: #d79a2d;
+  --gold-strong: #b9781d;
+  --gold-soft: rgba(215, 154, 45, 0.12);
+  --jade: #7e9f58;
+  --azure: #6f9d91;
+  --rose: #dc9273;
+  --violet: #9b7188;
+  --danger: #c35b31;
+  --seal: #e4772b;
+  --seal-strong: #c65a18;
+
+  --input-bg: #fffdf7;
+  --ring-track: rgba(62, 43, 28, 0.12);
+  --bar-track: rgba(62, 43, 28, 0.1);
+  --chart-grid: rgba(62, 43, 28, 0.1);
+  --chart-track: rgba(62, 43, 28, 0.05);
+  --chart-bar: var(--jade);
+  --constellation-line: rgba(62, 43, 28, 0.2);
+  --constellation-locked: rgba(62, 43, 28, 0.3);
+  --constellation-fill: var(--paper-raised);
+  --constellation-core: var(--paper-raised);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 22px 60px rgba(93, 58, 23, 0.13);
+}
+
+html[data-theme='lulu'][data-skin-tone='dark'] {
+  --paper: #211914;
+  --paper-raised: #2c2118;
+  --paper-sunken: #17100d;
+  --ink: #f8ead2;
+  --ink-soft: #dcc6a8;
+  --ink-mute: #b69c7d;
+
+  --bg: var(--paper);
+  --bg-deep: var(--paper-sunken);
+  --panel: var(--paper-raised);
+  --panel-2: #34261b;
+  --panel-3: #241a13;
+
+  --line: rgba(248, 234, 210, 0.15);
+  --line-strong: rgba(248, 234, 210, 0.32);
+
+  --text: var(--ink);
+  --text-dim: var(--ink-soft);
+  --text-mute: var(--ink-mute);
+
+  --gold: #f1c25d;
+  --gold-strong: #dca53e;
+  --gold-soft: rgba(241, 194, 93, 0.12);
+  --jade: #a9c17f;
+  --azure: #90c3b8;
+  --rose: #e7a285;
+  --violet: #c098b0;
+  --danger: #ef8b61;
+  --seal: #f29a4a;
+  --seal-strong: #db7a2a;
+
+  --input-bg: #2a1f16;
+  --ring-track: rgba(248, 234, 210, 0.16);
+  --bar-track: rgba(248, 234, 210, 0.11);
+  --chart-grid: rgba(248, 234, 210, 0.1);
+  --chart-track: rgba(248, 234, 210, 0.05);
+  --chart-bar: var(--jade);
+  --constellation-line: rgba(248, 234, 210, 0.24);
+  --constellation-locked: rgba(248, 234, 210, 0.36);
+  --constellation-fill: var(--paper-raised);
+  --constellation-core: var(--paper-raised);
+
+  --shadow: 0 26px 70px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme='lulu'] body {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(circle at 12% 16%, rgba(228, 119, 43, 0.07), transparent 22%),
+    radial-gradient(circle at 88% 10%, rgba(126, 159, 88, 0.09), transparent 20%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg opacity='.1'%3E%3Ccircle cx='26' cy='32' r='7' fill='%23ef7f2e'/%3E%3Cpath d='M32 23q9-7 14-1-8 7-14 1' fill='%237e9f58'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(rgba(62, 43, 28, 0.04) 0.6px, transparent 0.7px);
+  background-size: auto, auto, 120px 120px, 6px 6px;
+  color: var(--ink);
+}
+
+html[data-theme='lulu'][data-skin-tone='dark'] body {
+  background-image:
+    radial-gradient(circle at 14% 14%, rgba(242, 154, 74, 0.1), transparent 24%),
+    radial-gradient(circle at 86% 8%, rgba(169, 193, 127, 0.08), transparent 20%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg opacity='.08'%3E%3Ccircle cx='26' cy='32' r='7' fill='%23f29a4a'/%3E%3Cpath d='M32 23q9-7 14-1-8 7-14 1' fill='%23a9c17f'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(rgba(248, 234, 210, 0.035) 0.6px, transparent 0.7px);
+  background-size: auto, auto, 120px 120px, 6px 6px;
+}
+
+html[data-theme='lulu'] ::selection {
+  background: rgba(228, 119, 43, 0.24);
+  color: var(--ink);
+}
+
+html[data-theme='lulu'] .topbar {
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  border-bottom-color: var(--line);
+}
+
+html[data-theme='lulu'] .sidebar {
+  background: color-mix(in srgb, var(--paper) 91%, transparent);
+  border-right-color: var(--line);
+}
+
+html[data-theme='lulu'] .brand-seal {
+  background-image: url('../assets/lulu/lulu-thumb.webp');
+  background-size: cover;
+  background-position: center 30%;
+  border-color: rgba(228, 119, 43, 0.45);
+  border-radius: 12px;
+  box-shadow: 0 2px 0 rgba(62, 43, 28, 0.08);
+}
+
+html[data-theme='lulu'] .brand-seal svg {
+  display: none;
+}
+
+html[data-theme='lulu'] .nav-item.is-active::before {
+  background: var(--seal);
+}
+
+html[data-theme='lulu'] .today-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--paper-raised);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+
+html[data-theme='lulu'][data-skin-tone='dark'] .today-hero {
+  box-shadow: none;
+}
+
+html[data-theme='lulu'] .today-hero::before,
+html[data-theme='lulu'] .today-hero::after {
+  content: '';
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+  border-color: var(--gold);
+  opacity: 0.55;
+}
+
+html[data-theme='lulu'] .today-hero::before {
+  top: 14px;
+  left: 14px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+  border-top-left-radius: 10px;
+}
+
+html[data-theme='lulu'] .today-hero::after {
+  right: 14px;
+  bottom: 14px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-bottom-right-radius: 10px;
+}
+
+html[data-theme='lulu'] .today-hero .hero-quote {
+  color: var(--ink);
+}
+
+html[data-theme='lulu'] .today-hero .hero-quote cite {
+  color: var(--text-mute);
+}
+
+html[data-theme='lulu'] .hero-actions .btn-primary {
+  background: var(--seal);
+  border-color: var(--seal);
+  color: #fff9ed;
+}
+
+html[data-theme='lulu'] .hero-actions .btn-primary:hover {
+  background: var(--seal-strong);
+  border-color: var(--seal-strong);
+}
+
+html[data-theme='lulu'] .stat-card,
+html[data-theme='lulu'] .settings-card,
+html[data-theme='lulu'] .goal-card,
+html[data-theme='lulu'] .task-row {
+  border-color: var(--line);
+  border-radius: 12px;
+}
+
+html[data-theme='lulu'] .stat-card {
+  background: var(--paper-raised);
+}
+
+html[data-theme='lulu'] .btn {
+  border-radius: 9px;
+}
+
+html[data-theme='lulu'] .icon-btn,
+html[data-theme='lulu'] .language-toggle,
+html[data-theme='lulu'] .theme-toggle {
+  border-radius: 9px;
+}
+
+html[data-theme='lulu'] .chart-bar {
+  background: var(--jade);
+}
+
+.theme-option.theme-lulu .theme-preview {
+  background-image: url('../assets/lulu/lulu-thumb.webp');
+  background-size: cover;
+  background-position: center 36%;
+}
+
+.lulu-hero-art {
+  display: none;
+}
+
+html[data-theme='lulu'] .lulu-hero-art {
+  display: block;
+  position: absolute;
+  z-index: 0;
+  right: 218px;
+  bottom: -34px;
+  width: 235px;
+  height: 305px;
+  background: url('../assets/lulu/lulu-cutout.webp') bottom center / contain no-repeat;
+  filter: drop-shadow(0 12px 12px rgba(93, 58, 23, 0.12));
+  pointer-events: none;
+  opacity: 0.92;
+}
+
+html[data-theme='lulu'][data-skin-tone='dark'] .lulu-hero-art {
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.55));
+}
+
+.lulu-side-card {
+  display: none;
+}
+
+html[data-theme='lulu'] .lulu-side-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 78px;
+  margin: 0 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--paper-raised);
+  overflow: hidden;
+}
+
+html[data-theme='lulu'] .lulu-side-portrait {
+  flex: none;
+  width: 56px;
+  height: 64px;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: url('../assets/lulu/lulu-portrait.webp') center 27% / cover no-repeat;
+}
+
+html[data-theme='lulu'] .lulu-side-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+html[data-theme='lulu'] .lulu-side-copy strong {
+  font-family: var(--serif);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+html[data-theme='lulu'] .lulu-side-copy small {
+  font-family: var(--mono);
+  font-size: 7.5px;
+  letter-spacing: 0.08em;
+  color: var(--text-mute);
+}
+
+html[data-theme='lulu'] .today-hero-copy,
+html[data-theme='lulu'] .today-hero-ring {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1180px) {
+  html[data-theme='lulu'] .lulu-hero-art {
+    right: 150px;
+    width: 190px;
+    height: 250px;
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 900px) {
+  html[data-theme='lulu'] .lulu-hero-art,
+  html[data-theme='lulu'] .lulu-side-card {
+    display: none;
+  }
+
+  html[data-theme='lulu'] .today-hero {
+    border-radius: 14px;
+  }
+}
+
+
+.theme-option.theme-lulu .theme-preview > span {
+  background: #e4772b;
+}
+
+.theme-option.theme-lulu .theme-preview > span:nth-child(2) {
+  background: #d79a2d;
+}
+
+.theme-option.theme-lulu .theme-preview > span:nth-child(3) {
+  background: #7e9f58;
+}
+
+html[data-theme='lulu'] .theme-picker {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.skin-tone-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--paper-raised) 82%, transparent);
+}
+
+.skin-tone-row > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.skin-tone-row strong {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.skin-tone-row small {
+  font-size: 9.5px;
+  color: var(--text-mute);
+}
+
+.skin-tone-switch {
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--paper-sunken);
+}
+
+.skin-tone-switch button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border-radius: 5px;
+  color: var(--text-mute);
+  font-size: 10px;
+}
+
+.skin-tone-switch button.is-active {
+  background: var(--paper-raised);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(62, 43, 28, 0.12);
+}
+
+@media (max-width: 1180px) {
+  html[data-theme='lulu'] .theme-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  html[data-theme='lulu'] .theme-picker {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .skin-tone-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* 四套内置主题固定为四列，避免噜噜卡片单独换行 */
+.theme-picker {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1180px) {
+  .theme-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .theme-picker {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+html[data-theme='lulu'] .app-main,
+html[data-theme='lulu'] .sidebar {
+  position: relative;
+  z-index: 1;
+}

@@ -1,4 +1,4 @@
-import type { CustomTheme, ThemeBase, ThemeName } from '@yolo/core';
+import type { CustomTheme, SkinTone, ThemeBase, ThemeName } from '@yolo/core';
 
 const THEME_KEY = 'yolo-theme';
 
@@ -47,7 +47,7 @@ export function isThemeBase(value: unknown): value is ThemeBase {
 }
 
 export function isThemeName(value: unknown): value is ThemeName {
-  return value === 'custom' || isThemeBase(value);
+  return value === 'custom' || value === 'lulu' || isThemeBase(value);
 }
 
 type Rgb = { r: number; g: number; b: number };
@@ -151,11 +151,16 @@ export function applyCustomTheme(custom: CustomTheme): void {
   const root = document.documentElement;
   root.dataset.theme = custom.base;
   root.dataset.customTheme = 'true';
+  delete root.dataset.skinTone;
   setCustomVars(custom);
   cacheTheme('custom');
 }
 
-export function applyTheme(theme: ThemeName, custom?: CustomTheme | null): void {
+export function applyTheme(
+  theme: ThemeName,
+  custom?: CustomTheme | null,
+  skinTone: SkinTone = 'light',
+): void {
   if (typeof document === 'undefined') return;
   if (theme === 'custom' && custom) {
     applyCustomTheme(custom);
@@ -163,6 +168,13 @@ export function applyTheme(theme: ThemeName, custom?: CustomTheme | null): void 
   }
   const root = document.documentElement;
   clearCustomVars();
+  if (theme === 'lulu') {
+    root.dataset.theme = 'lulu';
+    root.dataset.skinTone = skinTone;
+    cacheTheme('lulu');
+    return;
+  }
+  delete root.dataset.skinTone;
   root.dataset.theme = isThemeBase(theme) ? theme : 'paper';
   cacheTheme(root.dataset.theme as ThemeBase);
 }
@@ -177,5 +189,5 @@ export function applyCachedTheme(): void {
     cached = null;
   }
   const root = document.documentElement;
-  root.dataset.theme = isThemeBase(cached) ? cached : 'paper';
+  root.dataset.theme = isThemeBase(cached) || cached === 'lulu' ? cached : 'paper';
 }

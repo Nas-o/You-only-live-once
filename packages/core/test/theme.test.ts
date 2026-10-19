@@ -16,6 +16,13 @@ describe('自编辑主题', () => {
     expect(data.settings.customTheme).toBeNull();
   });
 
+  it('肤色明暗随数据迁移', () => {
+    const data = createSampleData('行者', NOW);
+    data.settings.skinTone = 'dark';
+    const migrated = migrateData(JSON.parse(JSON.stringify(data)));
+    expect(migrated?.settings.skinTone).toBe('dark');
+  });
+
   it('保存与迁移自定义主题', () => {
     const custom: CustomTheme = {
       name: '噜噜',

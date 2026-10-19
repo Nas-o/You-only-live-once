@@ -77,8 +77,33 @@ await page.locator('.nav-item').filter({ hasText: '今日' }).first().click();
 await page.waitForTimeout(500);
 await shot(page, '46-theme-swiss.png');
 
+await page.locator('.theme-toggle').click();
+await page.waitForTimeout(700);
+if ((await themeOf(page)) !== 'lulu') throw new Error('第三次点击未切换到 lulu');
+await shot(page, '49-theme-lulu.png');
+
 // 在设置页选择 ink，测试设置面板按钮
-await page.locator('.theme-toggle').click(); // swiss -> paper
+await page.locator('.nav-item').filter({ hasText: '设置' }).first().click();
+await page.waitForTimeout(500);
+const luluTone = page.locator('.skin-tone-switch button').filter({ hasText: '暗色' });
+if (await luluTone.count()) {
+  await luluTone.click();
+  await page.waitForTimeout(400);
+  if ((await page.evaluate(() => document.documentElement.dataset.skinTone)) !== 'dark') {
+    throw new Error('噜噜暗色未应用');
+  }
+  await shot(page, '50-theme-lulu-dark.png');
+  await page.locator('.nav-item').filter({ hasText: '今日' }).first().click();
+  await page.waitForTimeout(400);
+  await shot(page, '51-theme-lulu-dark-today.png');
+  await page.locator('.nav-item').filter({ hasText: '设置' }).first().click();
+  await page.waitForTimeout(300);
+  await page.locator('.skin-tone-switch button').filter({ hasText: '亮色' }).click();
+  await page.waitForTimeout(300);
+}
+await page.locator('.nav-item').filter({ hasText: '今日' }).first().click();
+await page.waitForTimeout(300);
+await page.locator('.theme-toggle').click(); // lulu -> paper
 await page.waitForTimeout(500);
 await page.locator('.theme-toggle').click(); // paper -> ink
 await page.waitForTimeout(700);

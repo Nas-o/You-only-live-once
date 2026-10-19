@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from 'react';
 import {
   AlertTriangle,
+  Moon,
   Palette,
   Database,
   Download,
@@ -12,6 +13,7 @@ import {
   Save,
   ShieldCheck,
   Sparkles,
+  Sun,
   Trash2,
   Upload,
 } from 'lucide-react';
@@ -27,6 +29,7 @@ export function SettingsPage() {
   const saving = useAppStore((s) => s.saving);
   const lastSavedAt = useAppStore((s) => s.lastSavedAt);
   const savePreferences = useAppStore((s) => s.savePreferences);
+  const setSkinTone = useAppStore((s) => s.setSkinTone);
   const setTheme = useAppStore((s) => s.setTheme);
   const exportData = useAppStore((s) => s.exportData);
   const importData = useAppStore((s) => s.importData);
@@ -104,7 +107,7 @@ export function SettingsPage() {
             </div>
             <div>
               <h2>界面主题</h2>
-              <p>三套内置视觉语言，随时切换；也可以自编辑一套自己的主题。</p>
+              <p>内置主题随时切换；也可以自编辑一套自己的主题。</p>
             </div>
           </div>
           <div className="theme-picker" role="radiogroup" aria-label="界面主题">
@@ -134,6 +137,30 @@ export function SettingsPage() {
               </button>
             ))}
           </div>
+          {data.settings.theme === 'lulu' ? (
+            <div className="skin-tone-row">
+              <div>
+                <strong>噜噜皮肤</strong>
+                <small>奶油纸与可可纸，两种光线。</small>
+              </div>
+              <div className="skin-tone-switch" role="group" aria-label="噜噜皮肤明暗">
+                <button
+                  type="button"
+                  className={data.settings.skinTone === 'light' ? 'is-active' : ''}
+                  onClick={() => setSkinTone('light')}
+                >
+                  <Sun size={13} /> 亮色
+                </button>
+                <button
+                  type="button"
+                  className={data.settings.skinTone === 'dark' ? 'is-active' : ''}
+                  onClick={() => setSkinTone('dark')}
+                >
+                  <Moon size={13} /> 暗色
+                </button>
+              </div>
+            </div>
+          ) : null}
           <div className={`custom-theme-row ${data.settings.theme === 'custom' ? 'is-active' : ''}`}>
             {customTheme ? (
               <>

@@ -73,6 +73,11 @@ export function Sidebar() {
         })}
       </nav>
 
+      <div className="lulu-side-card" aria-hidden="true">
+        <span className="lulu-side-portrait" />
+        <span className="lulu-side-copy"><strong>LULU</strong><small>softly forward</small></span>
+      </div>
+
       <div className="sidebar-spacer" />
 
       <button type="button" className="growth-side-card" onClick={() => setView('cultivation')}>

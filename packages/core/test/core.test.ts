@@ -88,10 +88,10 @@ describe('营地与攀登值', () => {
 });
 
 describe('界面主题', () => {
-  it('默认主题为纸上时间，并提供三套可选主题', () => {
+  it('默认主题为纸上时间，并提供四套可选主题', () => {
     const data = createInitialData(NOW);
     expect(data.settings.theme).toBe('paper');
-    expect(THEMES.map((theme) => theme.id)).toEqual(['paper', 'ink', 'swiss']);
+    expect(THEMES.map((theme) => theme.id)).toEqual(['paper', 'ink', 'swiss', 'lulu']);
   });
 });
 

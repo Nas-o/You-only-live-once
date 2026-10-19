@@ -77,6 +77,7 @@ export const THEMES: {
   { id: 'paper', name: '纸上时间', description: '暖纸、墨色与印章红，编辑设计' },
   { id: 'ink', name: '深墨', description: '深墨底色、骨白文字与朱砂强调' },
   { id: 'swiss', name: '瑞士网格', description: '白、黑、红，严格网格与无衬线标题' },
+  { id: 'lulu', name: '噜噜', description: '奶油黄、橙橘与青叶，侧栏小兽与软纸框' },
 ];
 
 export const DIFFICULTY_LABEL: Record<number, string> = {

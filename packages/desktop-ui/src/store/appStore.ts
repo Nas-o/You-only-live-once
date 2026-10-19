@@ -50,6 +50,7 @@ import {
   type Goal,
   type GoalInput,
   type Language,
+  type SkinTone,
   type KnowledgePointInput,
   type PhaseInput,
   type ReportInput,
@@ -162,6 +163,7 @@ interface AppStore {
   updateProfile: (patch: { name?: string; motto?: string }) => void;
   updateSettings: (patch: Partial<AppData['settings']>) => void;
   setTheme: (theme: ThemeName) => void;
+  setSkinTone: (tone: SkinTone) => void;
   saveCustomTheme: (theme: CustomTheme) => void;
   deleteCustomTheme: () => void;
   setLanguage: (language: Language) => void;
@@ -338,7 +340,7 @@ export const useAppStore = create<AppStore>((set, get) => {
         data = { ...data, activeTimers: recovered.timers };
         recoveryNote = `检测到 ${recovered.pausedCount} 个未结束的计时，已自动暂停并保留专注记录。`;
       }
-      applyTheme(data.settings.theme, data.settings.customTheme);
+      applyTheme(data.settings.theme, data.settings.customTheme, data.settings.skinTone);
       set({
         data,
         ready: true,
@@ -394,7 +396,7 @@ export const useAppStore = create<AppStore>((set, get) => {
         draft.settings.maxParallel = 1;
         draft.meta.onboarded = true;
       });
-      applyTheme(data.settings.theme, data.settings.customTheme);
+      applyTheme(data.settings.theme, data.settings.customTheme, data.settings.skinTone);
       set({ data, ready: true, view: 'today' });
       pushToast({
         tone: 'success',
@@ -436,7 +438,7 @@ export const useAppStore = create<AppStore>((set, get) => {
         },
         { silent: true },
       );
-      applyTheme(theme, custom);
+      applyTheme(theme, custom, get().data.settings.skinTone);
       const option = THEMES.find((item) => item.id === theme);
       pushToast({
         tone: 'info',
@@ -445,12 +447,19 @@ export const useAppStore = create<AppStore>((set, get) => {
       });
     },
 
+    setSkinTone: (skinTone) => {
+      commit((draft) => {
+        draft.settings.skinTone = skinTone;
+      }, { silent: true });
+      applyTheme(get().data.settings.theme, get().data.settings.customTheme, skinTone);
+    },
+
     saveCustomTheme: (customTheme) => {
       commit((draft) => {
         draft.settings.customTheme = customTheme;
         draft.settings.theme = 'custom';
       }, { silent: true });
-      applyTheme('custom', customTheme);
+      applyTheme('custom', customTheme, get().data.settings.skinTone);
       pushToast({
         tone: 'success',
         title: `主题 · ${customTheme.name || '自定义主题'}`,
@@ -463,7 +472,7 @@ export const useAppStore = create<AppStore>((set, get) => {
         draft.settings.customTheme = null;
         if (draft.settings.theme === 'custom') draft.settings.theme = 'paper';
       }, { silent: true });
-      applyTheme(get().data.settings.theme, get().data.settings.customTheme);
+      applyTheme(get().data.settings.theme, get().data.settings.customTheme, get().data.settings.skinTone);
       pushToast({ tone: 'info', title: '已删除自定义主题', message: '已回到纸上时间。' });
     },
 
@@ -1266,7 +1275,7 @@ export const useAppStore = create<AppStore>((set, get) => {
       }
       const recovered = recoverTimers(migrated.activeTimers);
       migrated.activeTimers = recovered.timers;
-      applyTheme(migrated.settings.theme, migrated.settings.customTheme);
+      applyTheme(migrated.settings.theme, migrated.settings.customTheme, migrated.settings.skinTone);
       set({
         data: migrated,
         ready: true,
@@ -1291,7 +1300,7 @@ export const useAppStore = create<AppStore>((set, get) => {
       fresh.ai = { ...previousAi };
       fresh.settings.language = previousLanguage;
       if (mode === 'empty') fresh.meta.onboarded = false;
-      applyTheme(fresh.settings.theme, fresh.settings.customTheme);
+      applyTheme(fresh.settings.theme, fresh.settings.customTheme, fresh.settings.skinTone);
       set({
         data: fresh,
         modal: { kind: 'none' },

@@ -199,6 +199,17 @@ export const MANUAL_TRANSLATIONS: Record<string, ManualTranslation> = {
   '累计专注': { en: 'Total focus', ja: '累計集中', ko: '누적 집중' },
   '侦察分': { en: 'Recon score', ja: '偵察スコア', ko: '정찰 점수' },
 
+  '内置主题随时切换；也可以自编辑一套自己的主题。': { en: 'Switch built-in themes anytime, or design your own.', ja: '内蔵テーマはいつでも切替。自分だけのテーマも作れます。', ko: '기본 테마를 언제든 바꾸거나 나만의 테마를 만들 수 있습니다.' },
+
+  // 噜噜皮肤
+  '噜噜': { en: 'Lulu', ja: 'ルル', ko: '루루' },
+  '奶油黄、橙橘与青叶，侧栏小兽与软纸框': { en: 'Cream yellow, tangerine and leaf green, with a small companion and soft paper frames.', ja: 'クリーム色、オレンジ、若葉。サイドの小さな相棒と柔らかな紙の枠。', ko: '크림 옐로, 탠저린, 잎사귀 초록. 사이드의 작은 친구와 부드러운 종이 프레임.' },
+  '噜噜皮肤': { en: 'Lulu skin', ja: 'ルルスキン', ko: '루루 스킨' },
+  '奶油纸与可可纸，两种光线。': { en: 'Cream paper or cocoa paper — two kinds of light.', ja: 'クリーム紙とココア紙、2つの光。', ko: '크림 종이와 코코아 종이, 두 가지 빛.' },
+  '亮色': { en: 'Light', ja: 'ライト', ko: '라이트' },
+  '暗色': { en: 'Dark', ja: 'ダーク', ko: '다크' },
+  '噜噜皮肤明暗': { en: 'Lulu skin tone', ja: 'ルルスキンの明暗', ko: '루루 스킨 밝기' },
+
   // 自编辑主题
   '自编辑主题': { en: 'Custom theme', ja: 'カスタムテーマ', ko: '사용자 테마' },
   '三套内置视觉语言，随时切换；也可以自编辑一套自己的主题。': { en: 'Three built-in visual languages, or design your own theme.', ja: '3つの内蔵テーマ。自分だけのテーマも作れます。', ko: '세 가지 기본 테마 또는 나만의 테마를 만들 수 있습니다.' },

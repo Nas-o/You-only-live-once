@@ -52,8 +52,10 @@ export interface Settings {
   reduceMotion: boolean;
   /** 完成时播放提示音（预留） */
   sound: boolean;
-  /** 界面主题：纸上时间 / 深墨 / 瑞士网格 / 自编辑 */
+  /** 界面主题：纸上时间 / 深墨 / 瑞士网格 / 噜噜 / 自编辑 */
   theme: ThemeName;
+  /** 噜噜皮肤的亮色/暗色版本 */
+  skinTone: SkinTone;
   /** 自编辑主题；未创建时为 null */
   customTheme: CustomTheme | null;
   /** 界面语言：中文 / 日本語 / 한국어 / English */
@@ -447,7 +449,8 @@ export interface TimerSettlement {
 export type AppView = 'today' | 'tasks' | 'goals' | 'cultivation' | 'stats' | 'settings';
 
 export type ThemeBase = 'paper' | 'ink' | 'swiss';
-export type ThemeName = ThemeBase | 'custom';
+export type ThemeName = ThemeBase | 'lulu' | 'custom';
+export type SkinTone = 'light' | 'dark';
 
 export interface CustomThemeColors {
   paper: string;

@@ -121,6 +121,7 @@ export function createInitialData(now: Date = new Date()): AppData {
       reduceMotion: false,
       sound: true,
       theme: 'paper',
+      skinTone: 'light',
       customTheme: null,
       language: 'zh',
     },
@@ -867,7 +868,8 @@ export function migrateData(raw: unknown, now: Date = new Date()): AppData | nul
       log.seconds >= 0,
   );
   const settings = { ...base.settings, ...(obj.settings ?? {}) };
-  if (!['paper', 'ink', 'swiss', 'custom'].includes(settings.theme)) settings.theme = 'paper';
+  if (!['paper', 'ink', 'swiss', 'lulu', 'custom'].includes(settings.theme)) settings.theme = 'paper';
+  if (!['light', 'dark'].includes(settings.skinTone)) settings.skinTone = 'light';
   settings.customTheme = normalizeCustomTheme((obj.settings as Partial<Settings> | undefined)?.customTheme);
   if (settings.theme === 'custom' && !settings.customTheme) settings.theme = 'paper';
   if (!['zh', 'ja', 'ko', 'en'].includes(settings.language)) settings.language = 'zh';

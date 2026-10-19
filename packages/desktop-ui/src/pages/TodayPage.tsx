@@ -74,6 +74,7 @@ export function TodayPage() {
   return (
     <div className="page-inner today-page">
       <section className="today-hero">
+        <div className="lulu-hero-art" aria-hidden="true" />
         <div className="today-hero-copy">
           <div className="eyebrow">MEMENTO MORI</div>
           <blockquote className="hero-quote">
