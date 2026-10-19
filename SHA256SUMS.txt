@@ -1,4 +1,12 @@
-1bc94306033a1e13e3e693c7e674599042a14b0e3f9ce9f9531018798ec24507  apps/linux/release/YouOnlyLiveOnce-0.1.0-amd64.deb
-d20c209108d48714eeb23aad86e69141a6c16a0a664e5d0ce6f0fe55deb6ae0f  apps/linux/release/YouOnlyLiveOnce-0.1.0-x86_64.AppImage
-40231b34055a7fc5f45e5645d73c404c37d125a21a65faa90fb597bad271bed9  apps/windows/release/YouOnlyLiveOnce-0.1.0-win-x64-portable.zip
-00ab34660add38ac3300d26213cb3ebfa6fd7c2d4309a7aa4f323c6fd7d21be4  apps/android/release/YouOnlyLiveOnce-0.1.0-android-debug.apk
+a9015c0de35b93cbb59503ce4bcbd93e558b09a130a47a94de8e1fd2cc5a8378  apps/linux/release/YouOnlyLiveOnce-0.1.1-amd64.deb
+798ce05115b351fe431f499daa822eb3fda8dda9394597fd9453e50d8804800b  apps/linux/release/YouOnlyLiveOnce-0.1.1-arm64.AppImage
+8c4edb14f927eb71f9cbc82d9bacdb3064ff5e292b02f8f91caac0f78aaa6a9c  apps/linux/release/YouOnlyLiveOnce-0.1.1-arm64.deb
+850d2a865927d5a42cf325295050c12d4a46a6c0ee52b7c619b1227574cbf9ff  apps/linux/release/YouOnlyLiveOnce-0.1.1-x86_64.AppImage
+96641603ce93ff9e27fb5253e40596bac23c7c787091db4051fd77495abc6cfc  apps/windows/release/YouOnlyLiveOnce-0.1.1-win-arm64-portable.zip
+bfa0583292aab317d3082ef37791fe879113ef5c814a0cd714caad46ced5cb64  apps/windows/release/YouOnlyLiveOnce-0.1.1-win-x64-portable.zip
+74c54e21e3fb3668c403c060299a08349b85c30fbcbf83aa22861edc945a6e44  apps/android/release/YouOnlyLiveOnce-0.1.1-android-debug.apk
+c0c5dd43809e7279d5dbc34b853c88a5b245e3ae2536d35dc8d76faaf6021294  apps/macos/release/YouOnlyLiveOnce-0.1.1-mac-arm64.dmg
+8cdd52bdb314b5b31a325c3b77dc2a1d5646f542915b24922fc47b5151662639  apps/macos/release/YouOnlyLiveOnce-0.1.1-mac-arm64.zip
+b252b704b60fae69029ea95b9e82319c3469cea86d76e7d4e05367c3cca80628  apps/macos/release/YouOnlyLiveOnce-0.1.1-mac-x64.dmg
+f8809af2d113b8292efd5774e1fb214524d83cfacb8357f454bab3cf9a49d284  apps/macos/release/YouOnlyLiveOnce-0.1.1-mac-x64.zip
+87376898251df76e89524b947ed8704a0732af25e420503860b423868266aae5  apps/ios/release/YouOnlyLiveOnce-0.1.1-ios-unsigned.ipa
