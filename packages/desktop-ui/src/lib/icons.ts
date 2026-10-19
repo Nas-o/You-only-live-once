@@ -1,0 +1,60 @@
+import {
+  BarChart3,
+  BookOpen,
+  CheckCircle2,
+  Coins,
+  Compass,
+  Flame,
+  FolderKanban,
+  GitBranch,
+  Hourglass,
+  Layers,
+  Mountain,
+  Moon,
+  Sprout,
+  ScrollText,
+  Search,
+  Sparkles,
+  Star,
+  Sun,
+  Target,
+  Timer,
+  Trophy,
+  type LucideIcon,
+} from 'lucide-react';
+
+export const ACHIEVEMENT_ICONS: Record<string, LucideIcon> = {
+  compass: Compass,
+  timer: Timer,
+  moon: Moon,
+  flame: Flame,
+  'git-branch': GitBranch,
+  sparkles: Sparkles,
+  search: Search,
+  star: Star,
+  check: CheckCircle2,
+  trophy: Trophy,
+  hourglass: Hourglass,
+  target: Target,
+  mountain: Mountain,
+  coins: Coins,
+  sun: Sun,
+  scroll: ScrollText,
+};
+
+export const CATEGORY_ICONS = {
+  learning: BookOpen,
+  practice: Sparkles,
+  project: FolderKanban,
+  reading: BookOpen,
+  other: Layers,
+} as const;
+
+export const NAV_ICONS = {
+  today: Sun,
+  tasks: Layers,
+  goals: Star,
+  cultivation: Sprout,
+  stats: BarChart3,
+  settings: Sparkles,
+} as const;

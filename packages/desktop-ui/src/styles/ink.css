@@ -1,0 +1,185 @@
+/* ============================================================
+   深墨 · Ink
+   纸版布局的暗色变体：深墨底、骨白文字、朱砂强调。
+   不使用渐变、发光与玻璃拟态。
+   ============================================================ */
+
+html[data-theme="ink"] {
+  --paper: #141311;
+  --paper-raised: #1b1916;
+  --paper-sunken: #0f0e0c;
+  --ink: #ece7db;
+  --ink-soft: #b8afa1;
+  --ink-mute: #9a9184;
+
+  --bg: var(--paper);
+  --bg-deep: var(--paper-sunken);
+  --panel: var(--paper-raised);
+  --panel-2: #201d19;
+  --panel-3: #26221d;
+
+  --line: rgba(236, 231, 219, 0.14);
+  --line-strong: rgba(236, 231, 219, 0.34);
+
+  --text: var(--ink);
+  --text-dim: var(--ink-soft);
+  --text-mute: var(--ink-mute);
+
+  --gold: #c09a63;
+  --gold-strong: #d6b27b;
+  --gold-soft: rgba(192, 154, 99, 0.12);
+  --jade: #8ea88b;
+  --azure: #88a7b8;
+  --rose: #c58a82;
+  --violet: #a491b5;
+  --danger: #e07a6a;
+  --seal: #c25b48;
+  --seal-strong: #a94a39;
+
+  --input-bg: #1a1815;
+  --ring-track: rgba(236, 231, 219, 0.18);
+  --bar-track: rgba(236, 231, 219, 0.12);
+  --chart-grid: rgba(236, 231, 219, 0.1);
+  --chart-track: rgba(236, 231, 219, 0.05);
+  --chart-bar: #8ea88b;
+  --constellation-line: rgba(236, 231, 219, 0.22);
+  --constellation-locked: rgba(236, 231, 219, 0.36);
+  --constellation-fill: #1b1916;
+  --constellation-core: #1b1916;
+
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+html[data-theme="ink"] body {
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(236, 231, 219, 0.035) 0.5px, transparent 0.55px);
+  background-size: 5px 5px;
+  color: var(--ink);
+}
+
+html[data-theme="ink"] ::selection {
+  background: rgba(194, 91, 72, 0.3);
+  color: var(--ink);
+}
+
+html[data-theme="ink"] ::-webkit-scrollbar-thumb {
+  background: rgba(236, 231, 219, 0.24);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+html[data-theme="ink"] .topbar {
+  background: rgba(20, 19, 17, 0.94);
+}
+
+html[data-theme="ink"] .mobile-nav {
+  background: rgba(20, 19, 17, 0.97);
+}
+
+html[data-theme="ink"] input,
+html[data-theme="ink"] textarea,
+html[data-theme="ink"] select {
+  background: var(--input-bg);
+  color: var(--ink);
+}
+
+html[data-theme="ink"] input:focus,
+html[data-theme="ink"] textarea:focus,
+html[data-theme="ink"] select:focus {
+  background: #211e1a;
+  border-color: var(--ink-soft);
+}
+
+html[data-theme="ink"] input[type="date"] {
+  color-scheme: dark;
+}
+
+html[data-theme="ink"] input[type="range"].progress-slider::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    90deg,
+    var(--seal) 0%,
+    var(--seal) calc(var(--range, 50) * 1%),
+    rgba(236, 231, 219, 0.16) calc(var(--range, 50) * 1%),
+    rgba(236, 231, 219, 0.16) 100%
+  );
+}
+
+html[data-theme="ink"] input[type="range"].progress-slider::-webkit-slider-thumb {
+  background: var(--seal);
+  border-color: var(--paper);
+  box-shadow: 0 0 0 1px var(--seal);
+}
+
+html[data-theme="ink"] .brand-seal {
+  background: transparent;
+  border-color: var(--seal);
+  color: var(--seal);
+}
+
+html[data-theme="ink"] .theme-option-current {
+  background: var(--paper-raised);
+  border-color: rgba(194, 91, 72, 0.4);
+}
+
+html[data-theme="ink"] .heatmap-cell {
+  background: rgba(236, 231, 219, 0.08);
+}
+
+html[data-theme="ink"] .heatmap-cell.level-1 {
+  background: rgba(142, 168, 139, 0.28);
+}
+
+html[data-theme="ink"] .heatmap-cell.level-2 {
+  background: rgba(142, 168, 139, 0.46);
+}
+
+html[data-theme="ink"] .heatmap-cell.level-3 {
+  background: rgba(142, 168, 139, 0.66);
+}
+
+html[data-theme="ink"] .heatmap-cell.level-4 {
+  background: var(--seal);
+  box-shadow: none;
+}
+
+html[data-theme="ink"] .heatmap-cell.is-future {
+  opacity: 0.22;
+}
+
+html[data-theme="ink"] .focus-layer {
+  background: #0e0c09;
+}
+
+html[data-theme="ink"] .focus-card {
+  background: #1a1713;
+}
+
+html[data-theme="ink"] .btn-primary,
+html[data-theme="ink"] .levelup-btn,
+html[data-theme="ink"] .onboarding-submit {
+  background: var(--seal);
+  border-color: var(--seal);
+  color: #fff8f0;
+}
+
+html[data-theme="ink"] .btn-primary:hover {
+  background: var(--seal-strong);
+  border-color: var(--seal-strong);
+}
+
+html[data-theme="ink"] .theme-preview {
+  border-color: rgba(236, 231, 219, 0.2);
+}
+
+html[data-theme="ink"] .stat-trend {
+  color: var(--jade);
+}
+
+html[data-theme="ink"] .goal-card-map,
+html[data-theme="ink"] .goal-card {
+  background-color: var(--paper-raised);
+}
+
+html[data-theme="ink"] .chart-goal-legend {
+  color: var(--text-mute);
+}

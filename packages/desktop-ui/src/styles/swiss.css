@@ -1,0 +1,543 @@
+/* ============================================================
+   瑞士网格 · Swiss Grid
+   白、黑、红；无衬线粗标题；严格网格；零圆角。
+   ============================================================ */
+
+html[data-theme="swiss"] {
+  --paper: #f6f6f2;
+  --paper-raised: #ffffff;
+  --paper-sunken: #ecece6;
+  --ink: #111111;
+  --ink-soft: #343434;
+  --ink-mute: #5d5d57;
+
+  --bg: var(--paper);
+  --bg-deep: var(--paper-sunken);
+  --panel: var(--paper-raised);
+  --panel-2: #f0f0ea;
+  --panel-3: #e6e6e0;
+
+  --line: rgba(17, 17, 17, 0.22);
+  --line-strong: #111111;
+
+  --text: var(--ink);
+  --text-dim: var(--ink-soft);
+  --text-mute: var(--ink-mute);
+
+  --gold: #8a5a1f;
+  --gold-strong: #6f4717;
+  --gold-soft: rgba(138, 90, 31, 0.08);
+  --jade: #2f5a44;
+  --azure: #2f5670;
+  --rose: #a33a30;
+  --violet: #5a4770;
+  --danger: #d02f24;
+  --seal: #e0342a;
+  --seal-strong: #bf241b;
+
+  --input-bg: #ffffff;
+  --ring-track: rgba(17, 17, 17, 0.18);
+  --bar-track: rgba(17, 17, 17, 0.15);
+  --chart-grid: rgba(17, 17, 17, 0.12);
+  --chart-track: transparent;
+  --chart-bar: #111111;
+  --constellation-line: rgba(17, 17, 17, 0.32);
+  --constellation-locked: rgba(17, 17, 17, 0.45);
+  --constellation-fill: #ffffff;
+  --constellation-core: #ffffff;
+
+  --radius: 0;
+  --radius-sm: 0;
+  --shadow: none;
+  --serif: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", Helvetica, Arial, sans-serif;
+}
+
+html[data-theme="swiss"] body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(17, 17, 17, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.055) 1px, transparent 1px);
+  background-size: 48px 48px;
+  color: var(--ink);
+}
+
+html[data-theme="swiss"] .sidebar {
+  background: var(--paper-sunken);
+  border-right: 2px solid var(--ink);
+}
+
+html[data-theme="swiss"] .brand-seal {
+  border-radius: 0;
+  border-color: var(--seal);
+  background: var(--seal);
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .nav-item {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .nav-item.is-active {
+  background: var(--ink);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+html[data-theme="swiss"] .nav-item.is-active::before {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--seal);
+}
+
+html[data-theme="swiss"] .nav-item.is-active .nav-badge {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .nav-badge {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .realm-card {
+  border: 1px solid var(--ink);
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .topbar {
+  background: rgba(246, 246, 242, 0.96);
+  border-bottom: 2px solid var(--ink);
+}
+
+html[data-theme="swiss"] .daily-mini {
+  border-radius: 0;
+  border-color: var(--ink);
+}
+
+html[data-theme="swiss"] .timer-chip {
+  border-radius: 0;
+  border-color: var(--ink);
+}
+
+html[data-theme="swiss"] .page-header h1 {
+  font-family: var(--sans);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+html[data-theme="swiss"] .eyebrow {
+  letter-spacing: 0.06em;
+}
+
+html[data-theme="swiss"] .today-hero {
+  background: var(--paper-raised);
+  border: 1px solid var(--ink);
+  border-top: 6px solid var(--seal);
+  border-radius: 0;
+  padding: 36px;
+}
+
+html[data-theme="swiss"] .hero-quote {
+  font-family: var(--sans);
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.36;
+  color: var(--ink);
+}
+
+html[data-theme="swiss"] .hero-quote cite {
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+html[data-theme="swiss"] .hero-ring-center strong {
+  font-family: var(--sans);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+html[data-theme="swiss"] .stat-grid {
+  gap: 0;
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+html[data-theme="swiss"] .stat-card {
+  border-right: 1px solid var(--ink);
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .stat-value {
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+html[data-theme="swiss"] .stat-label,
+html[data-theme="swiss"] .stat-hint {
+  font-family: var(--sans);
+}
+
+html[data-theme="swiss"] .side-panel {
+  border-top: 2px solid var(--ink);
+}
+
+html[data-theme="swiss"] .section-heading h2 {
+  font-family: var(--sans);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+html[data-theme="swiss"] .task-card,
+html[data-theme="swiss"] .goal-card,
+html[data-theme="swiss"] .chart-card,
+html[data-theme="swiss"] .settings-card,
+html[data-theme="swiss"] .cult-hero,
+html[data-theme="swiss"] .cult-section,
+html[data-theme="swiss"] .modal,
+html[data-theme="swiss"] .drawer,
+html[data-theme="swiss"] .levelup-card,
+html[data-theme="swiss"] .empty-state,
+html[data-theme="swiss"] .active-timer-card,
+html[data-theme="swiss"] .theme-option,
+html[data-theme="swiss"] .option-chips button,
+html[data-theme="swiss"] .segmented,
+html[data-theme="swiss"] .segmented button,
+html[data-theme="swiss"] .search-box,
+html[data-theme="swiss"] .sort-select,
+html[data-theme="swiss"] .btn,
+html[data-theme="swiss"] .icon-btn,
+html[data-theme="swiss"] .confidence-pill,
+html[data-theme="swiss"] .category-option,
+html[data-theme="swiss"] .difficulty-picker button,
+html[data-theme="swiss"] .storage-path,
+html[data-theme="swiss"] .platform-list li,
+html[data-theme="swiss"] .phase-composer,
+html[data-theme="swiss"] .phase-editor,
+html[data-theme="swiss"] .path-row,
+html[data-theme="swiss"] .resource-chip,
+html[data-theme="swiss"] .toggle-line input {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .task-card {
+  border: 1px solid var(--ink);
+}
+
+html[data-theme="swiss"] .task-card:hover {
+  border-color: var(--ink);
+  background: var(--paper-raised);
+}
+
+html[data-theme="swiss"] .task-card h3,
+html[data-theme="swiss"] .goal-card h3,
+html[data-theme="swiss"] .cult-copy h2,
+html[data-theme="swiss"] .modal-head h2,
+html[data-theme="swiss"] .levelup-card h2 {
+  font-family: var(--sans);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+html[data-theme="swiss"] .goal-card {
+  border: 1px solid var(--ink);
+}
+
+html[data-theme="swiss"] .goal-card::before {
+  height: 4px;
+}
+
+html[data-theme="swiss"] .tasks-summary {
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+html[data-theme="swiss"] .tasks-summary > div {
+  border-right: 1px solid var(--ink);
+}
+
+html[data-theme="swiss"] .task-table {
+  border-top: 1px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+
+html[data-theme="swiss"] .task-row {
+  border-bottom: 1px solid var(--line);
+}
+
+html[data-theme="swiss"] .task-row-head {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+html[data-theme="swiss"] .segmented button.is-active {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .btn-primary {
+  background: var(--seal);
+  border-color: var(--seal);
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .btn-primary:hover {
+  background: var(--seal-strong);
+  border-color: var(--seal-strong);
+}
+
+html[data-theme="swiss"] .btn-ghost {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+html[data-theme="swiss"] .btn-ghost:hover {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .btn-soft-gold,
+html[data-theme="swiss"] .btn-amber {
+  border-color: var(--seal);
+  color: var(--seal);
+}
+
+html[data-theme="swiss"] .btn-jade {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+html[data-theme="swiss"] input,
+html[data-theme="swiss"] textarea,
+html[data-theme="swiss"] select {
+  background: #ffffff;
+  border-color: var(--ink);
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] input:focus,
+html[data-theme="swiss"] textarea:focus,
+html[data-theme="swiss"] select:focus {
+  border-color: var(--seal);
+  box-shadow: none;
+  background: #ffffff;
+}
+
+html[data-theme="swiss"] input[type="range"].progress-slider::-webkit-slider-runnable-track {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .progress-bar,
+html[data-theme="swiss"] .progress-bar > span {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .task-card-icon,
+html[data-theme="swiss"] .stat-icon,
+html[data-theme="swiss"] .empty-icon,
+html[data-theme="swiss"] .report-missing-icon,
+html[data-theme="swiss"] .settings-icon {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .cult-orb {
+  width: 154px;
+  height: 154px;
+}
+
+html[data-theme="swiss"] .cult-orb::before {
+  border-radius: 0;
+  border: 2px solid var(--ink);
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-theme="swiss"] .cult-orb-core strong {
+  color: var(--seal);
+  font-family: var(--sans);
+  font-weight: 800;
+}
+
+html[data-theme="swiss"] .realm-step {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .realm-step-node {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .realm-step.is-current {
+  border-color: var(--ink);
+  background: #ffffff;
+}
+
+html[data-theme="swiss"] .realm-step.is-current .realm-step-node {
+  color: #ffffff;
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+html[data-theme="swiss"] .realm-stage-dot {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .achievement-grid {
+  border: 1px solid var(--ink);
+  gap: 1px;
+  background: var(--ink);
+}
+
+html[data-theme="swiss"] .achievement {
+  background: #ffffff;
+  border: none;
+}
+
+html[data-theme="swiss"] .achievement-icon {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .heatmap-cell {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .heatmap-cell.level-1 {
+  background: #e2e2dd;
+}
+
+html[data-theme="swiss"] .heatmap-cell.level-2 {
+  background: #c7c7c0;
+}
+
+html[data-theme="swiss"] .heatmap-cell.level-3 {
+  background: #8f8f88;
+}
+
+html[data-theme="swiss"] .heatmap-cell.level-4 {
+  background: var(--seal);
+}
+
+html[data-theme="swiss"] .insight-panel {
+  background: #ffffff;
+  border: 1px solid var(--ink);
+  border-left: 4px solid var(--seal);
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .modal {
+  border: 2px solid var(--ink);
+  box-shadow: none;
+}
+
+html[data-theme="swiss"] .modal-backdrop,
+html[data-theme="swiss"] .drawer-backdrop,
+html[data-theme="swiss"] .levelup-backdrop {
+  background: rgba(17, 17, 17, 0.5);
+}
+
+html[data-theme="swiss"] .drawer {
+  border-left: 2px solid var(--ink);
+  box-shadow: none;
+}
+
+html[data-theme="swiss"] .modal-head {
+  border-bottom: 2px solid var(--ink);
+}
+
+html[data-theme="swiss"] .modal-foot {
+  border-top: 2px solid var(--ink);
+  background: var(--paper-sunken);
+}
+
+html[data-theme="swiss"] .report-aside {
+  border-left: 2px solid var(--ink);
+  background: var(--paper-sunken);
+}
+
+html[data-theme="swiss"] .score-card {
+  border: 1px solid var(--ink);
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .onboarding {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(17, 17, 17, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+html[data-theme="swiss"] .onboarding-art {
+  background: var(--paper-sunken);
+  border-right: 2px solid var(--ink);
+}
+
+html[data-theme="swiss"] .onboarding-manifesto h1 {
+  font-family: var(--sans);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+html[data-theme="swiss"] .onboarding-panel {
+  background: var(--paper);
+}
+
+html[data-theme="swiss"] .principle-icon {
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  color: var(--seal);
+}
+
+html[data-theme="swiss"] .onboarding-submit {
+  border-radius: 0;
+  background: var(--seal);
+  border-color: var(--seal);
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .mobile-nav {
+  background: rgba(246, 246, 242, 0.98);
+  border-top: 2px solid var(--ink);
+}
+
+html[data-theme="swiss"] .mobile-nav button {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .mobile-nav button.is-active {
+  background: var(--ink);
+  color: #ffffff;
+}
+
+html[data-theme="swiss"] .theme-option.is-active {
+  border-color: var(--seal);
+  box-shadow: inset 0 0 0 1px var(--seal);
+}
+
+html[data-theme="swiss"] .theme-option-current {
+  background: #ffffff;
+  border-color: var(--seal);
+  color: var(--seal);
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .theme-preview {
+  border-radius: 0;
+}
+
+html[data-theme="swiss"] .toast {
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-theme="swiss"] .boot-screen {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(17, 17, 17, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}

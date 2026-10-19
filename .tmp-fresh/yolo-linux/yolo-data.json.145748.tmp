@@ -1,0 +1,1579 @@
+{
+  "version": 1,
+  "meta": {
+    "createdAt": "2026-10-05T01:00:00.000Z",
+    "lastSavedAt": "2026-10-19T09:35:07.138Z",
+    "onboarded": true,
+    "installId": "inst_d92e9375-cfa8-4904-9a2b-1b602f6de7a7"
+  },
+  "profile": {
+    "name": "行者",
+    "motto": "把有限的时间，用在真正重要的事上。",
+    "joinedAt": "2026-10-05T01:00:00.000Z"
+  },
+  "settings": {
+    "dailyGoalMinutes": 90,
+    "maxParallel": 3,
+    "reduceMotion": false,
+    "sound": true,
+    "theme": "paper"
+  },
+  "tasks": [
+    {
+      "id": "t_js",
+      "title": "JavaScript 核心语法",
+      "description": "把 JS 的地基打牢：作用域、原型、异步与模块化。之后 React 与 Node 都会更轻松。",
+      "category": "learning",
+      "status": "active",
+      "priority": "high",
+      "difficulty": 3,
+      "estimatedMinutes": 600,
+      "dueDate": "2026-10-31",
+      "progress": 62,
+      "createdAt": "2026-10-07T12:00:00.000Z",
+      "updatedAt": "2026-10-07T12:30:00.000Z",
+      "goalId": "g_e6e6cbaa-9bfb-467b-808d-3094dc9ba04b",
+      "phases": [
+        {
+          "id": "ph_d952962a-b12c-4201-942d-443136349a79",
+          "title": "语法与类型系统",
+          "note": "变量、类型转换、判等、数组与对象常用方法",
+          "estimatedMinutes": 120,
+          "status": "done",
+          "order": 0,
+          "completedAt": "2026-10-10T13:00:00.000Z",
+          "rewardedAt": "2026-10-10T13:00:00.000Z",
+          "dueDate": "2026-10-09"
+        },
+        {
+          "id": "ph_1ea41ff1-0c5e-4869-9592-fb8bc953baec",
+          "title": "函数、作用域与闭包",
+          "note": "执行上下文、闭包、this、call/apply/bind",
+          "estimatedMinutes": 150,
+          "status": "done",
+          "order": 1,
+          "completedAt": "2026-10-14T13:00:00.000Z",
+          "rewardedAt": "2026-10-14T13:00:00.000Z",
+          "dueDate": "2026-10-14"
+        },
+        {
+          "id": "ph_51a1bf4b-8563-4d63-b7cb-30e2a0445849",
+          "title": "异步与事件循环",
+          "note": "回调、Promise、async/await、微任务与宏任务",
+          "estimatedMinutes": 180,
+          "status": "doing",
+          "order": 2,
+          "startedAt": "2026-10-17T12:00:00.000Z",
+          "dueDate": "2026-10-19"
+        },
+        {
+          "id": "ph_0cf7d663-6abc-43d1-ab8b-cc0130ffc28d",
+          "title": "模块化与工程习惯",
+          "note": "ESM、错误处理、调试、小型练习项目",
+          "estimatedMinutes": 150,
+          "status": "todo",
+          "order": 3,
+          "dueDate": "2026-10-24"
+        }
+      ],
+      "tags": [
+        "JavaScript",
+        "基础",
+        "前端"
+      ],
+      "totalFocusSeconds": 22200,
+      "sessionCount": 7,
+      "xpEarned": 480,
+      "note": "## 今天搞清楚了什么\n\n`this` 的绑定规则比想象中清楚，尤其是箭头函数不创建自己的 `this`。\n\n- [x] 画出事件循环的调用栈\n- [ ] 用最小示例验证微任务顺序\n\n```js\nconsole.log(this);\n```\n\n> 下一步：把宏任务与微任务的执行顺序讲给一个没学过的人听。",
+      "report": {
+        "subject": "JavaScript 核心语法与运行机制：作用域链、闭包、原型、this、事件循环、Promise 与模块化。",
+        "goal": "能独立读懂并改写中等复杂度的 JavaScript 代码，为 React 与 Node.js 打牢地基。",
+        "successCriteria": "不查资料写出闭包、原型继承与异步流程控制示例；能讲清事件循环；完成 20 道配套练习并复盘。",
+        "prerequisites": "会基本的 HTML/CSS；理解变量、函数、条件与循环。",
+        "usefulScope": "作用域与闭包、原型链、this 绑定、Promise/async、事件循环、模块化、常用数组方法。",
+        "avoidScope": "暂不深挖 V8 源码与 JIT 优化；不追冷门语法糖；不为了炫技写难懂的一行代码。",
+        "risks": "最容易陷入“教程循环”：看得懂但写不出。异步与 this 容易混淆，练习量不足会眼高手低。",
+        "path": [
+          {
+            "id": "p_545f4a3e-0ead-4aa7-9a21-8c8fa2198d8f",
+            "title": "语法与类型系统",
+            "detail": "变量、类型转换、判等、数组与对象常用方法",
+            "estimatedMinutes": 120
+          },
+          {
+            "id": "p_c45f71eb-534c-48a9-b650-ef31ae00ea40",
+            "title": "函数、作用域与闭包",
+            "detail": "执行上下文、闭包、this、call/apply/bind",
+            "estimatedMinutes": 150
+          },
+          {
+            "id": "p_5b9fb4d8-9719-4be1-856e-d37c1d2fe6ad",
+            "title": "异步与事件循环",
+            "detail": "回调、Promise、async/await、微任务与宏任务",
+            "estimatedMinutes": 180
+          },
+          {
+            "id": "p_799b98be-7392-48ec-a486-b16c407c6920",
+            "title": "模块化与工程习惯",
+            "detail": "ESM、错误处理、调试、小型练习项目",
+            "estimatedMinutes": 150
+          }
+        ],
+        "resources": [
+          {
+            "id": "r_76e281e3-215a-45fa-b1ca-415b87abe78f",
+            "title": "MDN JavaScript 指南",
+            "type": "docs",
+            "url": "https://developer.mozilla.org/zh-CN/docs/Web/JavaScript"
+          },
+          {
+            "id": "r_e7785dfa-5249-48bb-b017-d1c8d26d2408",
+            "title": "JavaScript.info",
+            "type": "course",
+            "url": "https://zh.javascript.info/"
+          },
+          {
+            "id": "r_a21b8a04-c884-436a-b440-4d8867fdccbf",
+            "title": "《你不知道的 JavaScript》",
+            "type": "book"
+          }
+        ],
+        "calibratedMinutes": 600,
+        "confidence": 4,
+        "score": 100,
+        "submittedAt": "2026-10-07T12:30:00.000Z",
+        "updatedAt": "2026-10-07T12:30:00.000Z",
+        "revisions": 0
+      }
+    },
+    {
+      "id": "t_react",
+      "title": "React 组件与状态管理",
+      "description": "从组件拆分到状态设计，做出可维护的中型页面。",
+      "category": "learning",
+      "status": "active",
+      "priority": "high",
+      "difficulty": 4,
+      "estimatedMinutes": 900,
+      "dueDate": "2026-11-13",
+      "progress": 30,
+      "createdAt": "2026-10-09T12:00:00.000Z",
+      "updatedAt": "2026-10-09T12:30:00.000Z",
+      "goalId": "g_e6e6cbaa-9bfb-467b-808d-3094dc9ba04b",
+      "phases": [
+        {
+          "id": "ph_12dbb85d-c91b-44e9-b13f-6f4743ada097",
+          "title": "组件与 JSX",
+          "note": "组件树、props、条件与列表渲染",
+          "estimatedMinutes": 200,
+          "status": "done",
+          "order": 0,
+          "completedAt": "2026-10-13T13:00:00.000Z",
+          "rewardedAt": "2026-10-13T13:00:00.000Z"
+        },
+        {
+          "id": "ph_db932191-2cb5-45b6-b10f-4e7e12ff76d7",
+          "title": "Hooks 与副作用",
+          "note": "useState/useEffect/useMemo/自定义 Hook",
+          "estimatedMinutes": 250,
+          "status": "doing",
+          "order": 1,
+          "startedAt": "2026-10-16T12:00:00.000Z"
+        },
+        {
+          "id": "ph_1e1a7023-a578-45a9-b611-7ff62c5cfdfc",
+          "title": "状态设计与路由",
+          "note": "状态提升、Context、路由与表单",
+          "estimatedMinutes": 250,
+          "status": "todo",
+          "order": 2
+        },
+        {
+          "id": "ph_58fb436f-b6c8-402e-8427-c96b44edb685",
+          "title": "异步数据与性能",
+          "note": "请求竞态、加载态、渲染优化",
+          "estimatedMinutes": 200,
+          "status": "todo",
+          "order": 3
+        }
+      ],
+      "tags": [
+        "React",
+        "Hooks",
+        "前端"
+      ],
+      "totalFocusSeconds": 12000,
+      "sessionCount": 5,
+      "xpEarned": 285,
+      "note": "## 下一步\n\n先把表单抽成受控组件，再考虑状态库。",
+      "report": {
+        "subject": "React 组件化、Hooks 与状态管理：从组件拆分到数据流设计。",
+        "goal": "独立构建可维护的中型 React 应用，并能判断何时真的需要状态管理库。",
+        "successCriteria": "完成带路由、表单、异步数据的作品集页面；能解释重渲染原因与 key 的作用。",
+        "prerequisites": "掌握 JavaScript 基础、ES 模块与基本 DOM 操作。",
+        "usefulScope": "组件拆分、Hooks、状态提升、路由、异步数据、列表 key、性能基础。",
+        "avoidScope": "暂不深入 Fiber 源码；不急着引入 Redux；不做服务端渲染。",
+        "risks": "过早引入复杂状态库；副作用清理不当；抄代码而不理解数据流。",
+        "path": [
+          {
+            "id": "p_1e1ccad9-6f9d-4a95-9c2a-b7e6dbdbc4cb",
+            "title": "组件与 JSX",
+            "detail": "组件树、props、条件与列表渲染",
+            "estimatedMinutes": 200
+          },
+          {
+            "id": "p_81d877c5-4bab-48c4-b084-9f3808252dcf",
+            "title": "Hooks 与副作用",
+            "detail": "useState/useEffect/useMemo/自定义 Hook",
+            "estimatedMinutes": 250
+          },
+          {
+            "id": "p_a18f994e-ef54-48e7-9b60-5ce552efa155",
+            "title": "状态设计与路由",
+            "detail": "状态提升、Context、路由与表单",
+            "estimatedMinutes": 250
+          },
+          {
+            "id": "p_5aa66d78-2a70-4a94-a431-0ea7a80ec6ce",
+            "title": "异步数据与性能",
+            "detail": "请求竞态、加载态、渲染优化",
+            "estimatedMinutes": 200
+          }
+        ],
+        "resources": [
+          {
+            "id": "r_3cb82210-d2e2-46d1-8cc1-e04789b44721",
+            "title": "React 官方文档（中文）",
+            "type": "docs",
+            "url": "https://zh-hans.react.dev/"
+          },
+          {
+            "id": "r_3987c84f-608a-4b30-8689-7418bc036fba",
+            "title": "useHooks 案例集",
+            "type": "practice",
+            "url": "https://usehooks.com/"
+          }
+        ],
+        "calibratedMinutes": 900,
+        "confidence": 3,
+        "score": 97,
+        "submittedAt": "2026-10-09T12:30:00.000Z",
+        "updatedAt": "2026-10-09T12:30:00.000Z",
+        "revisions": 0
+      }
+    },
+    {
+      "id": "t_portfolio",
+      "title": "个人作品集网站",
+      "description": "把三个案例讲清楚，然后上线。完美主义是上线最大的敌人。",
+      "category": "project",
+      "status": "active",
+      "priority": "medium",
+      "difficulty": 4,
+      "estimatedMinutes": 1500,
+      "dueDate": "2026-11-28",
+      "progress": 15,
+      "createdAt": "2026-10-11T11:00:00.000Z",
+      "updatedAt": "2026-10-11T11:30:00.000Z",
+      "goalId": "g_34f9e2e5-a1c4-4282-b95b-7da46466c9e8",
+      "phases": [
+        {
+          "id": "ph_756ed5c6-4690-4d7d-981d-2c1b5faddcab",
+          "title": "内容梳理与线框",
+          "note": "确定目标访客、案例结构与页面线框",
+          "estimatedMinutes": 240,
+          "status": "doing",
+          "order": 0,
+          "startedAt": "2026-10-17T11:00:00.000Z"
+        },
+        {
+          "id": "ph_522de0e6-06e6-4335-a045-541340918746",
+          "title": "视觉与响应式",
+          "note": "版式、色彩、断点与组件",
+          "estimatedMinutes": 420,
+          "status": "todo",
+          "order": 1
+        },
+        {
+          "id": "ph_f81171cb-d804-4a0d-9af3-6404b9cf88fb",
+          "title": "案例页面与动效",
+          "note": "三个案例详情、交互与细节",
+          "estimatedMinutes": 480,
+          "status": "todo",
+          "order": 2
+        },
+        {
+          "id": "ph_f2287175-af4b-4cfb-a2fb-b3213d6add3b",
+          "title": "部署与性能",
+          "note": "域名、部署、压缩与检查",
+          "estimatedMinutes": 360,
+          "status": "todo",
+          "order": 3
+        }
+      ],
+      "tags": [
+        "作品集",
+        "设计",
+        "上线"
+      ],
+      "totalFocusSeconds": 7200,
+      "sessionCount": 3,
+      "xpEarned": 180,
+      "report": {
+        "subject": "个人作品集网站：信息架构、案例叙事、视觉呈现与上线部署。",
+        "goal": "上线一个可用于求职与社交展示的作品集网站，包含三个完整案例。",
+        "successCriteria": "移动端可用、首屏 2 秒内、含案例详情与联系方式、可被搜索引擎收录。",
+        "prerequisites": "HTML/CSS/JS 基础；会用 Git；准备三个项目素材。",
+        "usefulScope": "信息架构、案例叙事、响应式布局、部署、性能与 SEO 基础。",
+        "avoidScope": "暂不做后台系统；不追求炫技动画；不堆砌无关技术。",
+        "risks": "完美主义导致迟迟不上线；案例没有过程与结果；移动端遗漏。",
+        "path": [
+          {
+            "id": "p_5b2c0d42-f8a2-46b6-b365-43db9b6fc788",
+            "title": "内容梳理与线框",
+            "detail": "确定目标访客、案例结构与页面线框",
+            "estimatedMinutes": 240
+          },
+          {
+            "id": "p_6f4cc881-0bd6-41b2-8233-5d89aada5269",
+            "title": "视觉与响应式",
+            "detail": "版式、色彩、断点与组件",
+            "estimatedMinutes": 420
+          },
+          {
+            "id": "p_24d422ed-57b0-4321-881b-af820a0b89b1",
+            "title": "案例页面与动效",
+            "detail": "三个案例详情、交互与细节",
+            "estimatedMinutes": 480
+          },
+          {
+            "id": "p_91a65a20-9a1b-4872-99ec-6eb77413fed9",
+            "title": "部署与性能",
+            "detail": "域名、部署、压缩与检查",
+            "estimatedMinutes": 360
+          }
+        ],
+        "resources": [
+          {
+            "id": "r_e2000b5e-3485-47c0-bd81-492f5456c72e",
+            "title": "Awwwards 参考库",
+            "type": "other",
+            "url": "https://www.awwwards.com/"
+          },
+          {
+            "id": "r_efd277d6-45cd-487a-b360-093375886d15",
+            "title": "Web.dev 性能指南",
+            "type": "docs",
+            "url": "https://web.dev/learn/"
+          }
+        ],
+        "calibratedMinutes": 1500,
+        "confidence": 3,
+        "score": 93,
+        "submittedAt": "2026-10-11T11:30:00.000Z",
+        "updatedAt": "2026-10-11T11:30:00.000Z",
+        "revisions": 0
+      }
+    },
+    {
+      "id": "t_linux",
+      "title": "Linux 命令行基础",
+      "description": "为了部署与排查问题，补上命令行这一课。",
+      "category": "learning",
+      "status": "backlog",
+      "priority": "low",
+      "difficulty": 2,
+      "estimatedMinutes": 300,
+      "dueDate": "2026-11-08",
+      "progress": 0,
+      "createdAt": "2026-10-16T13:00:00.000Z",
+      "updatedAt": "2026-10-16T13:00:00.000Z",
+      "goalId": "g_e6e6cbaa-9bfb-467b-808d-3094dc9ba04b",
+      "phases": [],
+      "tags": [
+        "Linux",
+        "命令行"
+      ],
+      "totalFocusSeconds": 0,
+      "sessionCount": 0,
+      "xpEarned": 0
+    },
+    {
+      "id": "t_reading",
+      "title": "《认知觉醒》精读与践行",
+      "description": "不追求读完，追求用上。每章输出一张行动卡。",
+      "category": "reading",
+      "status": "active",
+      "priority": "medium",
+      "difficulty": 2,
+      "estimatedMinutes": 480,
+      "dueDate": "2026-11-03",
+      "progress": 55,
+      "createdAt": "2026-10-08T14:00:00.000Z",
+      "updatedAt": "2026-10-08T14:30:00.000Z",
+      "goalId": "g_6525cfb9-5ea2-46fe-a2e5-f444449495f2",
+      "phases": [
+        {
+          "id": "ph_a6f0ab1a-49a2-4ef2-8720-fe7f9777bbd9",
+          "title": "通读并标注",
+          "note": "快速通读，标记有触动的段落",
+          "estimatedMinutes": 180,
+          "status": "done",
+          "order": 0,
+          "completedAt": "2026-10-12T13:00:00.000Z",
+          "rewardedAt": "2026-10-12T13:00:00.000Z"
+        },
+        {
+          "id": "ph_ebc66d2a-5e29-44b8-895b-9134a6d37070",
+          "title": "精读核心章节",
+          "note": "围绕元认知与舒适区边缘做笔记",
+          "estimatedMinutes": 180,
+          "status": "doing",
+          "order": 1,
+          "startedAt": "2026-10-16T13:00:00.000Z"
+        },
+        {
+          "id": "ph_b814eb0a-b718-44d9-8b5f-eafe7eadc355",
+          "title": "输出行动卡与复盘模板",
+          "note": "把方法变成每天可执行的动作",
+          "estimatedMinutes": 120,
+          "status": "todo",
+          "order": 2
+        }
+      ],
+      "tags": [
+        "阅读",
+        "认知科学"
+      ],
+      "totalFocusSeconds": 15000,
+      "sessionCount": 5,
+      "xpEarned": 335,
+      "report": {
+        "subject": "《认知觉醒》精读与践行：元认知、舒适区边缘、关联与反馈。",
+        "goal": "把书中方法转成三个可坚持的日常习惯，并留下可复用的践行笔记。",
+        "successCriteria": "输出 6 张行动卡；建立每日复盘模板；连续践行 21 天。",
+        "prerequisites": "每天有 30 分钟不被打扰的阅读时间。",
+        "usefulScope": "元认知、舒适区边缘、关联、反馈闭环、每日反思。",
+        "avoidScope": "不追求阅读速度；不摘抄全书；不同时读多本同类书。",
+        "risks": "读完就忘；只输入不输出；计划过满导致中断。",
+        "path": [
+          {
+            "id": "p_c8a5b778-d86d-47e2-9d7c-01a1eafe6117",
+            "title": "通读并标注",
+            "detail": "快速通读，标记有触动的段落",
+            "estimatedMinutes": 180
+          },
+          {
+            "id": "p_e7de0a9d-617e-455a-94e5-c07e6d58a690",
+            "title": "精读核心章节",
+            "detail": "围绕元认知与舒适区边缘做笔记",
+            "estimatedMinutes": 180
+          },
+          {
+            "id": "p_eabd5f18-9c6c-4198-ac8a-a7bff452efd7",
+            "title": "输出行动卡与复盘模板",
+            "detail": "把方法变成每天可执行的动作",
+            "estimatedMinutes": 120
+          }
+        ],
+        "resources": [
+          {
+            "id": "r_49baec4f-7678-456d-a655-ab9649386350",
+            "title": "《认知觉醒》周岭",
+            "type": "book"
+          },
+          {
+            "id": "r_75acee1b-499d-434f-8b70-ef84f5301136",
+            "title": "费曼学习法笔记",
+            "type": "other"
+          }
+        ],
+        "calibratedMinutes": 480,
+        "confidence": 4,
+        "score": 86,
+        "submittedAt": "2026-10-08T14:30:00.000Z",
+        "updatedAt": "2026-10-08T14:30:00.000Z",
+        "revisions": 0
+      }
+    },
+    {
+      "id": "t_meditate",
+      "title": "晨间冥想 21 天",
+      "description": "每天 10 分钟，训练把注意力带回来的能力。",
+      "category": "practice",
+      "status": "done",
+      "priority": "medium",
+      "difficulty": 2,
+      "estimatedMinutes": 240,
+      "progress": 100,
+      "createdAt": "2026-10-05T23:00:00.000Z",
+      "updatedAt": "2026-10-05T23:30:00.000Z",
+      "goalId": "g_fc77d57e-5ea5-4fc9-be4a-cff09c7e2ec5",
+      "phases": [
+        {
+          "id": "ph_78444f06-277e-4120-b454-add61cccd7d6",
+          "title": "入门引导",
+          "note": "跟随引导完成 5 分钟呼吸练习",
+          "estimatedMinutes": 60,
+          "status": "done",
+          "order": 0,
+          "completedAt": "2026-10-07T00:00:00.000Z",
+          "rewardedAt": "2026-10-07T00:00:00.000Z"
+        },
+        {
+          "id": "ph_863d68dc-48fb-4437-abe1-89970ce18563",
+          "title": "稳定 10 分钟",
+          "note": "固定时间、固定地点，逐步延长",
+          "estimatedMinutes": 120,
+          "status": "done",
+          "order": 1,
+          "completedAt": "2026-10-12T00:00:00.000Z",
+          "rewardedAt": "2026-10-12T00:00:00.000Z"
+        },
+        {
+          "id": "ph_d4776fa3-da6f-476f-a9c1-b1ea74b798f4",
+          "title": "复盘与习惯固化",
+          "note": "记录情绪与注意力变化",
+          "estimatedMinutes": 60,
+          "status": "done",
+          "order": 2,
+          "completedAt": "2026-10-17T00:00:00.000Z",
+          "rewardedAt": "2026-10-17T00:00:00.000Z"
+        }
+      ],
+      "tags": [
+        "冥想",
+        "习惯"
+      ],
+      "totalFocusSeconds": 8700,
+      "sessionCount": 5,
+      "xpEarned": 500,
+      "completedAt": "2026-10-18T00:00:00.000Z",
+      "report": {
+        "subject": "晨间冥想 21 天：呼吸锚定、身体扫描与注意力训练。",
+        "goal": "建立每天 10 分钟的晨间冥想习惯，提升专注与情绪稳定。",
+        "successCriteria": "连续 21 天打卡；能完成 10 分钟不中断的呼吸观察；记录情绪变化。",
+        "prerequisites": "每天起床后有 10 分钟独处时间。",
+        "usefulScope": "呼吸观察、身体扫描、情绪标记、短时高频。",
+        "avoidScope": "不追求神秘体验；不久坐导致疲劳；不频繁更换方法。",
+        "risks": "前期容易走神并自责；时间安排不稳定；期待过高。",
+        "path": [
+          {
+            "id": "p_f68366a2-72a4-4d4d-957d-119bd697373d",
+            "title": "入门引导",
+            "detail": "跟随引导完成 5 分钟呼吸练习",
+            "estimatedMinutes": 60
+          },
+          {
+            "id": "p_578c963f-065e-449a-9fc7-99be89d96965",
+            "title": "稳定 10 分钟",
+            "detail": "固定时间、固定地点，逐步延长",
+            "estimatedMinutes": 120
+          },
+          {
+            "id": "p_225f2d72-acfc-4a4e-afd8-85d84db89673",
+            "title": "复盘与习惯固化",
+            "detail": "记录情绪与注意力变化",
+            "estimatedMinutes": 60
+          }
+        ],
+        "resources": [
+          {
+            "id": "r_19d6936a-1e18-4b2f-8ee0-a2ec1c7ff641",
+            "title": "Headspace 入门课程",
+            "type": "course"
+          },
+          {
+            "id": "r_3f13162e-d0dd-4642-8bad-445ac95eff1c",
+            "title": "《十分钟冥想》",
+            "type": "book"
+          }
+        ],
+        "calibratedMinutes": 240,
+        "confidence": 5,
+        "score": 87,
+        "submittedAt": "2026-10-05T23:30:00.000Z",
+        "updatedAt": "2026-10-05T23:30:00.000Z",
+        "revisions": 0
+      },
+      "completionRewardedAt": "2026-10-18T00:00:00.000Z"
+    }
+  ],
+  "goals": [
+    {
+      "id": "g_e6e6cbaa-9bfb-467b-808d-3094dc9ba04b",
+      "title": "独立开发者之路",
+      "description": "不依赖单一雇主，用代码与产品换取自由。",
+      "motto": "用作品说话",
+      "color": "gold",
+      "deadline": "2027-04-17",
+      "createdAt": "2026-10-05T01:00:00.000Z",
+      "knowledgePoints": [
+        {
+          "id": "k_dev_0",
+          "title": "HTML / CSS 基础",
+          "note": "能还原常见页面布局",
+          "status": "lit",
+          "xp": 50,
+          "estimatedMinutes": 120,
+          "taskId": "t_portfolio",
+          "createdAt": "2026-10-05T01:05:00.000Z",
+          "litAt": "2026-10-09T13:00:00.000Z"
+        },
+        {
+          "id": "k_dev_1",
+          "title": "JavaScript 核心",
+          "note": "闭包、原型、异步",
+          "status": "lit",
+          "xp": 60,
+          "estimatedMinutes": 150,
+          "taskId": "t_js",
+          "createdAt": "2026-10-05T01:05:00.000Z",
+          "litAt": "2026-10-17T13:00:00.000Z"
+        },
+        {
+          "id": "k_dev_2",
+          "title": "React 组件化",
+          "note": "正在攀登",
+          "status": "available",
+          "xp": 60,
+          "estimatedMinutes": 180,
+          "taskId": "t_react",
+          "createdAt": "2026-10-05T01:05:00.000Z"
+        },
+        {
+          "id": "k_dev_3",
+          "title": "Node.js 与 API",
+          "status": "locked",
+          "xp": 70,
+          "estimatedMinutes": 210,
+          "createdAt": "2026-10-05T01:05:00.000Z"
+        },
+        {
+          "id": "k_dev_4",
+          "title": "数据库设计",
+          "status": "locked",
+          "xp": 70,
+          "estimatedMinutes": 240,
+          "createdAt": "2026-10-05T01:05:00.000Z"
+        },
+        {
+          "id": "k_dev_5",
+          "title": "部署与运维",
+          "status": "locked",
+          "xp": 60,
+          "estimatedMinutes": 270,
+          "createdAt": "2026-10-05T01:05:00.000Z"
+        },
+        {
+          "id": "k_dev_6",
+          "title": "产品思维",
+          "status": "available",
+          "xp": 50,
+          "estimatedMinutes": 300,
+          "createdAt": "2026-10-05T01:05:00.000Z"
+        },
+        {
+          "id": "k_dev_7",
+          "title": "英语技术阅读",
+          "status": "available",
+          "xp": 40,
+          "estimatedMinutes": 330,
+          "createdAt": "2026-10-05T01:05:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "g_fc77d57e-5ea5-4fc9-be4a-cff09c7e2ec5",
+      "title": "身心调养",
+      "description": "身体是革命的本钱，也是修行的道场。",
+      "motto": "身安则道隆",
+      "color": "jade",
+      "createdAt": "2026-10-07T00:00:00.000Z",
+      "knowledgePoints": [
+        {
+          "id": "k_body_0",
+          "title": "规律睡眠",
+          "note": "23:30 前入睡",
+          "status": "lit",
+          "xp": 40,
+          "createdAt": "2026-10-07T00:05:00.000Z",
+          "litAt": "2026-10-12T23:30:00.000Z"
+        },
+        {
+          "id": "k_body_1",
+          "title": "晨间冥想",
+          "note": "每天 10 分钟",
+          "status": "lit",
+          "xp": 40,
+          "taskId": "t_meditate",
+          "createdAt": "2026-10-07T00:05:00.000Z",
+          "litAt": "2026-10-17T23:30:00.000Z"
+        },
+        {
+          "id": "k_body_2",
+          "title": "每周三次运动",
+          "note": "跑步或力量训练",
+          "status": "available",
+          "xp": 40,
+          "createdAt": "2026-10-07T00:05:00.000Z"
+        },
+        {
+          "id": "k_body_3",
+          "title": "饮食记录",
+          "note": "减少精制糖",
+          "status": "locked",
+          "xp": 40,
+          "createdAt": "2026-10-07T00:05:00.000Z"
+        },
+        {
+          "id": "k_body_4",
+          "title": "情绪日记",
+          "note": "给情绪命名",
+          "status": "locked",
+          "xp": 40,
+          "createdAt": "2026-10-07T00:05:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "g_34f9e2e5-a1c4-4282-b95b-7da46466c9e8",
+      "title": "建立个人品牌",
+      "description": "让作品被看见，让机会主动找上门。",
+      "motto": "被看见，才有连接",
+      "color": "azure",
+      "deadline": "2027-01-17",
+      "createdAt": "2026-10-09T02:00:00.000Z",
+      "knowledgePoints": [
+        {
+          "id": "k_brand_0",
+          "title": "作品集网站",
+          "note": "三个完整案例",
+          "status": "available",
+          "xp": 45,
+          "createdAt": "2026-10-09T02:05:00.000Z"
+        },
+        {
+          "id": "k_brand_1",
+          "title": "技术写作",
+          "note": "每月两篇",
+          "status": "locked",
+          "xp": 45,
+          "createdAt": "2026-10-09T02:05:00.000Z"
+        },
+        {
+          "id": "k_brand_2",
+          "title": "社区分享",
+          "note": "从一次小分享开始",
+          "status": "locked",
+          "xp": 45,
+          "createdAt": "2026-10-09T02:05:00.000Z"
+        },
+        {
+          "id": "k_brand_3",
+          "title": "个人品牌定位",
+          "note": "一句话说清你是谁",
+          "status": "available",
+          "xp": 45,
+          "createdAt": "2026-10-09T02:05:00.000Z"
+        },
+        {
+          "id": "k_brand_4",
+          "title": "摄影与视觉",
+          "note": "够用就好",
+          "status": "locked",
+          "xp": 45,
+          "createdAt": "2026-10-09T02:05:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "g_6525cfb9-5ea2-46fe-a2e5-f444449495f2",
+      "title": "读书破万卷",
+      "description": "用阅读搭建自己的认知坐标系。",
+      "motto": "读以致用",
+      "color": "rose",
+      "createdAt": "2026-10-10T13:00:00.000Z",
+      "knowledgePoints": [
+        {
+          "id": "k_read_0",
+          "title": "认知科学",
+          "note": "《认知觉醒》",
+          "status": "lit",
+          "xp": 40,
+          "createdAt": "2026-10-10T13:05:00.000Z",
+          "litAt": "2026-10-11T14:00:00.000Z"
+        },
+        {
+          "id": "k_read_1",
+          "title": "心理学",
+          "note": "下一步",
+          "status": "available",
+          "xp": 40,
+          "createdAt": "2026-10-10T13:05:00.000Z"
+        },
+        {
+          "id": "k_read_2",
+          "title": "写作表达",
+          "status": "locked",
+          "xp": 40,
+          "createdAt": "2026-10-10T13:05:00.000Z"
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "s_7b0cca0e-55b1-4619-973c-2068ad9cddc8",
+      "taskId": "t_js",
+      "taskTitle": "JavaScript 核心语法",
+      "startedAt": "2026-10-08T11:10:00.000Z",
+      "endedAt": "2026-10-08T12:00:00.000Z",
+      "seconds": 3000,
+      "parallel": 1,
+      "xp": 50,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_358cc93a-567a-4167-903e-525c679ac579",
+      "taskId": "t_reading",
+      "taskTitle": "《认知觉醒》精读与践行",
+      "startedAt": "2026-10-09T13:00:00.000Z",
+      "endedAt": "2026-10-09T14:00:00.000Z",
+      "seconds": 3600,
+      "parallel": 1,
+      "xp": 60,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_118d4f5a-5dbd-461f-aae1-1f089695f3ea",
+      "taskId": "t_meditate",
+      "taskTitle": "晨间冥想 21 天",
+      "startedAt": "2026-10-09T23:30:00.000Z",
+      "endedAt": "2026-10-10T00:00:00.000Z",
+      "seconds": 1800,
+      "parallel": 1,
+      "xp": 30
+    },
+    {
+      "id": "s_aad348de-6dce-4d1e-b78e-c1da51695d85",
+      "taskId": "t_js",
+      "taskTitle": "JavaScript 核心语法",
+      "startedAt": "2026-10-10T11:55:00.000Z",
+      "endedAt": "2026-10-10T13:00:00.000Z",
+      "seconds": 3900,
+      "parallel": 1,
+      "xp": 65,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_a820fd4a-9b9f-4c82-b780-e764b61fea5f",
+      "taskId": "t_react",
+      "taskTitle": "React 组件与状态管理",
+      "startedAt": "2026-10-11T12:20:00.000Z",
+      "endedAt": "2026-10-11T13:00:00.000Z",
+      "seconds": 2400,
+      "parallel": 1,
+      "xp": 40
+    },
+    {
+      "id": "s_4497ed45-6348-44d5-9f52-b0cba17cbab8",
+      "taskId": "t_reading",
+      "taskTitle": "《认知觉醒》精读与践行",
+      "startedAt": "2026-10-11T13:15:00.000Z",
+      "endedAt": "2026-10-11T14:00:00.000Z",
+      "seconds": 2700,
+      "parallel": 1,
+      "xp": 45
+    },
+    {
+      "id": "s_489e0fc5-3d7f-4b9b-a227-12bb546c24e1",
+      "taskId": "t_meditate",
+      "taskTitle": "晨间冥想 21 天",
+      "startedAt": "2026-10-11T23:35:00.000Z",
+      "endedAt": "2026-10-12T00:00:00.000Z",
+      "seconds": 1500,
+      "parallel": 1,
+      "xp": 25
+    },
+    {
+      "id": "s_eb9586b8-4ffb-42ed-a016-02c07e31cfbe",
+      "taskId": "t_js",
+      "taskTitle": "JavaScript 核心语法",
+      "startedAt": "2026-10-12T11:15:00.000Z",
+      "endedAt": "2026-10-12T12:00:00.000Z",
+      "seconds": 2700,
+      "parallel": 1,
+      "xp": 45
+    },
+    {
+      "id": "s_a9abac79-ad11-448d-afdd-59f842d8df98",
+      "taskId": "t_react",
+      "taskTitle": "React 组件与状态管理",
+      "startedAt": "2026-10-13T11:10:00.000Z",
+      "endedAt": "2026-10-13T12:00:00.000Z",
+      "seconds": 3000,
+      "parallel": 1,
+      "xp": 50,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_b3d87ec4-6565-41e8-82e1-bfd7536ef68c",
+      "taskId": "t_portfolio",
+      "taskTitle": "个人作品集网站",
+      "startedAt": "2026-10-13T13:15:00.000Z",
+      "endedAt": "2026-10-13T14:00:00.000Z",
+      "seconds": 2700,
+      "parallel": 1,
+      "xp": 45
+    },
+    {
+      "id": "s_9abe695a-d871-4c3e-a55f-cac271908081",
+      "taskId": "t_meditate",
+      "taskTitle": "晨间冥想 21 天",
+      "startedAt": "2026-10-13T23:30:00.000Z",
+      "endedAt": "2026-10-14T00:00:00.000Z",
+      "seconds": 1800,
+      "parallel": 1,
+      "xp": 30
+    },
+    {
+      "id": "s_4305ebc4-63a2-4dae-acea-673509f80d61",
+      "taskId": "t_js",
+      "taskTitle": "JavaScript 核心语法",
+      "startedAt": "2026-10-14T12:00:00.000Z",
+      "endedAt": "2026-10-14T13:00:00.000Z",
+      "seconds": 3600,
+      "parallel": 1,
+      "xp": 60,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_ed385166-93c3-4949-8dcd-dbb252d6dec5",
+      "taskId": "t_react",
+      "taskTitle": "React 组件与状态管理",
+      "startedAt": "2026-10-15T12:25:00.000Z",
+      "endedAt": "2026-10-15T13:00:00.000Z",
+      "seconds": 2100,
+      "parallel": 1,
+      "xp": 35
+    },
+    {
+      "id": "s_84a2b359-ca67-4911-882d-33426917b9ce",
+      "taskId": "t_reading",
+      "taskTitle": "《认知觉醒》精读与践行",
+      "startedAt": "2026-10-15T13:05:00.000Z",
+      "endedAt": "2026-10-15T14:00:00.000Z",
+      "seconds": 3300,
+      "parallel": 1,
+      "xp": 55,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_bd990291-7a42-4b2c-ac4a-796146981a61",
+      "taskId": "t_meditate",
+      "taskTitle": "晨间冥想 21 天",
+      "startedAt": "2026-10-15T23:30:00.000Z",
+      "endedAt": "2026-10-16T00:00:00.000Z",
+      "seconds": 1800,
+      "parallel": 1,
+      "xp": 30
+    },
+    {
+      "id": "s_8ead0437-b25c-47f3-9f79-c4da19748b34",
+      "taskId": "t_js",
+      "taskTitle": "JavaScript 核心语法",
+      "startedAt": "2026-10-16T11:05:00.000Z",
+      "endedAt": "2026-10-16T12:00:00.000Z",
+      "seconds": 3300,
+      "parallel": 1,
+      "xp": 55,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_7af0e4ac-a48f-43b1-b5dd-3d4f08cf2e9c",
+      "taskId": "t_react",
+      "taskTitle": "React 组件与状态管理",
+      "startedAt": "2026-10-17T11:15:00.000Z",
+      "endedAt": "2026-10-17T12:00:00.000Z",
+      "seconds": 2700,
+      "parallel": 1,
+      "xp": 45
+    },
+    {
+      "id": "s_f7d9c6dd-1661-4244-b2e0-c2ae51ef59ab",
+      "taskId": "t_portfolio",
+      "taskTitle": "个人作品集网站",
+      "startedAt": "2026-10-17T13:20:00.000Z",
+      "endedAt": "2026-10-17T14:00:00.000Z",
+      "seconds": 2400,
+      "parallel": 1,
+      "xp": 40
+    },
+    {
+      "id": "s_4868e137-9595-4bc7-91f6-ee536030a3f9",
+      "taskId": "t_meditate",
+      "taskTitle": "晨间冥想 21 天",
+      "startedAt": "2026-10-17T23:30:00.000Z",
+      "endedAt": "2026-10-18T00:00:00.000Z",
+      "seconds": 1800,
+      "parallel": 1,
+      "xp": 30
+    },
+    {
+      "id": "s_1b7b1173-8a05-497b-924a-963e2214adf3",
+      "taskId": "t_js",
+      "taskTitle": "JavaScript 核心语法",
+      "startedAt": "2026-10-18T12:15:00.000Z",
+      "endedAt": "2026-10-18T13:00:00.000Z",
+      "seconds": 2700,
+      "parallel": 1,
+      "xp": 45
+    },
+    {
+      "id": "s_1e675a16-5dc5-4674-933c-0f03b26fd3ab",
+      "taskId": "t_reading",
+      "taskTitle": "《认知觉醒》精读与践行",
+      "startedAt": "2026-10-18T13:10:00.000Z",
+      "endedAt": "2026-10-18T14:00:00.000Z",
+      "seconds": 3000,
+      "parallel": 1,
+      "xp": 50,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_6ec3591e-d1aa-4089-bbde-905574e154cf",
+      "taskId": "t_js",
+      "taskTitle": "JavaScript 核心语法",
+      "startedAt": "2026-10-19T00:10:00.000Z",
+      "endedAt": "2026-10-19T01:00:00.000Z",
+      "seconds": 3000,
+      "parallel": 2,
+      "xp": 50,
+      "note": "状态不错，完成了一个完整小节。"
+    },
+    {
+      "id": "s_260e759b-44e6-403c-88b1-5af95606ea5b",
+      "taskId": "t_react",
+      "taskTitle": "React 组件与状态管理",
+      "startedAt": "2026-10-19T00:30:00.000Z",
+      "endedAt": "2026-10-19T01:00:00.000Z",
+      "seconds": 1800,
+      "parallel": 2,
+      "xp": 30
+    },
+    {
+      "id": "s_c01b4901-d7e0-4637-82e9-85f9beee3345",
+      "taskId": "t_portfolio",
+      "taskTitle": "个人作品集网站",
+      "startedAt": "2026-10-19T12:25:00.000Z",
+      "endedAt": "2026-10-19T13:00:00.000Z",
+      "seconds": 2100,
+      "parallel": 3,
+      "xp": 35
+    },
+    {
+      "id": "s_d55d3468-6730-4315-9878-a53f5a1c5f65",
+      "taskId": "t_reading",
+      "taskTitle": "《认知觉醒》精读与践行",
+      "startedAt": "2026-10-19T12:20:00.000Z",
+      "endedAt": "2026-10-19T13:00:00.000Z",
+      "seconds": 2400,
+      "parallel": 3,
+      "xp": 40
+    }
+  ],
+  "activeTimers": [],
+  "rewards": {
+    "xp": 2790,
+    "events": [
+      {
+        "id": "xp_730ed6c8-2194-4f8f-a66a-fab8d4b8b77f",
+        "at": "2026-10-19T15:00:00.000Z",
+        "type": "daily",
+        "label": "每日目标达成 · 2 小时 35 分",
+        "xp": 30
+      },
+      {
+        "id": "xp_6c308644-95fc-45af-b01e-a32ca82852cb",
+        "at": "2026-10-19T13:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 《认知觉醒》精读与践行",
+        "xp": 40,
+        "taskId": "t_reading"
+      },
+      {
+        "id": "xp_5ff7d2b4-0de2-484b-83f8-064d1c8088bb",
+        "at": "2026-10-19T13:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 个人作品集网站",
+        "xp": 35,
+        "taskId": "t_portfolio"
+      },
+      {
+        "id": "xp_0e6138b9-f957-4cc1-899d-0d36a40e5a54",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 谋定后动",
+        "xp": 50
+      },
+      {
+        "id": "xp_8bedcd7e-7f01-4064-ae52-3cf0a5cede7b",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 千分钟",
+        "xp": 50
+      },
+      {
+        "id": "xp_daf486d0-a0d6-438d-8b47-ec6efb2fef26",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 初见成效",
+        "xp": 50
+      },
+      {
+        "id": "xp_37611eb0-66af-40ca-97f3-44a880a82d85",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 手可摘星",
+        "xp": 50
+      },
+      {
+        "id": "xp_f974826b-40b0-40cc-a2f3-3ec573e4f87f",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 洞若观火",
+        "xp": 50
+      },
+      {
+        "id": "xp_59793cd7-f31b-435b-a24c-a9ef5f398108",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 三线并行",
+        "xp": 50
+      },
+      {
+        "id": "xp_dfd03b06-94ae-41d7-8a16-9a855f534c0a",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 双线并行",
+        "xp": 50
+      },
+      {
+        "id": "xp_5499b367-4b17-4cff-bcb0-a61c7baa941b",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 七日同行",
+        "xp": 50
+      },
+      {
+        "id": "xp_bce18824-6082-48c3-a6ae-1deb315dfee7",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 三日不辍",
+        "xp": 50
+      },
+      {
+        "id": "xp_dddc3af0-8bc0-4ca7-84b4-f4ca4aa39f9d",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 深度专注",
+        "xp": 50
+      },
+      {
+        "id": "xp_905381e3-8cc6-4cb3-8cf5-e62328db01de",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 心流初开",
+        "xp": 50
+      },
+      {
+        "id": "xp_6d7979e0-cdca-4400-ad21-99383608a14b",
+        "at": "2026-10-19T09:35:07.138Z",
+        "type": "achievement",
+        "label": "成就 · 初次启程",
+        "xp": 50
+      },
+      {
+        "id": "xp_f996618b-9fe0-4404-bb5d-5a353e0b3fce",
+        "at": "2026-10-19T01:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · React 组件与状态管理",
+        "xp": 30,
+        "taskId": "t_react"
+      },
+      {
+        "id": "xp_63c99b14-9ab5-482f-ae89-ea862e00785d",
+        "at": "2026-10-19T01:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · JavaScript 核心语法",
+        "xp": 50,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_cf601538-4a44-4059-af42-72c8c1715171",
+        "at": "2026-10-18T15:00:00.000Z",
+        "type": "daily",
+        "label": "每日目标达成 · 2 小时 5 分",
+        "xp": 30
+      },
+      {
+        "id": "xp_8f11fb40-0f96-4689-beac-69511a073767",
+        "at": "2026-10-18T14:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 《认知觉醒》精读与践行",
+        "xp": 50,
+        "taskId": "t_reading"
+      },
+      {
+        "id": "xp_e52fe3b5-58ba-47e7-9020-984982e4b958",
+        "at": "2026-10-18T13:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · JavaScript 核心语法",
+        "xp": 45,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_7641fced-bc59-4471-9440-e097a3df6c34",
+        "at": "2026-10-18T00:00:00.000Z",
+        "type": "task",
+        "label": "任务完成 · 晨间冥想 21 天",
+        "xp": 220,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_ded5f4ed-bf1c-40d5-b736-3943b0a18999",
+        "at": "2026-10-18T00:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 晨间冥想 21 天",
+        "xp": 30,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_66fd0af8-4446-4681-898c-c2320a4b6c39",
+        "at": "2026-10-17T23:30:00.000Z",
+        "type": "knowledge",
+        "label": "点亮 · 晨间冥想",
+        "xp": 40
+      },
+      {
+        "id": "xp_8095148a-a56b-4478-8749-3610916d3595",
+        "at": "2026-10-17T14:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 个人作品集网站",
+        "xp": 40,
+        "taskId": "t_portfolio"
+      },
+      {
+        "id": "xp_e562902b-8842-41eb-8ef7-b56e66377354",
+        "at": "2026-10-17T13:00:00.000Z",
+        "type": "knowledge",
+        "label": "点亮 · JavaScript 核心",
+        "xp": 60
+      },
+      {
+        "id": "xp_90c7facc-2069-458e-847a-ba80c4f68c89",
+        "at": "2026-10-17T12:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · React 组件与状态管理",
+        "xp": 45,
+        "taskId": "t_react"
+      },
+      {
+        "id": "xp_cc49a938-64ce-4419-bdb0-77ba7d633ef4",
+        "at": "2026-10-17T00:00:00.000Z",
+        "type": "phase",
+        "label": "阶段完成 · 复盘与习惯固化",
+        "xp": 25,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_131673ef-d571-4e36-a0d6-b45c8b3786f9",
+        "at": "2026-10-16T12:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · JavaScript 核心语法",
+        "xp": 55,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_af3ad9f1-98be-467f-9e96-4e5a9e2f5c39",
+        "at": "2026-10-16T00:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 晨间冥想 21 天",
+        "xp": 30,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_92ebdbf6-6b30-4597-9577-fd87b094de37",
+        "at": "2026-10-15T15:00:00.000Z",
+        "type": "daily",
+        "label": "每日目标达成 · 1 小时 30 分",
+        "xp": 30
+      },
+      {
+        "id": "xp_92655171-325e-4ff7-b218-07dc2abefc42",
+        "at": "2026-10-15T14:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 《认知觉醒》精读与践行",
+        "xp": 55,
+        "taskId": "t_reading"
+      },
+      {
+        "id": "xp_c046374f-5421-4cff-8162-ae4d6f01e6f7",
+        "at": "2026-10-15T13:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · React 组件与状态管理",
+        "xp": 35,
+        "taskId": "t_react"
+      },
+      {
+        "id": "xp_27cc35cc-d948-49fc-b178-c00dfb816fbc",
+        "at": "2026-10-14T15:00:00.000Z",
+        "type": "daily",
+        "label": "每日目标达成 · 1 小时 30 分",
+        "xp": 30
+      },
+      {
+        "id": "xp_521b7eb7-d13d-48c7-8653-5c5237d04f73",
+        "at": "2026-10-14T13:00:00.000Z",
+        "type": "phase",
+        "label": "阶段完成 · 函数、作用域与闭包",
+        "xp": 25,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_858570e5-5c28-4755-bf99-cf5b79fdb427",
+        "at": "2026-10-14T13:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · JavaScript 核心语法",
+        "xp": 60,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_0decab2d-675d-4540-89cd-c428d648edca",
+        "at": "2026-10-14T00:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 晨间冥想 21 天",
+        "xp": 30,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_b26d3ecb-b9e9-4b9c-9f77-5f98a5496212",
+        "at": "2026-10-13T15:00:00.000Z",
+        "type": "daily",
+        "label": "每日目标达成 · 1 小时 35 分",
+        "xp": 30
+      },
+      {
+        "id": "xp_3b69f24b-a54c-408a-8419-e68ffe01465e",
+        "at": "2026-10-13T14:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 个人作品集网站",
+        "xp": 45,
+        "taskId": "t_portfolio"
+      },
+      {
+        "id": "xp_263d0a36-b2e0-456d-8c92-5284d5ad92e0",
+        "at": "2026-10-13T13:00:00.000Z",
+        "type": "phase",
+        "label": "阶段完成 · 组件与 JSX",
+        "xp": 25,
+        "taskId": "t_react"
+      },
+      {
+        "id": "xp_1800bb72-75ea-46b7-b27b-a11a5d6230c9",
+        "at": "2026-10-13T12:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · React 组件与状态管理",
+        "xp": 50,
+        "taskId": "t_react"
+      },
+      {
+        "id": "xp_387e913e-f287-4e2b-b0ea-ca7b9154327b",
+        "at": "2026-10-12T23:30:00.000Z",
+        "type": "knowledge",
+        "label": "点亮 · 规律睡眠",
+        "xp": 40
+      },
+      {
+        "id": "xp_bfe06582-a9a5-411e-a620-79667c5e3d7a",
+        "at": "2026-10-12T13:00:00.000Z",
+        "type": "phase",
+        "label": "阶段完成 · 通读并标注",
+        "xp": 25,
+        "taskId": "t_reading"
+      },
+      {
+        "id": "xp_a7b32a47-8a9f-48eb-a2aa-4fc60d906b3a",
+        "at": "2026-10-12T12:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · JavaScript 核心语法",
+        "xp": 45,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_f229fd13-c4ac-40fc-b9ca-517146dad70d",
+        "at": "2026-10-12T00:00:00.000Z",
+        "type": "phase",
+        "label": "阶段完成 · 稳定 10 分钟",
+        "xp": 25,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_9f0ce884-37b2-430d-adbe-9db823cb18b3",
+        "at": "2026-10-12T00:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 晨间冥想 21 天",
+        "xp": 25,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_70547221-e2a7-49fa-8549-bcb402773a0c",
+        "at": "2026-10-11T14:00:00.000Z",
+        "type": "knowledge",
+        "label": "点亮 · 认知科学",
+        "xp": 40
+      },
+      {
+        "id": "xp_b668081b-484d-4fdc-83b9-b9792f695eda",
+        "at": "2026-10-11T14:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 《认知觉醒》精读与践行",
+        "xp": 45,
+        "taskId": "t_reading"
+      },
+      {
+        "id": "xp_f9de107c-0218-4f34-999c-db1aebe512db",
+        "at": "2026-10-11T13:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · React 组件与状态管理",
+        "xp": 40,
+        "taskId": "t_react"
+      },
+      {
+        "id": "xp_d7a71c8f-683e-42d4-9ea1-b4051cc78970",
+        "at": "2026-10-11T11:30:00.000Z",
+        "type": "report",
+        "label": "调查报告 · 个人作品集网站",
+        "xp": 60,
+        "taskId": "t_portfolio"
+      },
+      {
+        "id": "xp_88e82064-dbf7-457e-aa19-3a462abdf091",
+        "at": "2026-10-10T15:00:00.000Z",
+        "type": "daily",
+        "label": "每日目标达成 · 1 小时 35 分",
+        "xp": 30
+      },
+      {
+        "id": "xp_79b4b16b-8612-4321-ace0-ba0e58fce011",
+        "at": "2026-10-10T13:00:00.000Z",
+        "type": "phase",
+        "label": "阶段完成 · 语法与类型系统",
+        "xp": 25,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_a9a563d2-e2bc-4b42-952a-bec2694ad3ec",
+        "at": "2026-10-10T13:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · JavaScript 核心语法",
+        "xp": 65,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_00c9e5b0-0dc7-4cc8-932e-c79b22b1d7d2",
+        "at": "2026-10-10T00:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 晨间冥想 21 天",
+        "xp": 30,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_0250024f-fec8-43bd-8b52-a1276504bb7b",
+        "at": "2026-10-09T14:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · 《认知觉醒》精读与践行",
+        "xp": 60,
+        "taskId": "t_reading"
+      },
+      {
+        "id": "xp_4dbde4bd-332a-487f-bf0e-1914b0485179",
+        "at": "2026-10-09T13:00:00.000Z",
+        "type": "knowledge",
+        "label": "点亮 · HTML / CSS 基础",
+        "xp": 50
+      },
+      {
+        "id": "xp_4339c099-2474-44b6-bf21-01d371ab7ada",
+        "at": "2026-10-09T12:30:00.000Z",
+        "type": "report",
+        "label": "调查报告 · React 组件与状态管理",
+        "xp": 60,
+        "taskId": "t_react"
+      },
+      {
+        "id": "xp_1dccf288-2830-40b5-b66b-95b6ea13c000",
+        "at": "2026-10-08T14:30:00.000Z",
+        "type": "report",
+        "label": "调查报告 · 《认知觉醒》精读与践行",
+        "xp": 60,
+        "taskId": "t_reading"
+      },
+      {
+        "id": "xp_15b8b081-6dac-4dbb-8cfd-48b1c02bd651",
+        "at": "2026-10-08T12:00:00.000Z",
+        "type": "focus",
+        "label": "专注 · JavaScript 核心语法",
+        "xp": 50,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_a2e9a4fd-98c1-4e95-bbf8-857755cf99f7",
+        "at": "2026-10-07T12:30:00.000Z",
+        "type": "report",
+        "label": "调查报告 · JavaScript 核心语法",
+        "xp": 60,
+        "taskId": "t_js"
+      },
+      {
+        "id": "xp_5e61e32f-840b-4d63-9949-8645d9bdd323",
+        "at": "2026-10-07T00:00:00.000Z",
+        "type": "phase",
+        "label": "阶段完成 · 入门引导",
+        "xp": 25,
+        "taskId": "t_meditate"
+      },
+      {
+        "id": "xp_be0d477d-8e96-4340-81bc-b6f330c8b600",
+        "at": "2026-10-05T23:30:00.000Z",
+        "type": "report",
+        "label": "调查报告 · 晨间冥想 21 天",
+        "xp": 60,
+        "taskId": "t_meditate"
+      }
+    ],
+    "unlocked": {
+      "first-step": "2026-10-19T09:35:07.138Z",
+      "first-focus": "2026-10-19T09:35:07.138Z",
+      "deep-work": "2026-10-19T09:35:07.138Z",
+      "streak-3": "2026-10-19T09:35:07.138Z",
+      "streak-7": "2026-10-19T09:35:07.138Z",
+      "parallel-2": "2026-10-19T09:35:07.138Z",
+      "parallel-3": "2026-10-19T09:35:07.138Z",
+      "report-5": "2026-10-19T09:35:07.138Z",
+      "star-5": "2026-10-19T09:35:07.138Z",
+      "task-1": "2026-10-19T09:35:07.138Z",
+      "focus-1000": "2026-10-19T09:35:07.138Z",
+      "report-90": "2026-10-19T09:35:07.138Z"
+    },
+    "dailyGoalAwards": [
+      "2026-10-10",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-18",
+      "2026-10-19"
+    ]
+  }
+}

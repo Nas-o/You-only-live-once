@@ -1,0 +1,4 @@
+4bc99f7e1d42254150220ffe82cb3e8f1b951e676f75f71ead9deb7f35bfc7a5  apps/linux/release/YouOnlyLiveOnce-0.1.0-x86_64.AppImage
+b29882cc538852c3aef32892e18ad56e23051afbdec675489c7ce6c73e566b71  apps/linux/release/YouOnlyLiveOnce-0.1.0-amd64.deb
+48fb9c2d92162201326b81ee9d70aa035544199b00b32e102e0bf58f3cad9501  apps/windows/release/YouOnlyLiveOnce-0.1.0-win-x64-portable.zip
+cc42688336f115e5dd2590aa67fad7cb4f58cb612a569d08469334044105b9d0  apps/android/release/YouOnlyLiveOnce-0.1.0-android-debug.apk

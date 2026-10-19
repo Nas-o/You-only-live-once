@@ -1,0 +1,270 @@
+import type { Language } from '@yolo/core';
+
+type UiLanguage = Exclude<Language, 'zh'>;
+export type ManualTranslation = Partial<Record<UiLanguage, string>>;
+
+/** 面向界面文案的人工润色层，优先于自动生成的词条。 */
+export const MANUAL_TRANSLATIONS: Record<string, ManualTranslation> = {
+  // 今日 / 成就
+  '连续': { en: 'Streak', ja: '連続', ko: '연속' },
+  '颗星': { en: 'stars', ja: '個の星', ko: '개 별' },
+  '成就 · 谋定后动': { en: 'Achievement · Think first', ja: '実績 · まず考える', ko: '업적 · 먼저 생각하기' },
+  '成就 · 千枚筹码': { en: 'Achievement · Thousand chips', ja: '実績 · 千枚のチップ', ko: '업적 · 천 개의 칩' },
+  '成就 · 千分钟': { en: 'Achievement · Thousand minutes', ja: '実績 · 千分', ko: '업적 · 천 분' },
+  '成就 · 初见成效': { en: 'Achievement · First results', ja: '実績 · 最初の成果', ko: '업적 · 첫 성과' },
+  '成就 · 手可摘星': { en: 'Achievement · Reach the stars', ja: '実績 · 星に手が届く', ko: '업적 · 별을 잡다' },
+  '成就 · 洞若观火': { en: 'Achievement · Clear sight', ja: '実績 · 明察', ko: '업적 · 명철한 통찰' },
+  '成就 · 专注成习': { en: 'Achievement · Focus habit', ja: '実績 · 集中の習慣', ko: '업적 · 집중 습관' },
+
+  // 报告
+  '启程侦查': { en: 'Departure recon', ja: '出発偵察', ko: '출발 정찰' },
+  '启程侦查 ·': { en: 'Departure recon ·', ja: '出発偵察 ·', ko: '출발 정찰 ·' },
+  '修订调查报告 ·': { en: 'Revised recon ·', ja: '改訂偵察 ·', ko: '수정 정찰 ·' },
+  '花 10 分钟做一次侦查，可能替你省下 10 个小时的弯路。提交后，学习路径可以一键沉淀为任务阶段。': {
+    en: 'Ten minutes of recon can save you ten hours of detours. After you submit, the learning path can become task phases in one click.',
+    ja: '10分の偵察で、10時間の遠回りを防げます。提出後、学習パスはワンクリックでタスクのフェーズになります。',
+    ko: '10분의 정찰이 10시간의 우회를 막아줍니다. 제출 후 학습 경로를 클릭 한 번으로 작업 단계로 만들 수 있습니다.',
+  },
+  '侦察对象': { en: 'Recon subject', ja: '偵察対象', ko: '정찰 대상' },
+  '到底要攻克什么？用自己的话把它说清楚。': { en: 'What exactly are you taking on? Say it in your own words.', ja: '何を攻略するのか。自分の言葉で明確に。', ko: '무엇을 해결할지 자신의 말로 분명히 적으세요.' },
+  '验收标准': { en: 'Acceptance criteria', ja: '合格基準', ko: '완료 기준' },
+  '什么算「学会了」？先定终点，避免无限学习。': { en: 'What counts as “learned”? Define the endpoint first.', ja: '「学んだ」とは何か。終点を先に決める。', ko: '무엇이 “배웠다”는 것인지 먼저 끝점을 정하세요.' },
+  '成功标准': { en: 'Success criteria', ja: '成功基準', ko: '성공 기준' },
+  '可观察、可验收，最好能产出一个作品或通过一次测试': { en: 'Observable and verifiable — ideally a work product or a test you pass.', ja: '観察・検収でき、作品かテストで示せること。', ko: '관찰하고 검증할 수 있어야 하며, 작품이나 테스트로 증명하는 것이 좋습니다.' },
+  '前置条件': { en: 'Prerequisites', ja: '前提条件', ko: '전제 조건' },
+  '写学习路径': { en: 'Write the learning path', ja: '学習パスを書く', ko: '학습 경로 작성' },
+  '把学习路径写入任务阶段': { en: 'Write the learning path into task phases', ja: '学習パスをタスクのフェーズに書き込む', ko: '학습 경로를 작업 단계로 저장' },
+  '估计不准也没关系。完成任务后，应用会把「预计 vs 实际」记入统计，帮你越来越准。': {
+    en: 'An imperfect estimate is fine. After you finish, the app records “estimated vs actual” so your estimates improve.',
+    ja: '見積もりが外れても大丈夫。完了後に「予想 vs 実際」を記録し、精度が上がります。',
+    ko: '예상이 틀려도 괜찮습니다. 완료 후 “예상 vs 실제”를 기록해 정확도를 높입니다.',
+  },
+  '与预计总用时相差': { en: 'Difference from estimate', ja: '予想との差', ko: '예상과의 차이' },
+  '提交并开始计时': { en: 'Submit & start timer', ja: '提出してタイマー開始', ko: '제출 후 타이머 시작' },
+  '提交报告': { en: 'Submit recon', ja: '偵察を提出', ko: '정찰 제출' },
+  '保存修订': { en: 'Save revision', ja: '改訂を保存', ko: '수정 저장' },
+  '从哪一步开始？': { en: 'Where do you start?', ja: 'どのステップから？', ko: '어느 단계부터 시작할까요?' },
+  '下一步做什么？': { en: 'What comes next?', ja: '次は何をする？', ko: '다음은 무엇을 할까요?' },
+  '这一步的具体动作 / 检验方式（可选）': { en: 'Concrete action / check for this step (optional)', ja: 'このステップの具体的な行動・確認方法（任意）', ko: '이 단계의 구체적 행동/확인 방법(선택)' },
+  '例如：JavaScript 的作用域、闭包与异步机制，难点在事件循环和 this 绑定。': {
+    en: 'e.g. JavaScript scope, closures, and async — the hard parts are the event loop and this binding.',
+    ja: '例：JavaScriptのスコープ、クロージャ、非同期。難しいのはイベントループとthis。',
+    ko: '예: JavaScript 스코프, 클로저, 비동기. 어려운 부분은 이벤트 루프와 this 바인딩.',
+  },
+  '例如：能独立读懂并改写中等复杂度的 JS 代码，为 React 和 Node 打地基。': {
+    en: 'e.g. Independently read and rewrite moderately complex JS, laying a foundation for React and Node.',
+    ja: '例：中程度のJSコードを自力で読み書きし、ReactとNodeの土台を作る。',
+    ko: '예: 중간 난이도 JS 코드를 스스로 읽고 고쳐 React와 Node의 기반을 다집니다.',
+  },
+  '例如：不查资料写出闭包与异步示例；完成 20 道练习；能讲清事件循环。': {
+    en: 'e.g. Write closure and async examples without references; finish 20 exercises; explain the event loop.',
+    ja: '例：資料なしでクロージャと非同期の例を書く。練習20問。イベントループを説明する。',
+    ko: '예: 자료 없이 클로저와 비동기 예제 작성, 연습 20문제, 이벤트 루프 설명.',
+  },
+  '例如：会 HTML/CSS 和基础函数；需要一个能跑 Node 的环境。': {
+    en: 'e.g. HTML/CSS and basic functions; a working Node environment.',
+    ja: '例：HTML/CSSと基本関数。Nodeが動く環境。',
+    ko: '예: HTML/CSS와 기본 함수, Node 실행 환경.',
+  },
+  '例如：闭包、原型、Promise、事件循环、模块化。': {
+    en: 'e.g. closures, prototypes, Promises, event loop, modules.',
+    ja: '例：クロージャ、プロトタイプ、Promise、イベントループ、モジュール。',
+    ko: '예: 클로저, 프로토타입, Promise, 이벤트 루프, 모듈.',
+  },
+  '例如：暂不深挖 V8 源码，不追冷门语法糖。': {
+    en: 'e.g. Not diving into V8 internals or obscure syntax sugar for now.',
+    ja: '例：今はV8の内部やマイナーな糖衣構文を深追いしない。',
+    ko: '예: 당장 V8 내부나 희귀 문법 설탕은 파지 않습니다.',
+  },
+  '例如：容易陷入教程循环；异步与 this 易混淆；练习量不足会眼高手低。': {
+    en: 'e.g. Tutorial loops; async and this are easy to confuse; too little practice breeds false confidence.',
+    ja: '例：チュートリアル迷子。非同期とthisの混同。練習不足で過信しやすい。',
+    ko: '예: 튜토리얼 루프, 비동기와 this 혼동, 연습 부족으로 인한 착각.',
+  },
+  '资料 1': { en: 'Resource 1', ja: '資料 1', ko: '자료 1' },
+  '资料 2': { en: 'Resource 2', ja: '資料 2', ko: '자료 2' },
+  '链接（可选）': { en: 'Link (optional)', ja: 'リンク（任意）', ko: '링크(선택)' },
+
+  '同步阶段': { en: 'Sync phases', ja: 'フェーズを同期', ko: '단계 동기화' },
+  '今日已完成': { en: 'Focused today:', ja: '本日の完了：', ko: '오늘 완료:' },
+
+  '对象': { en: 'Subject', ja: '対象', ko: '대상' },
+  '目标': { en: 'Goal', ja: '目標', ko: '목표' },
+  '验收': { en: 'Criteria', ja: '合格', ko: '기준' },
+
+  'Writing记录': { en: 'Writing log', ja: '執筆記録', ko: '작성 기록' },
+
+  // 任务详情
+  '任务 ·': { en: 'Task ·', ja: 'タスク ·', ko: '작업 ·' },
+  '把任务拆成不同时期的小目标 · 已完成': { en: 'Break the task into phases · Completed', ja: 'タスクをフェーズに分ける · 完了', ko: '작업을 단계로 나누기 · 완료' },
+  '第一次开始计时后，这里会留下你的专注轨迹。': { en: 'Your focus trail appears here after the first session.', ja: '最初の集中を始めると、ここに記録が残ります。', ko: '첫 집중을 시작하면 여기에 기록이 남습니다.' },
+  '已为这个任务留下': { en: 'Left for this task', ja: 'このタスクに残した', ko: '이 작업에 남긴' },
+
+  '写下第一份调查报告': { en: 'Write your first recon report', ja: '最初の偵察レポートを書く', ko: '첫 정찰 보고서 작성' },
+  '手动填写': { en: 'Fill in manually', ja: '手動入力', ko: '직접 입력' },
+  '报告校准后': { en: 'After recon calibration', ja: '偵察で調整後', ko: '정찰 보정 후' },
+  '开始后可见': { en: 'Visible after start', ja: '開始後に表示', ko: '시작 후 표시' },
+  '相当靠谱': { en: 'Fairly accurate', ja: 'かなり正確', ko: '꽤 정확' },
+  '继续校准': { en: 'Keep calibrating', ja: '調整を続ける', ko: '계속 보정' },
+  '还没有阶段。可以从调查报告的学习路径自动生成，或手动添加。': { en: 'No phases yet. Generate them from the recon learning path, or add one manually.', ja: 'フェーズはまだありません。偵察の学習パスから生成するか、手動で追加できます。', ko: '아직 단계가 없습니다. 정찰 학습 경로에서 생성하거나 직접 추가하세요.' },
+
+  '创建后，在任务表里点击「开始计时」会先要求提交一份调查报告： 学什么、怎么学、不学什么。这不是门槛，是帮你少走弯路的护栏。': { en: 'After creation, Start timer asks for a recon report: what to learn, how, and what not to learn. It is a guardrail, not a gate.', ja: '作成後、「タイマー開始」で偵察レポートを求められます。何を、どう学び、何を学ばないか。門ではなく、遠回りを防ぐガードレールです。', ko: '작업을 만든 뒤 타이머 시작을 누르면 정찰 보고서를 요구합니다. 무엇을 어떻게 배우고 무엇을 배우지 않을지. 문턱이 아니라 우회를 막는 가드레일입니다.' },
+  '提交于': { en: 'Submitted', ja: '提出日', ko: '제출일' },
+  '用阶段进度（': { en: 'Use phase progress (', ja: 'フェーズ進捗（', ko: '단계 진행 (' },
+  '%）同步任务进度': { en: '%) to sync task progress', ja: '%）でタスク進捗を同期', ko: '%)로 작업 진행 동기화' },
+  '建议先写 5-8知识点, 既能看到全貌, 又不会因为太多而瘫痪。之后随时可以增删。': { en: 'Start with 5–8 knowledge points: enough to see the whole, few enough to stay moving. You can add or remove later.', ja: 'まずは知識点を5〜8個。全体が見えて、多すぎて止まらない数に。後から自由に増減できます。', ko: '지식 포인트를 5~8개로 시작하세요. 전체가 보이면서도 너무 많아 멈추지 않을 수 있습니다. 나중에 자유롭게 추가·삭제할 수 있습니다.' },
+
+  '洞若观火': { en: 'Clear sight', ja: '明察', ko: '꿰뚫어 봄' },
+  '手可摘星': { en: 'Reach the stars', ja: '星に手が届く', ko: '별을 잡다' },
+  '言出必行': { en: 'Walk the talk', ja: '有言実行', ko: '말한 대로 실행' },
+  '千枚筹码': { en: 'Thousand chips', ja: '千枚のチップ', ko: '천 개의 칩' },
+  '今日事今日毕': { en: 'Finish today’s work today', ja: '今日のことは今日終える', ko: '오늘 일은 오늘 끝내기' },
+  '谋定后动': { en: 'Think before acting', ja: 'まず考えてから動く', ko: '먼저 생각하고 행동' },
+
+  // 成长
+  '专注、报告、阶段、作品、知识点和文档写作都会成为证据。每棵大目标是一棵技能树，节点点亮，能力就被看见。': {
+    en: 'Focus, recon, phases, work, knowledge points, and writing all become evidence. Each goal grows a skill tree; light the nodes and your ability becomes visible.',
+    ja: '集中、偵察、フェーズ、作品、知識点、執筆はすべて証拠になります。大きな目標はスキルツリー。ノードを灯せば能力が見えます。',
+    ko: '집중, 정찰, 단계, 작품, 지식 포인트, 글쓰기가 모두 증거가 됩니다. 큰 목표는 스킬 트리이며, 노드를 밝히면 능력이 보입니다.',
+  },
+  '当前阶段': { en: 'Current stage', ja: '現在の段階', ko: '현재 단계' },
+  '持续建造者': { en: 'Steady builder', ja: '継続する作り手', ko: '꾸준한 빌더' },
+  '让证据可以被别人看见': { en: 'Make the evidence visible to others', ja: '証拠を人に見せられる形に', ko: '증거를 다른 사람이 볼 수 있게' },
+  '距「能教别人的人」还差 36 条': { en: '36 more to reach “Can teach others”', ja: '「人に教えられる人」まであと36件', ko: '“다른 사람을 가르칠 수 있는 사람”까지 36개 남음' },
+  '颗星已点亮': { en: 'stars lit', ja: '個の星が点灯', ko: '개 별 점등' },
+  '个知识点 ·': { en: 'knowledge points ·', ja: '個の知識点 ·', ko: '개 지식 포인트 ·' },
+  '立下于': { en: 'Set', ja: '制定', ko: '설정' },
+  '最近一个待点亮的目标：身心调养 · 每周三次运动': {
+    en: 'Next star to light: Wellbeing · Exercise three times a week',
+    ja: '次に灯す星：心身の調養 · 週3回の運動',
+    ko: '다음에 밝힐 별: 심신 관리 · 주 3회 운동',
+  },
+
+  // 任务表
+  '低 / 中 / 高': { en: 'Low / Medium / High', ja: '低 / 中 / 高', ko: '낮음 / 보통 / 높음' },
+  '优先级：低 / 中 / 高 · 状态：进行中的任务会出现在「今日」': {
+    en: 'Priority: Low / Medium / High · In-progress tasks appear on Today',
+    ja: '優先度：低 / 中 / 高 · 進行中のタスクは「今日」に表示',
+    ko: '우선순위: 낮음 / 보통 / 높음 · 진행 중인 작업은 오늘에 표시',
+  },
+  '还有': { en: 'Still', ja: 'あと', ko: '아직' },
+  '项必答内容未完成': { en: 'required fields left', ja: '件の必須項目が未入力', ko: '개 필수 항목 남음' },
+
+  '每个大目标是一棵树。任务和专注是养料，知识点是节点。': { en: 'Each big goal is a tree. Tasks and focus are the nutrients; knowledge points are the nodes.', ja: '大きな目標は一本の木。タスクと集中が養分、知識点がノードです。', ko: '큰 목표는 하나의 나무입니다. 작업과 집중이 영양분, 지식 포인트가 노드입니다.' },
+
+  // 统计
+  '这里没有考核，只有镜子。看清投入与预估偏差，才能把时间放回真正重要的地方。': {
+    en: 'No grades here — only a mirror. See the gap between time invested and estimated, then put your time back where it matters.',
+    ja: 'ここに評価はなく、鏡だけがあります。投入と見積もりのズレを見て、時間を本当に大切な場所へ戻しましょう。',
+    ko: '여기에는 평가가 아니라 거울만 있습니다. 투입과 예상의 차이를 보고 시간을 정말 중요한 곳으로 되돌리세요.',
+  },
+  '共 25 次 · 平均 43 分钟': { en: '25 sessions · avg 43 min', ja: '25回 · 平均43分', ko: '25회 · 평균 43분' },
+  '每日目标 90 分钟': { en: 'Daily goal 90 min', ja: '1日の目標90分', ko: '일일 목표 90분' },
+  '完成率 17%': { en: 'Completion 17%', ja: '完了率17%', ko: '완료율 17%' },
+  '5 份启程侦查': { en: '5 recons', ja: '偵察5件', ko: '정찰 5건' },
+  '5 个任务可对比': { en: '5 tasks comparable', ja: '比較可能なタスク5件', ko: '비교 가능한 작업 5개' },
+  '最近 14 天合计 1085 分钟': { en: '14-day total 1085 min', ja: '直近14日 合計1085分', ko: '최근 14일 합계 1085분' },
+  '虚线为每日目标': { en: 'Dotted line: daily goal', ja: '点線：1日の目標', ko: '점선: 일일 목표' },
+  '最近': { en: 'Recent', ja: '最近', ko: '최근' },
+  '周 · 颜色越亮投入越多': { en: 'weeks · brighter means more time', ja: '週 · 明るいほど投入が多い', ko: '주 · 밝을수록 투입 많음' },
+  '平均准确度': { en: 'Average accuracy', ja: '平均精度', ko: '평균 정확도' },
+  '你平均每次专注 43 分钟。试着把单次时间拉长到 45 分钟以上，减少启动损耗。': {
+    en: 'You average 43 min per focus. Try stretching sessions past 45 min to reduce startup cost.',
+    ja: '1回の集中は平均43分。45分以上に伸ばして起動コストを減らしましょう。',
+    ko: '집중 1회 평균 43분. 45분 이상으로 늘려 시작 비용을 줄여 보세요.',
+  },
+  '到目前为止，你在 10月19日 投入最多：155 分钟。': {
+    en: 'So far your biggest day is Oct 19: 155 min.',
+    ja: '今のところ最も多い日は10月19日：155分。',
+    ko: '지금까지 가장 많이 투입한 날은 10월 19일: 155분.',
+  },
+
+  // 目标
+  '大目标负责方向，知识点负责落地。每点亮一颗星，都是一次真实的理解。': {
+    en: 'Goals give direction; knowledge points make it real. Every star you light is genuine understanding.',
+    ja: '大きな目標が方向を決め、知識点が地に落とす。星を灯すたび、本当の理解が増える。',
+    ko: '큰 목표는 방향을, 지식 포인트는 실행을 맡습니다. 별을 밝힐 때마다 진짜 이해가 쌓입니다.',
+  },
+  '1关联任务': { en: '1 linked task', ja: '関連タスク1件', ko: '연결 작업 1개' },
+  // 报告占位与步骤
+  '阶段名称，例如：完成第一轮练习': { en: 'Phase name, e.g. Finish the first practice round', ja: 'フェーズ名（例：最初の練習を終える）', ko: '단계 이름(예: 첫 연습 완료)' },
+  '阶段名称': { en: 'Phase name', ja: 'フェーズ名', ko: '단계 이름' },
+  '预计分钟': { en: 'Estimated minutes', ja: '予想分', ko: '예상 분' },
+  '资料 1：书名 / 课程 / 文档': { en: 'Resource 1: book / course / doc', ja: '資料1：書籍 / コース / ドキュメント', ko: '자료 1: 책 / 강의 / 문서' },
+  '资料 2：书名 / 课程 / 文档': { en: 'Resource 2: book / course / doc', ja: '資料2：書籍 / コース / ドキュメント', ko: '자료 2: 책 / 강의 / 문서' },
+
+  '报告完成率': { en: 'Recon completion', ja: '偵察完了率', ko: '정찰 완료율' },
+  '完成任务': { en: 'Tasks completed', ja: '完了タスク', ko: '완료 작업' },
+  '预估准确度': { en: 'Estimate accuracy', ja: '見積もり精度', ko: '예상 정확도' },
+  '累计专注': { en: 'Total focus', ja: '累計集中', ko: '누적 집중' },
+  '侦察分': { en: 'Recon score', ja: '偵察スコア', ko: '정찰 점수' },
+
+  // 自编辑主题
+  '自编辑主题': { en: 'Custom theme', ja: 'カスタムテーマ', ko: '사용자 테마' },
+  '三套内置视觉语言，随时切换；也可以自编辑一套自己的主题。': { en: 'Three built-in visual languages, or design your own theme.', ja: '3つの内蔵テーマ。自分だけのテーマも作れます。', ko: '세 가지 기본 테마 또는 나만의 테마를 만들 수 있습니다.' },
+  '给这套界面起一个名字，比如「噜噜」。': { en: 'Name this look — for example “Lulu”.', ja: 'この見た目に名前を。例：「ルル」。', ko: '이 화면에 이름을 붙이세요. 예: “루루”.' },
+  '选一套底子，再调自己的颜色。它会像内置主题一样出现在顶栏和设置里。': { en: 'Pick a base, then tune your own colors. It appears in the top bar and settings like a built-in theme.', ja: 'ベースを選び、色を調整。内蔵テーマと同じようにトップバーと設定に表示されます。', ko: '기본 스타일을 고르고 색을 조정하세요. 기본 테마처럼 상단 바와 설정에 표시됩니다.' },
+  '暖纸与编辑排版': { en: 'Warm paper, editorial layout', ja: '温かな紙と編集レイアウト', ko: '따뜻한 종이와 편집 레이아웃' },
+  '深色底与衬线': { en: 'Dark ground, serif type', ja: '暗い背景とセリフ', ko: '어두운 배경과 세리프' },
+  '无衬线与严格网格': { en: 'Sans-serif, strict grid', ja: 'サンセリフと厳格なグリッド', ko: '산세리프와 엄격한 그리드' },
+  '自编辑主题 · 纸上时间': { en: 'Custom theme · Time on paper', ja: 'カスタムテーマ · 紙の時間', ko: '사용자 테마 · 종이의 시간' },
+  '自编辑主题 · 深墨': { en: 'Custom theme · Dark Ink', ja: 'カスタムテーマ · 深墨', ko: '사용자 테마 · 딥잉크' },
+  '自编辑主题 · 瑞士网格': { en: 'Custom theme · Swiss Grid', ja: 'カスタムテーマ · スイスグリッド', ko: '사용자 테마 · 스위스 그리드' },
+  '主题名称': { en: 'Theme name', ja: 'テーマ名', ko: '테마 이름' },
+  '底子': { en: 'Base', ja: 'ベース', ko: '기본 스타일' },
+  '颜色': { en: 'Colors', ja: '色', ko: '색상' },
+  '页面底色': { en: 'Page background', ja: 'ページ背景', ko: '페이지 배경' },
+  '卡片纸面': { en: 'Card surface', ja: 'カード面', ko: '카드 표면' },
+  '凹陷底色': { en: 'Sunken surface', ja: 'くぼみ面', ko: '음각 배경' },
+  '文字墨色': { en: 'Ink / text', ja: '文字色', ko: '글자색' },
+  '印章强调': { en: 'Seal accent', ja: '印章アクセント', ko: '인장 강조' },
+  '金色': { en: 'Gold', ja: '金色', ko: '금색' },
+  '青玉': { en: 'Jade', ja: '青玉', ko: '비취' },
+  '天青': { en: 'Azure', ja: '天青', ko: '하늘색' },
+  '紫气': { en: 'Violet', ja: '紫', ko: '보라' },
+  '保存并应用': { en: 'Save & apply', ja: '保存して適用', ko: '저장 및 적용' },
+  '删除主题': { en: 'Delete theme', ja: 'テーマを削除', ko: '테마 삭제' },
+  '恢复默认': { en: 'Reset', ja: '初期値に戻す', ko: '기본값' },
+  '主题名最多 24 个字符。': { en: 'Theme name must be 24 characters or fewer.', ja: 'テーマ名は24文字以内。', ko: '테마 이름은 24자 이내여야 합니다.' },
+  '我的主题': { en: 'My theme', ja: 'マイテーマ', ko: '내 테마' },
+  '自编辑': { en: 'Custom', ja: 'カスタム', ko: '사용자' },
+  '例如：噜噜': { en: 'e.g. Lulu', ja: '例：ルル', ko: '예: 루루' },
+  '创建': { en: 'Create', ja: '作成', ko: '만들기' },
+  '编辑': { en: 'Edit', ja: '編集', ko: '편집' },
+  '把时间用在真正重要的事上。': { en: 'Spend time on what truly matters.', ja: '本当に大切なことに時間を使う。', ko: '정말 중요한 일에 시간을 쓰세요.' },
+  '已保存并应用。': { en: 'Saved and applied.', ja: '保存して適用しました。', ko: '저장하고 적용했습니다.' },
+  '已删除自定义主题': { en: 'Custom theme deleted', ja: 'カスタムテーマを削除しました', ko: '사용자 테마 삭제됨' },
+  '已回到纸上时间。': { en: 'Back to Time on Paper.', ja: '「紙の時間」に戻りました。', ko: '“종이의 시간”으로 돌아왔습니다.' },
+
+  // 设置 / 关于
+  '填到 /v1 为止，应用会自动补 /chat/completions；也兼容完整地址。远程必须 HTTPS，本机 Ollama 可用 http://127.0.0.1。': {
+    en: 'Stop at /v1; the app appends /chat/completions. Full URLs also work. Remote endpoints must use HTTPS; local Ollama can use http://127.0.0.1.',
+    ja: '/v1 まで入力。アプリが /chat/completions を補います。完全なURLも可。リモートはHTTPS必須、ローカルOllamaは http://127.0.0.1 可。',
+    ko: '/v1까지만 입력하면 앱이 /chat/completions를 붙입니다. 전체 URL도 가능합니다. 원격은 HTTPS 필수, 로컬 Ollama는 http://127.0.0.1 사용 가능.',
+  },
+  'DeepSeek 建议使用 deepseek-flash；评估时会自动关闭思考模式，避免推理占满输出预算。': {
+    en: 'DeepSeek recommends deepseek-flash. Thinking is disabled during reviews so reasoning does not consume the output budget.',
+    ja: 'DeepSeekは deepseek-flash 推奨。評価時は思考モードを切り、推論が出力枠を圧迫しないようにします。',
+    ko: 'DeepSeek는 deepseek-flash를 권장합니다. 평가 시 사고 모드를 꺼 추론이 출력 예산을 차지하지 않게 합니다.',
+  },
+  '测试连接': { en: 'Test connection', ja: '接続テスト', ko: '연결 테스트' },
+  '清除 Key': { en: 'Clear key', ja: 'Keyを消去', ko: 'Key 삭제' },
+  '已保存 · 刚刚': { en: 'Saved · just now', ja: '保存済み · たった今', ko: '저장됨 · 방금' },
+  '这个应用刻意不提供账号与云同步。你的时间记录属于你自己，不应该成为别人的数据。': {
+    en: 'This app deliberately has no accounts or cloud sync. Your time records belong to you, not to someone else’s dataset.',
+    ja: 'このアプリはあえてアカウントもクラウド同期もありません。時間の記録はあなたのものであり、他人のデータではありません。',
+    ko: '이 앱은 계정과 클라우드 동기화를 의도적으로 제공하지 않습니다. 시간 기록은 당신의 것이며 다른 사람의 데이터가 아닙니다.',
+  },
+  '“人生不能重来，但今天还可以重新安排。”': {
+    en: '“Life cannot be replayed, but today can still be rearranged.”',
+    ja: '「人生はやり直せない。でも今日はまだ組み直せる。」',
+    ko: '“인생은 다시 시작할 수 없지만, 오늘은 아직 다시 짤 수 있다.”',
+  },
+  '三端共享': { en: 'Shared across three platforms', ja: '3プラットフォーム共通', ko: '세 플랫폼 공유' },
+  '与': { en: 'and', ja: 'と', ko: '와' },
+  '的领域模型与界面，平台外壳只负责窗口、存储与系统集成。': {
+    en: 'domain model and interface; each platform shell only handles windows, storage, and system integration.',
+    ja: 'のドメインモデルとUI。各プラットフォームのシェルはウィンドウ、保存、システム連携だけを担当します。',
+    ko: '도메인 모델과 인터페이스. 플랫폼 셸은 창, 저장, 시스템 통합만 담당합니다.',
+  },
+};

@@ -1,0 +1,56 @@
+{
+  "name": "you-only-live-once",
+  "version": "0.1.0",
+  "private": true,
+  "description": "你只活一次 —— 以终为始的任务旅程",
+  "workspaces": [
+    "packages/*",
+    "apps/linux",
+    "apps/windows",
+    "apps/android"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @yolo/linux",
+    "build": "npm run build -w @yolo/linux",
+    "start": "npm run start -w @yolo/linux",
+    "start:demo": "npm run start:demo -w @yolo/linux",
+    "test": "npm run test -w @yolo/core",
+    "typecheck": "npm run typecheck -w @yolo/core && npm run typecheck -w @yolo/desktop-ui && npm run typecheck -w @yolo/linux && npm run typecheck -w @yolo/windows && npm run typecheck -w @yolo/android",
+    "screenshots": "node scripts/screenshot.mjs",
+    "verify": "npm run typecheck && npm run test && npm run build:all",
+    "test:ui": "node scripts/interaction-test.mjs",
+    "package:linux": "npm run package -w @yolo/linux",
+    "verify:packaged": "node scripts/verify-packaged.mjs",
+    "verify:appimage": "node scripts/verify-appimage.mjs",
+    "test:rewards": "node scripts/verify-rewards.mjs",
+    "dev:windows": "npm run dev -w @yolo/windows",
+    "build:windows": "npm run build -w @yolo/windows",
+    "start:windows": "npm run start -w @yolo/windows",
+    "start:demo:windows": "npm run start:demo -w @yolo/windows",
+    "typecheck:windows": "npm run typecheck -w @yolo/windows",
+    "package:windows": "npm run package:portable -w @yolo/windows",
+    "package:windows:dir": "npm run package:dir -w @yolo/windows",
+    "build:all": "npm run build -w @yolo/linux && npm run build -w @yolo/windows && npm run build -w @yolo/android",
+    "package:windows:portable": "npm run package:portable -w @yolo/windows",
+    "package:windows:installer": "npm run package -w @yolo/windows",
+    "verify:windows:preview": "node scripts/verify-windows-preview.mjs",
+    "checksums": "node scripts/checksums.mjs",
+    "dev:android": "npm run dev -w @yolo/android",
+    "build:android": "npm run build -w @yolo/android",
+    "typecheck:android": "npm run typecheck -w @yolo/android",
+    "sync:android": "npm run cap:sync -w @yolo/android",
+    "package:android": "npm run package -w @yolo/android",
+    "test:mobile": "node scripts/mobile-preview.mjs",
+    "verify:android:web": "node scripts/verify-android-web.mjs",
+    "test:themes": "node scripts/theme-preview.mjs",
+    "test:ai": "node scripts/ai-mock-test.mjs",
+    "test:language": "node scripts/language-test.mjs",
+    "test:theme-editor": "node scripts/theme-editor-test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "electron-builder": "^26.15.3"
+  }
+}

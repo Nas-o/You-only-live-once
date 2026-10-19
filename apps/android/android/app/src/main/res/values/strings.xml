@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">你只活一次</string>
+    <string name="title_activity_main">你只活一次</string>
+    <string name="package_name">com.yolo.android</string>
+    <string name="custom_url_scheme">com.yolo.android</string>
+</resources>
