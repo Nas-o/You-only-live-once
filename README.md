@@ -8,6 +8,16 @@
 
 ![今日](screenshots/01-today.png)
 
+## 平台
+
+| 平台 | 架构 | 产物 |
+| --- | --- | --- |
+| Linux | x64 / arm64 | AppImage、deb |
+| Windows | x64 / arm64 | 便携版 ZIP |
+| macOS | Intel / Apple Silicon | DMG、ZIP（未签名） |
+| Android | arm64 / universal | Debug APK |
+| iOS | arm64 | 未签名 IPA（需自签安装） |
+
 ## 它解决什么
 
 普通待办只记录「要做什么」，却很少回答两个问题：
@@ -95,6 +105,14 @@ npm run start:windows
 npm run start:demo:windows
 ```
 
+macOS：
+
+```bash
+npm run dev:macos
+npm run start:macos
+npm run package:macos        # Intel + Apple Silicon
+```
+
 Android：
 
 ```bash
@@ -104,16 +122,26 @@ npm run sync:android     # 同步到 Capacitor 原生工程
 npm run package:android  # 生成 debug APK
 ```
 
+iOS（需要 macOS + Xcode + CocoaPods）：
+
+```bash
+npm run package:ios          # 生成未签名 IPA
+```
+
 详细 Android 环境说明见 [`apps/android/README.md`](apps/android/README.md)。
 
 ## 构建与打包
 
 | 平台 | 命令 | 产物 |
 | --- | --- | --- |
-| Linux | `npm run package:linux` | AppImage / deb |
-| Windows | `npm run package:windows` | 便携版 ZIP |
+| Linux x64 | `npm run package:linux` | AppImage / deb |
+| Linux arm64 | `npm run package:linux:arm64` | AppImage / deb |
+| Windows x64 | `npm run package:windows` | 便携版 ZIP |
+| Windows arm64 | `npm run package:windows:portable:arm64` | 便携版 ZIP |
 | Windows 安装器 | `npm run package:windows:installer` | NSIS，需要 Windows 或 Wine |
-| Android | `npm run package:android` | Debug APK |
+| macOS | `npm run package:macos` | Intel + Apple Silicon DMG / ZIP |
+| Android | `npm run package:android` | Universal Debug APK |
+| iOS | `npm run package:ios` | 未签名 IPA |
 
 产物默认在 `apps/<platform>/release/`；SHA256 见 [`SHA256SUMS.txt`](SHA256SUMS.txt)。
 
@@ -147,7 +175,9 @@ npm run screenshots            # 逐页截图验收
 ```text
 Linux:   $XDG_CONFIG_HOME/yolo-linux/yolo-data.json
 Windows: %APPDATA%\yolo-windows\yolo-data.json
+macOS:   ~/Library/Application Support/yolo-macos/yolo-data.json
 Android: Capacitor Preferences（yolo-data-v1）
+iOS:     Capacitor Preferences（yolo-data-v1）
 ```
 
 桌面端保存前写 `yolo-data.backup.json`；三端 JSON 模型一致，可互相导入。数据只在本机，没有后端、账号、云同步或埋点。
@@ -159,7 +189,9 @@ packages/core/         纯 TS 领域核心：任务、报告、计时、奖励�
 packages/desktop-ui/   共享界面、zustand 状态机、AI 客户端、i18n、皮肤资产
 apps/linux/            Electron Linux 外壳
 apps/windows/          Electron Windows 外壳
+apps/macos/            Electron macOS 外壳（Intel / Apple Silicon）
 apps/android/          Capacitor Android 外壳与移动桥
+apps/ios/              Capacitor iOS 工程与未签名 IPA 构建
 scripts/               截图、交互回归、打包校验
 docs/                  架构与路线
 screenshots/           验收截图
@@ -169,9 +201,11 @@ screenshots/           验收截图
 
 ## 当前状态与限制
 
-- Linux x64：已构建 AppImage / deb。
-- Windows x64：便携版已构建，尚未在真实 Windows 10/11 上验收 DPI、IME 与睡眠恢复；未代码签名。
-- Android：Debug APK 已构建，尚未真机验收；上架需 release 签名，后台常驻服务尚未接入。
+- Linux x64 / arm64：已构建 AppImage / deb。
+- Windows x64 / arm64：便携版已构建，尚未在真实 Windows 机器上验收 DPI、IME 与睡眠恢复；未代码签名。
+- macOS Intel / Apple Silicon：DMG / ZIP 未签名，首次打开需右键或系统设置放行。
+- Android：Universal Debug APK；尚未真机验收，上架需 release 签名。
+- iOS：未签名 IPA，需 AltStore / Sideloadly 等工具用自己的 Apple ID 重签；没有 Apple Developer 签名时不能直接安装或上架。iOS 的 AI Key 目前使用 Preferences，而不是 Keychain。
 - 完成提示音为预留开关，当前版本静音。
 - 数据为单 JSON / Preferences，v1 未加密；敏感信息不要写进报告。
 
@@ -181,22 +215,23 @@ screenshots/           验收截图
 推荐用 tag 触发 `.github/workflows/release.yml`：
 
 ```bash
-git tag -a v0.1.0 -m "YOLO v0.1.0"
-git push origin v0.1.0
+git tag -a v0.1.1 -m "YOLO v0.1.1"
+git push origin v0.1.1
 ```
 
-Actions 会依次完成类型检查、核心测试、三端构建，并把以下文件挂到 GitHub Release：
+Actions 会并行构建 Linux、Windows、macOS、Android、iOS，并把以下文件挂到 GitHub Release：
 
 ```text
-apps/linux/release/YouOnlyLiveOnce-*-x86_64.AppImage
-apps/linux/release/YouOnlyLiveOnce-*-amd64.deb
-apps/windows/release/YouOnlyLiveOnce-*-win-x64-portable.zip
-apps/android/release/YouOnlyLiveOnce-*-android-debug.apk
+Linux x64 / arm64:   AppImage + deb
+Windows x64 / arm64: portable ZIP
+macOS Intel / arm64: DMG + ZIP
+Android:             universal debug APK
+iOS:                 unsigned IPA
 SHA256SUMS.txt
 ```
 
 如果暂时不想配置 Actions，也可以在本机打包后，打开：
-**GitHub → Releases → Draft a new release → 选择 tag → 手动上传以上 5 个文件 → Publish release**。
+**GitHub → Releases → Draft a new release → 选择 tag → 手动上传以上产物 → Publish release**。
 
 发布新版本时，记得同步修改 `package.json`、各子包版本号、Android `build.gradle` 的 `versionName`，再创建新的 tag。
 

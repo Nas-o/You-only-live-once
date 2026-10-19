@@ -1,6 +1,6 @@
 {
   "name": "@yolo/linux",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "你只活一次 · Linux (x64) 桌面端",
   "main": "electron/main.cjs",
@@ -12,7 +12,8 @@
     "typecheck": "tsc --noEmit",
     "screenshot": "node ../../scripts/screenshot.mjs",
     "package": "npm run build && electron-builder --linux AppImage deb",
-    "package:dir": "npm run build && electron-builder --linux dir"
+    "package:dir": "npm run build && electron-builder --linux dir",
+    "package:arm64": "npm run build && electron-builder --linux AppImage deb --arm64"
   },
   "dependencies": {
     "@yolo/core": "*",

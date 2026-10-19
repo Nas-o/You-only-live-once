@@ -13,16 +13,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-release:
+  linux-windows-android:
     runs-on: ubuntu-22.04
-    timeout-minutes: 40
+    timeout-minutes: 45
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
@@ -46,8 +44,6 @@ jobs:
 
       - name: Install Android platform and build tools
         run: |
-          # GitHub 的 ubuntu runner 已预装 Android SDK；直接使用本机 sdkmanager，
-          # 避免 setup-android action 在部分 runner 镜像上安装失败。
           export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
           export ANDROID_SDK_ROOT="$ANDROID_HOME"
           echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
@@ -57,35 +53,114 @@ jobs:
           yes | "$SDKMANAGER" --licenses >/dev/null || true
           "$SDKMANAGER" "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Package Linux
-        run: |
-          set -o pipefail
-          npm run package:linux 2>&1 | tee /tmp/package-linux.log
+      - name: Package Linux x64
+        run: npm run package:linux
 
-      - name: Show Linux packaging failure
-        if: failure()
-        run: tail -120 /tmp/package-linux.log >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Package Linux arm64
+        run: npm run package:linux:arm64
 
-      - name: Package Windows portable
-        run: |
-          set -o pipefail
-          npm run package:windows:portable 2>&1 | tee /tmp/package-windows.log
+      - name: Package Windows x64
+        run: npm run package:windows:portable
 
-      - name: Show Windows packaging failure
-        if: failure()
-        run: tail -120 /tmp/package-windows.log >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Package Windows arm64
+        run: npm run package:windows:portable:arm64
 
       - name: Package Android
-        run: |
-          set -o pipefail
-          npm run package:android 2>&1 | tee /tmp/package-android.log
+        run: npm run package:android
 
-      - name: Show Android packaging failure
-        if: failure()
-        run: tail -120 /tmp/package-android.log >> "$GITHUB_STEP_SUMMARY" || true
+      - name: Upload Linux assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: |
+            apps/linux/release/*.AppImage
+            apps/linux/release/*.deb
+
+      - name: Upload Windows assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: apps/windows/release/*-portable.zip
+
+      - name: Upload Android assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: apps/android/release/*.apk
+
+  macos:
+    runs-on: macos-14
+    timeout-minutes: 35
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Package macOS x64 + arm64
+        run: npm run package:macos
+
+      - name: Upload macOS assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: |
+            apps/macos/release/*.dmg
+            apps/macos/release/*.zip
+
+  ios:
+    runs-on: macos-14
+    timeout-minutes: 35
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build unsigned IPA
+        run: npm run package:ios
+
+      - name: Upload iOS asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios
+          path: apps/ios/release/*.ipa
+
+  release:
+    needs: [linux-windows-android, macos, ios]
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download release assets
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Place assets into release directories
+        run: |
+          mkdir -p apps/linux/release apps/windows/release apps/android/release apps/macos/release apps/ios/release
+          cp -v artifacts/linux/* apps/linux/release/ 2>/dev/null || true
+          cp -v artifacts/windows/* apps/windows/release/ 2>/dev/null || true
+          cp -v artifacts/android/* apps/android/release/ 2>/dev/null || true
+          cp -v artifacts/macos/* apps/macos/release/ 2>/dev/null || true
+          cp -v artifacts/ios/* apps/ios/release/ 2>/dev/null || true
 
       - name: Write checksums
-        run: npm run checksums
+        run: node scripts/checksums.mjs
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
@@ -99,4 +174,7 @@ jobs:
             apps/linux/release/*.deb
             apps/windows/release/*-portable.zip
             apps/android/release/*.apk
+            apps/macos/release/*.dmg
+            apps/macos/release/*.zip
+            apps/ios/release/*.ipa
             SHA256SUMS.txt

@@ -10,12 +10,13 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const appDir = path.resolve(__dirname, '..');
 const releaseDir = path.join(appDir, 'release');
-const unpacked = path.join(releaseDir, 'win-unpacked');
+const arch = process.argv[2] === 'arm64' ? 'arm64' : 'x64';
+const unpacked = path.join(releaseDir, arch === 'x64' ? 'win-unpacked' : `win-${arch}-unpacked`);
 const version = JSON.parse(fs.readFileSync(path.join(appDir, 'package.json'), 'utf8')).version;
-const target = path.join(releaseDir, `YouOnlyLiveOnce-${version}-win-x64-portable.zip`);
+const target = path.join(releaseDir, `YouOnlyLiveOnce-${version}-win-${arch}-portable.zip`);
 
 if (!fs.existsSync(path.join(unpacked, 'yolo.exe'))) {
-  console.error('找不到 release/win-unpacked/yolo.exe，请先执行 electron-builder --win dir');
+  console.error(`找不到 ${path.relative(appDir, unpacked)}/yolo.exe，请先执行 electron-builder --win dir --${arch}`);
   process.exit(1);
 }
 if (fs.existsSync(target)) fs.rmSync(target);
@@ -43,4 +44,4 @@ if (result.status !== 0) {
   process.exit(result.status ?? 1);
 }
 const size = (fs.statSync(target).size / 1024 / 1024).toFixed(1);
-console.log(`✓ Windows 便携版：${target}（${size} MB）`);
+console.log(`✓ Windows 便携版（${arch}）：${target}（${size} MB）`);
