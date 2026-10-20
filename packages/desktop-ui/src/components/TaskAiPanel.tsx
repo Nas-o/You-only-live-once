@@ -25,6 +25,7 @@ import {
 import { useAppStore } from '../store/appStore';
 import {
   CONFIDENCE_THRESHOLD,
+  MAX_INTERVIEW_ROUNDS,
   hasAiConfig,
   isLocalApiUrl,
   planReviewToRecord,
@@ -232,7 +233,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
     ? data.estimateReviews.find((review) => review.id === session.resultId)
     : undefined;
   const canFinish = session ? session.confidence >= session.threshold : false;
-  const maxRoundReached = session ? session.round >= 6 && !canFinish : false;
+  const maxRoundReached = session ? session.round >= MAX_INTERVIEW_ROUNDS && !canFinish : false;
 
   const goSettings = () => {
     closeTask();
@@ -264,6 +265,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
         ...fresh,
         confidence: turn.confidence,
         level: turn.level,
+        coverage: turn.coverage,
         questions: turn.questions,
         stage: turn.readyForPlan ? 'plan' : 'interview',
         profileSummary: turn.summary,
@@ -306,6 +308,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
         ...answered,
         confidence: turn.confidence,
         level: turn.level,
+        coverage: turn.coverage,
         questions: turn.questions,
         profileSummary: turn.summary || answered.profileSummary,
         stage: turn.readyForPlan ? 'plan' : 'interview',
@@ -405,7 +408,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
           <div>
             <Sparkles size={18} />
             <p>
-              AI 会先问 1–3 个与这个任务相关的问题，确认你已有的基础和目标。
+              问题数量根据你的回答动态变化：可能 1 轮就够，也可能超过 6 轮，最多 10 轮。
               <small>只有信息足够后，才会进入“你来写计划”的下一步。不出练习题，不替你写计划。</small>
             </p>
           </div>
@@ -419,8 +422,10 @@ export function TaskAiPanel({ task }: { task: Task }) {
       {session && session.stage === 'interview' ? (
         <div className="ai-interview">
           <div className="ai-stage-head">
-            <span className="ai-stage-label">第 {session.round + 1} 轮 · 背景访谈</span>
-            <span className="ai-stage-note">第 {session.round + 1} 轮</span>
+            <span className="ai-stage-label">
+              {maxRoundReached ? `已问满 ${MAX_INTERVIEW_ROUNDS} 轮` : `第 ${session.round + 1} 轮 · 背景访谈`}
+            </span>
+            <span className="ai-stage-note">{maxRoundReached ? '等待重新开始' : `第 ${session.round + 1} 轮`}</span>
           </div>
           {session.profileSummary ? <p className="ai-interview-summary" data-i18n-skip>{session.profileSummary}</p> : null}
           {session.questions.length > 0 ? (

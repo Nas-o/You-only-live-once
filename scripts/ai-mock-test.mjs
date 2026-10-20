@@ -78,6 +78,7 @@ const server = http.createServer((req, res) => {
       content = JSON.stringify({
         confidence: 35,
         level: 'beginner',
+        coverage: { level: 'partial', goal: 'known', baseline: 'missing', scope: 'missing', blocker: 'missing', success: 'missing' },
         summary: '还缺少你的语言基础和具体项目经历。',
         answerQuality: { status: 'valid', note: '首轮没有回答。' },
         questions: [firstQuestion],
@@ -89,6 +90,7 @@ const server = http.createServer((req, res) => {
       content = JSON.stringify({
         confidence: 35,
         level: 'beginner',
+        coverage: { level: 'known', goal: 'known', baseline: 'missing', scope: 'missing', blocker: 'missing', success: 'missing' },
         summary: '上一轮回答“英语”与编程经历无关，不能作为有效证据。',
         answerQuality: { status: 'irrelevant', note: '问题问的是编程语言和项目经历，回答是英语，属于答非所问。' },
         questions: [clarifyQuestion],
@@ -100,6 +102,7 @@ const server = http.createServer((req, res) => {
       content = JSON.stringify({
         confidence: 82,
         level: 'beginner',
+        coverage: { level: 'known', goal: 'known', baseline: 'known', scope: 'known', blocker: 'partial', success: 'partial' },
         summary: '已经知道你有其他语言基础和一个可运行项目；可以进入计划评估。',
         answerQuality: { status: 'valid', note: '回答具体，给出了语言和项目。' },
         questions: [],
@@ -189,9 +192,10 @@ await page.waitForSelector('.ai-question textarea', { timeout: 15000 });
 await page.waitForTimeout(500);
 const afterIrrelevant = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 assert(afterIrrelevant.assessmentSessions[0].stage === 'interview', '离谱回答不进入计划阶段');
-assert(afterIrrelevant.assessmentSessions[0].confidence === 35, '离谱回答不加置信度');
+assert(afterIrrelevant.assessmentSessions[0].confidence <= 35, '离谱回答不加置信度');
 assert(afterIrrelevant.assessmentSessions[0].lastAnswerQuality === 'irrelevant', '离谱回答被标记为答非所问');
 assert(afterIrrelevant.assessmentSessions[0].level === 'beginner', '新手水平已持久化');
+assert(afterIrrelevant.assessmentSessions[0].coverage.baseline === 'missing', '置信度缺口已持久化');
 assert((await page.locator('.ai-question').count()) === 1, '被追问时仍只问一个问题');
 assert(!(await page.locator('.ai-estimate-panel').innerText()).includes('置信度'), '追问时仍不展示置信度');
 await page.locator('.ai-question textarea').fill('学过 JavaScript 和 Python，写过一个可运行的命令行记账工具。');

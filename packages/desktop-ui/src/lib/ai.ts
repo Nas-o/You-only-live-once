@@ -8,7 +8,10 @@ import {
   type AiAnswerQuality,
   type AiAssessmentSession,
   type AiConfidence,
+  type AiCoverageStatus,
   type AiExperienceLevel,
+  type AiInterviewCoverage,
+  type AiInterviewDimension,
   type AiInterviewQuestion,
   type AiPlanVerdict,
   type AiProvider,
@@ -412,6 +415,20 @@ export async function testAiConnection(ai: AiSettings): Promise<string> {
 // ============================================================
 
 export const CONFIDENCE_THRESHOLD = 80;
+export const MIN_INTERVIEW_ROUNDS = 1;
+export const MAX_INTERVIEW_ROUNDS = 10;
+
+export const INTERVIEW_DIMENSION_WEIGHTS: Record<AiInterviewDimension, number> = {
+  level: 0.22,
+  goal: 0.22,
+  baseline: 0.18,
+  scope: 0.18,
+  blocker: 0.12,
+  success: 0.08,
+};
+
+const CORE_DIMENSIONS: AiInterviewDimension[] = ['level', 'goal', 'baseline', 'scope'];
+const INTERVIEW_DIMENSIONS: AiInterviewDimension[] = ['level', 'goal', 'baseline', 'scope', 'blocker', 'success'];
 
 export interface InterviewTurn {
   confidence: number;
@@ -421,6 +438,7 @@ export interface InterviewTurn {
   missing: string[];
   readyForPlan: boolean;
   level: AiExperienceLevel;
+  coverage: AiInterviewCoverage;
   answerQuality?: AiAnswerQuality;
   answerNote?: string;
 }
@@ -465,6 +483,42 @@ function parseLevel(value: unknown): AiExperienceLevel {
     : 'unknown';
 }
 
+function parseCoverage(value: unknown): AiInterviewCoverage {
+  const source = value && typeof value === 'object' ? (value as Record<string, unknown>) : {};
+  const coverage = {} as AiInterviewCoverage;
+  for (const dimension of INTERVIEW_DIMENSIONS) {
+    const status = String(source[dimension] ?? 'missing');
+    coverage[dimension] = ['known', 'partial', 'missing'].includes(status)
+      ? (status as AiCoverageStatus)
+      : 'missing';
+  }
+  return coverage;
+}
+
+function coverageScore(coverage: AiInterviewCoverage): number {
+  return INTERVIEW_DIMENSIONS.reduce(
+    (sum, dimension) => sum + INTERVIEW_DIMENSION_WEIGHTS[dimension] * ({ known: 1, partial: 0.5, missing: 0 }[coverage[dimension]] ?? 0),
+    0,
+  );
+}
+
+function coreCoverageKnown(coverage: AiInterviewCoverage): boolean {
+  return CORE_DIMENSIONS.every((dimension) => coverage[dimension] === 'known');
+}
+
+export function computeInterviewConfidence(
+  coverage: AiInterviewCoverage,
+  modelConfidence: number,
+  answerQuality: AiAnswerQuality | undefined,
+  answerCount: number,
+): number {
+  let value = coverageScore(coverage) * 0.82 + (clampConfidence(modelConfidence) / 100) * 0.18;
+  if (CORE_DIMENSIONS.some((dimension) => coverage[dimension] === 'missing')) value = Math.min(value, 0.65);
+  if (answerQuality && answerQuality !== 'valid') value *= 0.62;
+  if (answerCount === 0) value *= 0.9;
+  return Math.round(Math.max(0, Math.min(1, value)) * 100);
+}
+
 function parseQuestions(value: unknown): AiInterviewQuestion[] {
   if (!Array.isArray(value)) return [];
   return value
@@ -474,6 +528,9 @@ function parseQuestions(value: unknown): AiInterviewQuestion[] {
       question: safeText(item.question, 240),
       why: safeText(item.why, 160),
       options: safeStringArray(item.options, 3, 140),
+      target: INTERVIEW_DIMENSIONS.includes(String(item.target) as AiInterviewDimension)
+        ? (String(item.target) as AiInterviewDimension)
+        : undefined,
     }))
     .filter((item) => item.question.length > 0)
     // 用户明确不需要“每天/每周能学几个小时”这类执行约束问题。
@@ -576,22 +633,29 @@ export function buildInterviewMessages(
   task: Task,
   session: AiAssessmentSession,
 ): { role: 'system' | 'user'; content: string }[] {
-  const system = `你是「你只活一次」的学习方案审计员。现在处于“背景访谈”阶段：先问清楚，不急着下结论。
+  const system = `你是「你只活一次」的学习方案审计员。现在处于“背景访谈”阶段：目标不是问满固定轮数，而是用尽量少的问题建立足够可靠的判断。
+置信度维度（每轮都要更新 coverage）：
+- level：用户当前真实水平（beginner / some / experienced / unknown）
+- goal：用户想达到的具体结果
+- baseline：已有的材料、经历、练习或作品
+- scope：这次任务的范围与边界
+- blocker：当前最具体的卡点
+- success：怎样算完成/学会
+
 规则：
-1. 根据这个任务的领域、用户写的启程侦查、学习文档和已有回答，动态决定下一轮问题；不要使用固定题库。
-2. **每轮只问一个问题**，不要一次给多个问题。一次只问一个，等用户回答后再决定下一问。
-3. 问题必须切合实际、可核对、能形成证据。优先问具体起点、具体材料、具体卡点；不要问“每天/每周能学几个小时”这类时间安排问题，那只是执行约束，不是能力证据。
-4. 不要重复已经回答过的问题；不要问用户已经在任务/报告/文档里写清楚的内容。
-5. 先判断上一轮回答的真实质量：valid（直接、具体、可核对）、vague（太泛）、irrelevant（答非所问）、contradictory（与目标/已有回答矛盾）。如果回答无效，下一问必须换一种更具体的方式追问同一主题，并且**不得提高 confidence**。
-6. 不要被自述欺骗：例如目标是“能自己写项目”却声称“已经学完所有内容”，或问编程经历却回答“学过英语”，都属于无效回答，不能当作有效证据。
-7. **建立并锁定用户的真实水平 level**：beginner / some / experienced / unknown。
-   - 一旦用户明确说“新手、零基础、没做过、没接触过”，level 必须是 beginner，并在后续所有轮次保持 beginner，除非用户明确纠正。
-   - level=beginner 时，禁止问“推导过哪些相关问题”“做过哪些项目”“解决过哪些复杂问题”“最熟练的是哪门”等假设已有经验的问题；只允许问入门级、最小可执行、具体术语或材料层面的问题。
-   - 如果上一轮回答与已建立水平矛盾，先用 beginner 能理解的方式澄清，不要直接提高难度。
-8. **每轮必须给 3 个 options**：它们是结合当前任务、用户水平和上下文最可能的三种具体回答，用第一人称、短句，不要是“是/否”；界面会自动追加第 4 个“其他（自己回答）”，所以不要自己生成第 4 项。beginner 的选项不能假设项目、推导或复杂经验。
-9. 首轮优先用选项确认用户起点（例如：完全没接触 / 看过资料没动手 / 做过一点简单练习），不要首轮就问项目经历。
-10. 新手不等于信息不足：一旦知道 level、目标、已有材料和至少一个具体起点或卡点，confidence 应能达到 ${CONFIDENCE_THRESHOLD}；不要为了追问项目细节无限提问。
-11. 只有 confidence >= ${CONFIDENCE_THRESHOLD} 时，才把 readyForPlan 设为 true 且 questions 返回空数组。
+1. 问题数量不固定，可能 1 轮就够，也可能超过 6 轮；最多 10 轮。不要为了凑轮数而提问。
+2. **每轮只问一个问题**，等用户回答后再决定下一问。
+3. 下一问必须针对 coverage 中 still missing/partial 的维度，优先补 level / goal / baseline / scope，再补 blocker / success；不要重复已经问过或已经从任务/报告/文档确认的信息。
+4. 问题要具体、可核对、可形成证据，并与用户当前水平匹配；不要问“每天/每周能学几个小时”这类执行约束。
+5. 先判断上一轮回答质量：valid（直接、具体、可核对）、vague（太泛）、irrelevant（答非所问）、contradictory（与已有回答矛盾）。无效回答下一问要换一种更具体的方式追问，并且不得提高 confidence。
+6. 不要被自述欺骗；但新手说“没做过/没接触过”是有效信息，不是信息不足。
+7. **锁定真实水平 level**：用户明确说“新手/零基础/没做过/没接触过”后，level 必须是 beginner，并在后续保持，除非用户明确纠正。
+   - level=beginner 时，禁止问“推导过哪些相关问题”“做过哪些项目”“解决过哪些复杂问题”“最熟练的是哪门”等假设已有经验的问题。
+   - 只问入门级、最小可执行、具体术语或材料层面的问题；如果上一轮回答与水平矛盾，先用 beginner 能理解的方式澄清。
+8. **每轮给 3 个 options**：结合任务、用户水平和 coverage 缺口，给出三种最可能的、第一人称、简短、具体的回答；不要是“是/否”，不要自己生成第 4 项（界面会自动追加“其他（自己回答）”）。beginner 的选项不能假设项目、推导或复杂经验。
+9. 首轮优先确认起点，不要首轮就问项目经历。
+10. confidence 只是你的主观估计；客户端还会根据 coverage 和回答质量计算。不要为了尽快结束而虚报；也不要把“不知道所有细节”当成信息不足。
+11. 只有当 level / goal / baseline / scope 都已经 known，且至少完成 1 轮回答时，才可以 readyForPlan=true 并返回空 questions。blocker / success 可以是 partial。
 12. 不替用户写计划，不出练习题，不修改任务；不要在问题下方写解释。
 13. 输出语言：${outputLanguage(data)}。所有面向用户的文字都使用这个语言。
 14. 只输出一个 JSON 对象，不要 Markdown 代码围栏，不要额外文字。`;
@@ -600,18 +664,27 @@ export function buildInterviewMessages(
 
 ## 已完成的访谈
 轮次：${session.round}
-当前置信度：${session.confidence}
+当前置信度（模型侧，仅参考）：${session.confidence}
 已建立水平：${session.level ?? 'unknown'}
+当前 coverage：${JSON.stringify(session.coverage ?? {})}
 ${buildAnswerBlock(session)}
 
 ## 输出 JSON
 {
   "confidence": 0-100 的数字,
   "level": "beginner | some | experienced | unknown",
+  "coverage": {
+    "level": "known | partial | missing",
+    "goal": "known | partial | missing",
+    "baseline": "known | partial | missing",
+    "scope": "known | partial | missing",
+    "blocker": "known | partial | missing",
+    "success": "known | partial | missing"
+  },
   "summary": "一两句话说明你现在还缺什么，或为什么已经足够",
   "answerQuality": { "status": "valid | vague | irrelevant | contradictory", "note": "对上一轮回答的判断；首轮没有回答时留空" },
   "questions": [
-    { "id": "q1", "question": "只问一个具体问题，不要附解释", "options": ["最可能的回答 1", "最可能的回答 2", "最可能的回答 3"] }
+    { "id": "q1", "target": "level | goal | baseline | scope | blocker | success", "question": "只问一个具体问题，不要附解释", "options": ["最可能的回答 1", "最可能的回答 2", "最可能的回答 3"] }
   ],
   "known": ["已经从上下文确认的事实"],
   "missing": ["仍然缺少的信息"],
@@ -624,17 +697,60 @@ ${buildAnswerBlock(session)}
   ];
 }
 
+function fallbackInterviewQuestion(
+  coverage: AiInterviewCoverage,
+  round: number,
+): AiInterviewQuestion {
+  const dimension =
+    INTERVIEW_DIMENSIONS.find((item) => coverage[item] !== 'known') ?? 'blocker';
+  const bank: Record<AiInterviewDimension, Omit<AiInterviewQuestion, 'id' | 'target'>> = {
+    level: {
+      question: '先确认起点：你对这个主题目前更接近哪一种状态？',
+      options: ['完全没接触过', '看过一些资料，但没动手', '做过一点简单练习'],
+    },
+    goal: {
+      question: '你希望学完后能做出什么具体结果？',
+      options: ['能独立完成一个小作品', '能看懂并修改现成例子', '能向别人讲清楚核心概念'],
+    },
+    baseline: {
+      question: '你现在手上已经有哪些相关材料或练习？',
+      options: ['只有入门教程', '有一些教程和零散笔记', '做过几个小练习'],
+    },
+    scope: {
+      question: '这次你希望把范围控制在哪里？',
+      options: ['先跑通最小例子', '覆盖常用基础，先不碰进阶', '跟着任务报告里的路径走'],
+    },
+    blocker: {
+      question: '现在最让你卡住的是哪一步？',
+      options: ['不知道从哪里开始', '看得懂但自己写不出来', '遇到错误不知道怎么排查'],
+    },
+    success: {
+      question: '怎样才算这次真的学会了？',
+      options: ['能不看教程独立完成', '能解释关键概念并改一个例子', '有一个可以展示的小成果'],
+    },
+  };
+  const item = bank[dimension];
+  return {
+    id: `q_auto_${round + 1}`,
+    question: item.question,
+    options: item.options,
+    target: dimension,
+  };
+}
+
 export function parseInterview(
   content: string,
   previousConfidence = 0,
   hadAnswer = false,
   previousLevel: AiExperienceLevel = 'unknown',
+  round = 0,
+  answerCount = 0,
 ): InterviewTurn {
   const parsed = parseObject(content);
   let questions = parseQuestions(parsed.questions).slice(0, 1);
   let level = parseLevel(parsed.level);
   if (previousLevel === 'beginner' && level !== 'experienced') level = 'beginner';
-  let confidence = clampConfidence(parsed.confidence);
+  const coverage = parseCoverage(parsed.coverage);
   const rawQuality = parsed.answerQuality;
   const qualityStatus =
     typeof rawQuality === 'string'
@@ -651,37 +767,36 @@ export function parseInterview(
     rawQuality && typeof rawQuality === 'object'
       ? safeText((rawQuality as { note?: unknown }).note, 300)
       : '';
-  // 新手锁定：如果模型又假设用户有推导/项目经历，替换成入门问题，避免前后矛盾。
+  let confidence = computeInterviewConfidence(
+    coverage,
+    Number(parsed.confidence),
+    quality,
+    answerCount,
+  );
+  // 新手锁定：如果模型又假设用户有推导/项目经历，换成当前仍缺维度的入门问题。
   if (level === 'beginner') {
     const beginnerUnsafe = /(推导|项目经历|做过.{0,10}项目|写过.{0,10}项目|哪些项目|最熟练|复杂问题|源码|架构|性能优化)/;
-    questions = questions.map((item) =>
-      beginnerUnsafe.test(item.question)
-        ? {
-            ...item,
-            question: '如果从零开始，你更希望先完成哪一步？',
-            options: [
-              '先把环境装好，跑通第一个例子',
-              '先看懂最基本的概念和术语',
-              '先跟着示例做一个小练习',
-            ],
-          }
-        : item,
-    );
+    if (questions.some((item) => beginnerUnsafe.test(item.question))) {
+      questions = [fallbackInterviewQuestion(coverage, round)];
+    }
   }
-  // 无效回答不能增加置信度；这是硬约束，不依赖模型自觉。
+  // 无效回答不能提高置信度；这是硬约束，不依赖模型自觉。
   if (hadAnswer && (!quality || quality !== 'valid')) {
     confidence = Math.min(confidence, previousConfidence);
   }
-  // 置信度是硬门槛；readyForPlan 不能绕过它。
-  const ready = confidence >= CONFIDENCE_THRESHOLD;
+  const ready =
+    confidence >= CONFIDENCE_THRESHOLD &&
+    coreCoverageKnown(coverage) &&
+    answerCount >= MIN_INTERVIEW_ROUNDS;
   if (ready) {
     questions = [];
   } else if (questions.length === 0) {
-    throw new Error('AI 认为信息还不够，但没有给出下一轮问题');
+    questions = [fallbackInterviewQuestion(coverage, round)];
   }
   return {
     confidence,
     level,
+    coverage,
     summary: safeText(parsed.summary, 500),
     questions,
     known: safeStringArray(parsed.known, 8, 160),
@@ -800,7 +915,14 @@ export async function runInterview(
   session: AiAssessmentSession,
 ): Promise<InterviewTurn> {
   const content = await completeJson(data, buildInterviewMessages(data, task, session), 1400);
-  return parseInterview(content, session.confidence, session.answers.length > 0, session.level ?? 'unknown');
+  return parseInterview(
+    content,
+    session.confidence,
+    session.answers.length > 0,
+    session.level ?? 'unknown',
+    session.round,
+    session.answers.length,
+  );
 }
 
 export async function runPlanAssessment(

@@ -317,12 +317,18 @@ export interface AiTip {
 
 export type AiExperienceLevel = 'beginner' | 'some' | 'experienced' | 'unknown';
 
+export type AiInterviewDimension = 'level' | 'goal' | 'baseline' | 'scope' | 'blocker' | 'success';
+export type AiCoverageStatus = 'known' | 'partial' | 'missing';
+export type AiInterviewCoverage = Record<AiInterviewDimension, AiCoverageStatus>;
+
 export interface AiInterviewQuestion {
   id: string;
   question: string;
   why?: string;
   /** 前三项是 AI 推测的最可能回答；界面会追加“其他（自己回答）”。 */
   options?: string[];
+  /** 这道题主要补齐的置信度维度，用于动态选题。 */
+  target?: AiInterviewDimension;
 }
 
 export interface AiInterviewAnswer {
@@ -349,6 +355,7 @@ export interface AiAssessmentSession {
   plan: string;
   profileSummary?: string;
   level?: AiExperienceLevel;
+  coverage?: AiInterviewCoverage;
   resultId?: string;
   lastAnswerQuality?: AiAnswerQuality;
   lastAnswerNote?: string;

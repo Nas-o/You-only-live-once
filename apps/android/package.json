@@ -1,6 +1,6 @@
 {
   "name": "@yolo/android",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "description": "你只活一次 · Android 手机版（Capacitor）",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "@yolo/ios",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "description": "你只活一次 · iOS 手机版（Capacitor）",
   "scripts": {
