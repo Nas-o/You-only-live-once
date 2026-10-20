@@ -174,7 +174,10 @@ npm run screenshots            # 逐页截图验收
 - 默认关闭；只有启用并点击评估时才请求。
 - 支持 OpenAI-compatible 接口：OpenAI、DeepSeek、Moonshot、Ollama、自定义地址。
 - DeepSeek 推荐 `https://api.deepseek.com` + `deepseek-flash`；评估时自动关闭 thinking，避免推理占满输出。
-- 先做多轮背景访谈，每轮只问一个问题；用户先写自己的计划，AI 只评估，不代写、不出练习题、不自动改数据。
+- 先做多轮背景访谈，每轮只问一个问题；每题给 3 个候选回答 + 1 个自定义入口，减少打字。
+- 访谈最多 6 轮；达不到置信度时可一键重新开始，不会卡死。
+- 用户明确说“新手/零基础”后会锁定 beginner 水平，后续只问入门问题，不再追问推导过什么、做过哪些项目。
+- 用户先写自己的计划，AI 只评估，不代写、不出练习题、不自动改数据。
 - 置信度只作为内部门槛，不在界面展示。
 - 学习文档和写作记录默认允许发送，可在设置中关闭；API Key 不进入导出数据，桌面用 safeStorage，Android 用 Keystore。
 
@@ -223,8 +226,8 @@ screenshots/           验收截图
 推荐用 tag 触发 `.github/workflows/release.yml`：
 
 ```bash
-git tag -a v0.1.5 -m "YOLO v0.1.5"
-git push origin v0.1.5
+git tag -a v0.1.6 -m "YOLO v0.1.6"
+git push origin v0.1.6
 ```
 
 Actions 会并行构建 Linux、Windows、macOS、Android、iOS，并把以下文件挂到 GitHub Release：

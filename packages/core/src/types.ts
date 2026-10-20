@@ -315,10 +315,14 @@ export interface AiTip {
   evidence?: string;
 }
 
+export type AiExperienceLevel = 'beginner' | 'some' | 'experienced' | 'unknown';
+
 export interface AiInterviewQuestion {
   id: string;
   question: string;
   why?: string;
+  /** 前三项是 AI 推测的最可能回答；界面会追加“其他（自己回答）”。 */
+  options?: string[];
 }
 
 export interface AiInterviewAnswer {
@@ -344,6 +348,7 @@ export interface AiAssessmentSession {
   answers: AiInterviewAnswer[];
   plan: string;
   profileSummary?: string;
+  level?: AiExperienceLevel;
   resultId?: string;
   lastAnswerQuality?: AiAnswerQuality;
   lastAnswerNote?: string;

@@ -13,8 +13,16 @@ fs.rmSync(workDir, { recursive: true, force: true });
 fs.mkdirSync(configDir, { recursive: true });
 
 const requests = [];
-const firstQuestion = { id: 'q1', question: '你之前系统学过哪些编程语言？最熟练的是哪一门？' };
-const clarifyQuestion = { id: 'q2', question: '你写过哪些具体的程序或项目？请说一个你能独立运行的。' };
+const firstQuestion = {
+  id: 'q1',
+  question: '你之前系统学过哪些编程语言？最熟练的是哪一门？',
+  options: ['我完全没学过编程', '我看过一点入门资料，但没动手', '我学过一点 JavaScript'],
+};
+const clarifyQuestion = {
+  id: 'q2',
+  question: '你写过哪些具体的程序或项目？请说一个你能独立运行的。',
+  options: ['还没写过', '写过一个很小的练习', '写过一个能运行的小工具'],
+};
 
 const server = http.createServer((req, res) => {
   let body = '';
@@ -69,6 +77,7 @@ const server = http.createServer((req, res) => {
     } else if (last.includes('尚无已回答的背景问题')) {
       content = JSON.stringify({
         confidence: 35,
+        level: 'beginner',
         summary: '还缺少你的语言基础和具体项目经历。',
         answerQuality: { status: 'valid', note: '首轮没有回答。' },
         questions: [firstQuestion],
@@ -79,6 +88,7 @@ const server = http.createServer((req, res) => {
     } else if (last.includes('轮次：1')) {
       content = JSON.stringify({
         confidence: 35,
+        level: 'beginner',
         summary: '上一轮回答“英语”与编程经历无关，不能作为有效证据。',
         answerQuality: { status: 'irrelevant', note: '问题问的是编程语言和项目经历，回答是英语，属于答非所问。' },
         questions: [clarifyQuestion],
@@ -89,6 +99,7 @@ const server = http.createServer((req, res) => {
     } else if (last.includes('轮次：2')) {
       content = JSON.stringify({
         confidence: 82,
+        level: 'beginner',
         summary: '已经知道你有其他语言基础和一个可运行项目；可以进入计划评估。',
         answerQuality: { status: 'valid', note: '回答具体，给出了语言和项目。' },
         questions: [],
@@ -167,6 +178,9 @@ await page.locator('.ai-start button').filter({ hasText: '开始背景访谈' })
 await page.waitForSelector('.ai-question', { timeout: 15000 });
 assert((await page.locator('.ai-question').count()) === 1, 'AI 每轮只问一个问题');
 assert((await page.locator('.ai-question-copy small').count()) === 0, '问题下方没有解释');
+assert((await page.locator('.ai-answer-option').count()) === 4, '每题给出三个候选选项和自定义入口');
+assert((await page.locator('.ai-interview-foot button').filter({ hasText: '重新开始访谈' }).count()) === 1, '访谈中始终有一键重来');
+await page.screenshot({ path: path.join(root, 'screenshots/65-ai-interview-options.png') });
 assert((await page.locator('.ai-confidence-meter, .ai-plan-confidence').count()) === 0, '不展示置信度');
 assert(!(await page.locator('.ai-estimate-panel').innerText()).includes('置信度'), '界面文案不出现置信度');
 await page.locator('.ai-question textarea').fill('学过英语。');
@@ -177,6 +191,7 @@ const afterIrrelevant = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 assert(afterIrrelevant.assessmentSessions[0].stage === 'interview', '离谱回答不进入计划阶段');
 assert(afterIrrelevant.assessmentSessions[0].confidence === 35, '离谱回答不加置信度');
 assert(afterIrrelevant.assessmentSessions[0].lastAnswerQuality === 'irrelevant', '离谱回答被标记为答非所问');
+assert(afterIrrelevant.assessmentSessions[0].level === 'beginner', '新手水平已持久化');
 assert((await page.locator('.ai-question').count()) === 1, '被追问时仍只问一个问题');
 assert(!(await page.locator('.ai-estimate-panel').innerText()).includes('置信度'), '追问时仍不展示置信度');
 await page.locator('.ai-question textarea').fill('学过 JavaScript 和 Python，写过一个可运行的命令行记账工具。');

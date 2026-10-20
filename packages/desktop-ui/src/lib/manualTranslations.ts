@@ -22,6 +22,8 @@ export const MANUAL_TRANSLATIONS: Record<string, ManualTranslation> = {
   '查看全部证据': { en: 'View all evidence', ja: 'すべての証拠を見る', ko: '모든 증거 보기' },
   '查看全部阶段': { en: 'View all stages', ja: 'すべての段階を見る', ko: '모든 단계 보기' },
   '慢一点，也是在向前。': { en: 'Slow is still forward.', ja: 'ゆっくりでも、前へ。', ko: '느려도 앞으로 나아가는 중.' },
+  '其他（自己回答）': { en: 'Other (write my own)', ja: 'その他（自分で書く）', ko: '기타 (직접 작성)' },
+  '重新开始访谈': { en: 'Restart interview', ja: 'インタビューをやり直す', ko: '인터뷰 다시 시작' },
   // 报告
   '启程侦查': { en: 'Departure recon', ja: '出発偵察', ko: '출발 정찰' },
   '启程侦查 ·': { en: 'Departure recon ·', ja: '出発偵察 ·', ko: '출발 정찰 ·' },

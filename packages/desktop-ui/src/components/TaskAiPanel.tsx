@@ -242,6 +242,8 @@ export function TaskAiPanel({ task }: { task: Task }) {
   const start = async () => {
     setBusy('start');
     setError(null);
+    setDraftAnswers({});
+    setShowAnswers(false);
     try {
       const now = new Date().toISOString();
       const fresh: AiAssessmentSession = {
@@ -261,6 +263,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
       const next: AiAssessmentSession = {
         ...fresh,
         confidence: turn.confidence,
+        level: turn.level,
         questions: turn.questions,
         stage: turn.readyForPlan ? 'plan' : 'interview',
         profileSummary: turn.summary,
@@ -302,6 +305,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
       const next: AiAssessmentSession = {
         ...answered,
         confidence: turn.confidence,
+        level: turn.level,
         questions: turn.questions,
         profileSummary: turn.summary || answered.profileSummary,
         stage: turn.readyForPlan ? 'plan' : 'interview',
@@ -421,22 +425,58 @@ export function TaskAiPanel({ task }: { task: Task }) {
           {session.profileSummary ? <p className="ai-interview-summary" data-i18n-skip>{session.profileSummary}</p> : null}
           {session.questions.length > 0 ? (
             <div className="ai-question-list">
-              {session.questions.map((question, index) => (
-                <label key={question.id} className="ai-question">
-                  <span className="ai-question-index">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="ai-question-copy">
-                    <strong data-i18n-skip>{question.question}</strong>
-                    <textarea
-                      rows={2}
-                      value={draftAnswers[question.id] ?? ''}
-                      onChange={(event) =>
-                        setDraftAnswers((current) => ({ ...current, [question.id]: event.target.value }))
-                      }
-                      placeholder="按你的真实情况回答，不用写得漂亮。"
-                    />
-                  </span>
-                </label>
-              ))}
+              {session.questions.map((question, index) => {
+                const answer = draftAnswers[question.id] ?? '';
+                const isCustom = answer.trim().length > 0 && !(question.options ?? []).includes(answer);
+                return (
+                  <div key={question.id} className="ai-question">
+                    <span className="ai-question-index">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="ai-question-copy">
+                      <strong data-i18n-skip>{question.question}</strong>
+                      {question.options && question.options.length > 0 ? (
+                        <span className="ai-answer-options" role="group" aria-label="可选回答">
+                          {question.options.map((option) => (
+                            <button
+                              key={option}
+                              type="button"
+                              className={`ai-answer-option ${answer === option ? 'is-selected' : ''}`}
+                              aria-pressed={answer === option}
+                              data-i18n-skip
+                              onClick={() =>
+                                setDraftAnswers((current) => ({ ...current, [question.id]: option }))
+                              }
+                            >
+                              {option}
+                            </button>
+                          ))}
+                          <button
+                            type="button"
+                            className={`ai-answer-option is-custom ${isCustom ? 'is-selected' : ''}`}
+                            aria-pressed={isCustom}
+                            onClick={() => {
+                              setDraftAnswers((current) => ({ ...current, [question.id]: '' }));
+                              requestAnimationFrame(() =>
+                                document.getElementById(`ai-answer-${question.id}`)?.focus(),
+                              );
+                            }}
+                          >
+                            其他（自己回答）
+                          </button>
+                        </span>
+                      ) : null}
+                      <textarea
+                        id={`ai-answer-${question.id}`}
+                        rows={2}
+                        value={answer}
+                        onChange={(event) =>
+                          setDraftAnswers((current) => ({ ...current, [question.id]: event.target.value }))
+                        }
+                        placeholder={question.options?.length ? '也可以在这里补充自己的回答…' : '按你的真实情况回答，不用写得漂亮。'}
+                      />
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           ) : null}
           <div className="ai-interview-foot">
@@ -444,6 +484,15 @@ export function TaskAiPanel({ task }: { task: Task }) {
               已回答 {session.answers.length} 个问题
               {maxRoundReached ? ' · 已达到轮次上限' : ''}
             </span>
+            <button
+              type="button"
+              className="btn btn-ghost btn-small"
+              onClick={() => void restart()}
+              disabled={busy !== null}
+            >
+              {busy === 'restart' || busy === 'start' ? <Loader2 size={13} className="spin" /> : <RefreshCw size={13} />}
+              重新开始访谈
+            </button>
             <button
               type="button"
               className="btn btn-primary"
@@ -456,7 +505,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
           </div>
           {maxRoundReached ? (
             <p className="ai-error">
-              <CircleAlert size={14} /> 当前信息仍不足，暂时不生成结论。请重新开始，补充更多背景。
+              <CircleAlert size={14} /> 当前信息仍不足，暂时不生成结论。可以点「重新开始访谈」，从新的起点补充背景。
             </p>
           ) : null}
         </div>
