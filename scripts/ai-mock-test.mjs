@@ -42,6 +42,23 @@ const server = http.createServer((req, res) => {
     let content;
     if (last.includes('只回复 OK')) {
       content = 'OK';
+    } else if (last.includes('"minimumPath"')) {
+      content = JSON.stringify({
+        summary: '按 20 小时完整路径安排，同时给出 4 小时关键路径。',
+        totalMinutes: 1200,
+        phases: [
+          { title: '跑通最小环境', minutes: 120, focus: '安装工具并跑通第一个例子', outcome: '能独立运行示例', critical: true },
+          { title: '基础语法与概念', minutes: 360, focus: '掌握变量、函数、异步等基础', outcome: '能写出小脚本', critical: true },
+          { title: '完成一个小工具', minutes: 480, focus: '做一个可运行的小工具', outcome: '有可运行产物', critical: false },
+          { title: '错误排查与复盘', minutes: 240, focus: '练习读错误并记录排查过程', outcome: '留下排查记录', critical: false },
+        ],
+        minimumPath: {
+          minutes: 240,
+          items: ['安装环境并跑通示例', '只学变量、函数和异步三块', '完成最小可运行脚本', '写一次错误排查记录'],
+          tradeoffs: ['暂时不学测试和工程化，后续补；可能缺少项目结构经验。'],
+        },
+        risks: ['4 小时只能覆盖最小闭环，不能达到完整计划的作品深度。'],
+      });
     } else if (last.includes('## 用户自己写的计划')) {
       content = JSON.stringify({
         confidence: 86,
@@ -183,6 +200,12 @@ assert((await page.locator('.ai-question').count()) === 1, 'AI 每轮只问一�
 assert((await page.locator('.ai-question-copy small').count()) === 0, '问题下方没有解释');
 assert((await page.locator('.ai-answer-option').count()) === 4, '每题给出三个候选选项和自定义入口');
 assert((await page.locator('.ai-interview-foot button').filter({ hasText: '重新开始访谈' }).count()) === 1, '访谈中始终有一键重来');
+await page.locator('.ai-interview-foot button').filter({ hasText: '重新开始访谈' }).click();
+await page.waitForSelector('.confirm-dialog', { timeout: 5000 });
+assert((await page.locator('.confirm-dialog').innerText()).includes('当前访谈进度'), '重新开始访谈前有后果确认');
+await page.locator('.confirm-dialog button').filter({ hasText: '取消' }).click();
+await page.waitForTimeout(200);
+assert((await page.locator('.ai-question').count()) === 1, '取消重来后保留当前问题');
 await page.screenshot({ path: path.join(root, 'screenshots/65-ai-interview-options.png') });
 assert((await page.locator('.ai-confidence-meter, .ai-plan-confidence').count()) === 0, '不展示置信度');
 assert(!(await page.locator('.ai-estimate-panel').innerText()).includes('置信度'), '界面文案不出现置信度');
@@ -229,6 +252,21 @@ const afterApply = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 const taskAfter = afterApply.tasks.find((task) => task.title === 'JavaScript 核心语法');
 assert(taskAfter.estimatedMinutes === 780, `采用建议后预计时间 ${estimateBefore} → ${taskAfter.estimatedMinutes}`);
 assert(Boolean(afterApply.estimateReviews[0].acceptedAt), '采用状态已记录');
+
+// 改可用时间后重新生成计划：保留访谈，不重新提问
+await page.locator('.ai-available-time input').fill('4');
+await page.locator('.ai-available-time input').press('Tab');
+await page.waitForTimeout(300);
+await page.locator('.ai-review-actions button').filter({ hasText: '重新生成计划' }).click();
+await page.waitForSelector('.confirm-dialog', { timeout: 5000 });
+assert((await page.locator('.confirm-dialog').innerText()).includes('保留当前访谈答案'), '重新生成计划前有后果确认');
+await page.locator('.confirm-dialog button').filter({ hasText: '重新生成计划' }).click();
+await page.waitForSelector('.ai-suggested-plan', { timeout: 15000 });
+const suggestedText = await page.locator('.ai-suggested-plan').innerText();
+assert(suggestedText.includes('20 小时'), '完整计划保留 20 小时');
+assert(suggestedText.includes('4 小时'), '按可用时间给出 4 小时关键路径');
+assert((await page.locator('.ai-question').count()) === 0, '重新生成计划不重新提问');
+await page.screenshot({ path: path.join(root, 'screenshots/67-ai-learning-plan.png') });
 
 const interviewRequest = requests.find((request) =>
   request.body.messages?.some((message) => message.content.includes('尚无已回答的背景问题')),

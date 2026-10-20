@@ -6,6 +6,7 @@ import {
   CircleAlert,
   CircleCheck,
   CircleDot,
+  Download,
   Loader2,
   MessageCircleQuestion,
   RefreshCw,
@@ -18,11 +19,14 @@ import {
   makeId,
   timeAgo,
   type AiAssessmentSession,
+  type AiLearningPlan,
   type AiPlanVerdict,
   type EstimateReview,
   type Task,
 } from '@yolo/core';
 import { useAppStore } from '../store/appStore';
+import { ConfirmDialog } from './ui/ConfirmDialog';
+import { buildPlanMarkdown, learningPlanToText, planMarkdownFilename, savePlanMarkdown } from '../lib/planExport';
 import {
   CONFIDENCE_THRESHOLD,
   MAX_INTERVIEW_ROUNDS,
@@ -30,6 +34,7 @@ import {
   isLocalApiUrl,
   planReviewToRecord,
   runInterview,
+  runLearningPlan,
   runPlanAssessment,
 } from '../lib/ai';
 
@@ -42,16 +47,108 @@ const PLAN_LABEL: Record<AiPlanVerdict, string> = {
 
 
 
+function SuggestedPlanCard({
+  plan,
+  onRegenerate,
+  onExport,
+  onUse,
+}: {
+  plan: AiLearningPlan;
+  onRegenerate: () => void;
+  onExport: () => void;
+  onUse: () => void;
+}) {
+  return (
+    <article className="ai-suggested-plan">
+      <div className="ai-suggested-head">
+        <div>
+          <span className="eyebrow">AI 基础计划</span>
+          <h4>{plan.summary}</h4>
+        </div>
+        <span className="ai-plan-total">{formatMinutes(plan.totalMinutes)}</span>
+      </div>
+
+      <div className="ai-plan-time-meta">
+        <span>完整路径 <strong>{formatMinutes(plan.totalMinutes)}</strong></span>
+        <span>关键路径 <strong>{formatMinutes(plan.minimumPath.minutes)}</strong></span>
+        {plan.availableMinutes < plan.totalMinutes ? (
+          <span className="is-tight">可用时间不足，按取舍执行</span>
+        ) : null}
+      </div>
+
+      <div className="ai-suggested-phases">
+        {plan.phases.map((phase, index) => (
+          <div key={`${phase.title}-${index}`} className={`ai-suggested-phase ${phase.critical ? 'is-critical' : ''}`}>
+            <span className="ai-suggested-index">{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <strong>{phase.title}</strong>
+              <p>{phase.focus}</p>
+              <small>验收：{phase.outcome}</small>
+            </div>
+            <em>{formatMinutes(phase.minutes)}</em>
+          </div>
+        ))}
+      </div>
+
+      <div className="ai-minimum-path">
+        <div className="ai-minimum-head">
+          <strong>时间不足时的关键路径</strong>
+          <span>{formatMinutes(plan.minimumPath.minutes)}</span>
+        </div>
+        <ol>
+          {plan.minimumPath.items.map((item, index) => (
+            <li key={`${item}-${index}`}>{item}</li>
+          ))}
+        </ol>
+        {plan.minimumPath.tradeoffs.length > 0 ? (
+          <div className="ai-tradeoffs">
+            <span>取舍</span>
+            <ul>
+              {plan.minimumPath.tradeoffs.map((item, index) => (
+                <li key={`${item}-${index}`}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
+
+      {plan.risks.length > 0 ? (
+        <ul className="ai-plan-risks">
+          {plan.risks.map((risk) => (
+            <li key={risk}>{risk}</li>
+          ))}
+        </ul>
+      ) : null}
+
+      <div className="ai-suggested-actions">
+        <button type="button" className="btn btn-primary btn-small" onClick={onUse}>
+          <CheckCircle2 size={13} /> 采用为我的计划
+        </button>
+        <button type="button" className="btn btn-ghost btn-small" onClick={onExport}>
+          <Download size={13} /> 导出 Markdown
+        </button>
+        <button type="button" className="btn btn-ghost btn-small" onClick={onRegenerate}>
+          <RefreshCw size={13} /> 按当前时间重新生成
+        </button>
+      </div>
+    </article>
+  );
+}
+
 function PlanResult({
   review,
   progress,
   onApply,
   onRestart,
+  onRegenerate,
+  onExport,
 }: {
   review: EstimateReview;
   progress: number;
   onApply: () => void;
   onRestart: () => void;
+  onRegenerate: () => void;
+  onExport: () => void;
 }) {
   const verdict = review.planVerdict ?? 'uncertain';
   const highTips = (review.tips ?? []).filter((tip) => tip.severity === 'high');
@@ -177,8 +274,14 @@ function PlanResult({
             <CheckCircle2 size={14} /> 采用中值 {Math.round((review.suggestedMin + review.suggestedMax) / 2)} 分钟
           </button>
         )}
+        <button type="button" className="btn btn-ghost btn-small" onClick={onExport}>
+          <Download size={13} /> 导出 Markdown
+        </button>
+        <button type="button" className="btn btn-ghost btn-small" onClick={onRegenerate}>
+          <RefreshCw size={13} /> 重新生成计划
+        </button>
         <button type="button" className="btn btn-ghost btn-small" onClick={onRestart}>
-          <RefreshCw size={13} /> 重新评估
+          <RefreshCw size={13} /> 重新开始访谈
         </button>
       </div>
     </article>
@@ -197,10 +300,13 @@ export function TaskAiPanel({ task }: { task: Task }) {
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0];
   const [draftAnswers, setDraftAnswers] = useState<Record<string, string>>({});
   const [planDraft, setPlanDraft] = useState(session?.plan ?? '');
-  const [busy, setBusy] = useState<'start' | 'answer' | 'plan' | 'restart' | null>(null);
+  const [busy, setBusy] = useState<'start' | 'answer' | 'plan' | 'restart' | 'suggest' | 'regenerate' | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [hasKey, setHasKey] = useState<boolean | null>(null);
   const [showAnswers, setShowAnswers] = useState(false);
+  const [availableHours, setAvailableHours] = useState(() => String(Math.max(1, Math.round((session?.availableMinutes ?? task.estimatedMinutes) / 60))));
+  const [confirmAction, setConfirmAction] = useState<'restart' | 'regenerate' | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -219,8 +325,9 @@ export function TaskAiPanel({ task }: { task: Task }) {
 
   useEffect(() => {
     setPlanDraft(session?.plan ?? '');
+    setAvailableHours(String(Math.max(1, Math.round((session?.availableMinutes ?? task.estimatedMinutes) / 60))));
     setError(null);
-  }, [session?.id]);
+  }, [session?.id, session?.availableMinutes, task.estimatedMinutes]);
 
   useEffect(() => {
     setDraftAnswers({});
@@ -239,6 +346,71 @@ export function TaskAiPanel({ task }: { task: Task }) {
     closeTask();
     setView('settings');
   };
+
+  const availableMinutes = () => {
+    const hours = Number(availableHours);
+    if (!Number.isFinite(hours) || hours <= 0) return session?.availableMinutes ?? task.estimatedMinutes;
+    return Math.min(60 * 24 * 30, Math.round(hours * 60));
+  };
+
+  const saveAvailableHours = (value: string) => {
+    setAvailableHours(value);
+    if (!session) return;
+    const hours = Number(value);
+    if (!Number.isFinite(hours) || hours <= 0) return;
+    saveAssessmentSession({
+      ...session,
+      availableMinutes: Math.min(60 * 24 * 30, Math.round(hours * 60)),
+      updatedAt: new Date().toISOString(),
+    });
+  };
+
+  const makeSuggestedPlan = async (mode: 'fallback' | 'regenerate') => {
+    if (!session) return;
+    setBusy(mode === 'regenerate' ? 'regenerate' : 'suggest');
+    setError(null);
+    try {
+      const minutes = availableMinutes();
+      const plan = await runLearningPlan(data, task, { ...session, availableMinutes: minutes }, minutes);
+      saveAssessmentSession({
+        ...session,
+        availableMinutes: minutes,
+        suggestedPlan: plan,
+        stage: 'plan',
+        updatedAt: new Date().toISOString(),
+      });
+      setNotice('已按当前任务和可用时间重新生成计划。');
+    } catch (reason) {
+      setError(String((reason as Error).message || reason));
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const useSuggestedPlan = () => {
+    if (!session?.suggestedPlan) return;
+    const text = learningPlanToText(session.suggestedPlan);
+    setPlanDraft(text);
+    saveAssessmentSession({
+      ...session,
+      plan: text,
+      updatedAt: new Date().toISOString(),
+    });
+  };
+
+  const exportPlan = async () => {
+    if (!session) return;
+    const markdown = buildPlanMarkdown(task, session, latestReview);
+    try {
+      await savePlanMarkdown(markdown, planMarkdownFilename(task));
+      setNotice('已生成 Markdown 文件；如果没有弹出分享/保存窗口，请检查浏览器下载。');
+    } catch (reason) {
+      setError(`导出失败：${String((reason as Error).message || reason)}`);
+    }
+  };
+
+  const requestRestart = () => setConfirmAction('restart');
+  const requestRegenerate = () => setConfirmAction('regenerate');
 
   const start = async () => {
     setBusy('start');
@@ -304,6 +476,9 @@ export function TaskAiPanel({ task }: { task: Task }) {
         updatedAt: at,
       };
       const turn = await runInterview(data, task, answered);
+      const lowQualityCount =
+        (answered.lowQualityCount ?? 0) +
+        (turn.answerQuality && turn.answerQuality !== 'valid' ? 1 : 0);
       const next: AiAssessmentSession = {
         ...answered,
         confidence: turn.confidence,
@@ -314,8 +489,20 @@ export function TaskAiPanel({ task }: { task: Task }) {
         stage: turn.readyForPlan ? 'plan' : 'interview',
         lastAnswerQuality: turn.answerQuality,
         lastAnswerNote: turn.answerNote,
+        lowQualityCount,
         updatedAt: new Date().toISOString(),
       };
+      // 反复矛盾/低质量回答或达到轮次上限时，不再无限追问：
+      // 承认信息不足，直接生成一份完整基础计划，并包含时间不足时的关键路径。
+      if (!turn.readyForPlan && (lowQualityCount >= 3 || answered.round >= MAX_INTERVIEW_ROUNDS)) {
+        const minutes = answered.availableMinutes ?? task.estimatedMinutes;
+        const plan = await runLearningPlan(data, task, { ...next, availableMinutes: minutes }, minutes);
+        next.stage = 'plan';
+        next.questions = [];
+        next.availableMinutes = minutes;
+        next.suggestedPlan = plan;
+        setNotice('信息仍不足，已按当前任务生成一份基础学习计划；完整路径和关键路径都在下面。');
+      }
       saveAssessmentSession(next);
       setDraftAnswers({});
       if (next.stage === 'plan') setPlanDraft('');
@@ -492,7 +679,7 @@ export function TaskAiPanel({ task }: { task: Task }) {
             <button
               type="button"
               className="btn btn-ghost btn-small"
-              onClick={() => void restart()}
+              onClick={requestRestart}
               disabled={busy !== null}
             >
               {busy === 'restart' || busy === 'start' ? <Loader2 size={13} className="spin" /> : <RefreshCw size={13} />}
@@ -519,9 +706,31 @@ export function TaskAiPanel({ task }: { task: Task }) {
       {session && session.stage === 'plan' ? (
         <div className="ai-plan-stage">
           <div className="ai-stage-head">
-            <span className="ai-stage-label">信息足够 · 现在轮到你了</span>
-            <span className="ai-stage-note">信息已足够</span>
+            <span className="ai-stage-label">{session.suggestedPlan ? '基础计划已生成 · 仍需你判断' : '信息足够 · 现在轮到你了'}</span>
+            <span className="ai-stage-note">{session.suggestedPlan ? '信息不足，先给基础版' : '信息已足够'}</span>
           </div>
+          <label className="ai-available-time">
+            <span>我实际能投入</span>
+            <input
+              type="number"
+              min={1}
+              max={200}
+              step={1}
+              value={availableHours}
+              onChange={(event) => setAvailableHours(event.target.value)}
+              onBlur={(event) => saveAvailableHours(event.target.value)}
+            />
+            <span>小时</span>
+            <small>完整计划仍按任务预计时长列出；少于总时长时，关键路径会单独裁剪。</small>
+          </label>
+          {session.suggestedPlan ? (
+            <SuggestedPlanCard
+              plan={session.suggestedPlan}
+              onRegenerate={requestRegenerate}
+              onExport={() => void exportPlan()}
+              onUse={useSuggestedPlan}
+            />
+          ) : null}
           <div className="ai-plan-prompt">
             <Wand2 size={18} />
             <div>
@@ -559,6 +768,15 @@ export function TaskAiPanel({ task }: { task: Task }) {
             }}
             placeholder={'例如：\n第 1 周：先补 Rust 所有权与借用，每天 1 小时，配合官方书前 6 章。\n第 2–3 周：写一个命令行小工具，完成后再读错误处理与测试。\n完成标准：能独立解释所有权错误，并交付一个可运行的 CLI。'}
           />
+          <div className="ai-plan-tools">
+            <button type="button" className="btn btn-ghost btn-small" onClick={requestRegenerate} disabled={busy !== null}>
+              {busy === 'regenerate' || busy === 'suggest' ? <Loader2 size={13} className="spin" /> : <RefreshCw size={13} />}
+              按当前任务重新生成计划
+            </button>
+            <button type="button" className="btn btn-ghost btn-small" onClick={() => void exportPlan()} disabled={busy !== null}>
+              <Download size={13} /> 导出 Markdown
+            </button>
+          </div>
           <div className="ai-plan-actions">
             <span>{planDraft.trim().length} 字</span>
             <button type="button" className="btn btn-primary" onClick={() => void evaluatePlan()} disabled={busy !== null}>
@@ -569,20 +787,67 @@ export function TaskAiPanel({ task }: { task: Task }) {
         </div>
       ) : null}
 
+      {notice ? <p className="ai-notice">{notice}</p> : null}
       {error ? (
         <p className="ai-error">
           <CircleAlert size={14} /> {error}
         </p>
       ) : null}
 
+      {session && session.stage === 'result' ? (
+        <label className="ai-available-time">
+          <span>我实际能投入</span>
+          <input
+            type="number"
+            min={1}
+            max={200}
+            step={1}
+            value={availableHours}
+            onChange={(event) => setAvailableHours(event.target.value)}
+            onBlur={(event) => saveAvailableHours(event.target.value)}
+          />
+          <span>小时</span>
+          <small>改完时间后点「重新生成计划」：完整路径仍保留，关键路径按新时间重排。</small>
+        </label>
+      ) : null}
+
+      {session && session.suggestedPlan && session.stage === 'result' ? (
+        <SuggestedPlanCard
+          plan={session.suggestedPlan}
+          onRegenerate={requestRegenerate}
+          onExport={() => void exportPlan()}
+          onUse={useSuggestedPlan}
+        />
+      ) : null}
       {session && session.stage === 'result' && latestReview ? (
         <PlanResult
           review={latestReview}
           progress={task.progress}
           onApply={() => applyEstimateReview(latestReview.id)}
-          onRestart={restart}
+          onRestart={requestRestart}
+          onRegenerate={requestRegenerate}
+          onExport={() => void exportPlan()}
         />
       ) : null}
+
+      <ConfirmDialog
+        open={confirmAction !== null}
+        title={confirmAction === 'restart' ? '重新开始背景访谈？' : '重新生成计划？'}
+        message={
+          confirmAction === 'restart'
+            ? '这会开启一份新的访谈，当前访谈进度和已回答的问题不再作为当前会话；任务、报告和已有数据不会被删除。'
+            : '这会保留当前访谈答案，只根据现在的任务情况、可用时间和上下文重新生成一份计划，不会重新问背景问题。'
+        }
+        confirmLabel={confirmAction === 'restart' ? '重新开始访谈' : '重新生成计划'}
+        tone="gold"
+        onConfirm={() => {
+          const action = confirmAction;
+          setConfirmAction(null);
+          if (action === 'restart') void restart();
+          if (action === 'regenerate') void makeSuggestedPlan('regenerate');
+        }}
+        onCancel={() => setConfirmAction(null)}
+      />
     </section>
   );
 }

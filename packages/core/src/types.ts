@@ -338,6 +338,29 @@ export interface AiInterviewAnswer {
   at: string;
 }
 
+export interface AiLearningPlanPhase {
+  title: string;
+  minutes: number;
+  focus: string;
+  outcome: string;
+  critical?: boolean;
+}
+
+export interface AiLearningPlan {
+  summary: string;
+  totalMinutes: number;
+  availableMinutes: number;
+  phases: AiLearningPlanPhase[];
+  minimumPath: {
+    minutes: number;
+    items: string[];
+    tradeoffs: string[];
+  };
+  risks: string[];
+  createdAt: string;
+  model: string;
+}
+
 export type AiAssessmentStage = 'interview' | 'plan' | 'result';
 
 /** 一次“先问清楚，再让用户写计划，再评估”的完整会话。 */
@@ -356,6 +379,9 @@ export interface AiAssessmentSession {
   profileSummary?: string;
   level?: AiExperienceLevel;
   coverage?: AiInterviewCoverage;
+  availableMinutes?: number;
+  lowQualityCount?: number;
+  suggestedPlan?: AiLearningPlan;
   resultId?: string;
   lastAnswerQuality?: AiAnswerQuality;
   lastAnswerNote?: string;

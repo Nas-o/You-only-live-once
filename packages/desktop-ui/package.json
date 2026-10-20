@@ -1,6 +1,6 @@
 {
   "name": "@yolo/desktop-ui",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "type": "module",
   "description": "你只活一次 · 桌面端共享界面与状态机（Linux / Windows）",

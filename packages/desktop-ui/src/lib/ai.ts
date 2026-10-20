@@ -12,6 +12,8 @@ import {
   type AiExperienceLevel,
   type AiInterviewCoverage,
   type AiInterviewDimension,
+  type AiLearningPlan,
+  type AiLearningPlanPhase,
   type AiInterviewQuestion,
   type AiPlanVerdict,
   type AiProvider,
@@ -818,14 +820,18 @@ export function buildPlanReviewMessages(
 2. 必须结合用户当前进度、已投入时间、访谈中暴露的基础水平，以及历史实际/预计偏差，下最终判断。
 3. 如果计划有明显风险，tips 必须具体、醒目，指出风险发生在哪一步，不要只写“建议优化”。
 4. 不出练习题，不替用户写计划，不修改任务。
-5. confidence 0-100；只有 confidence >= ${CONFIDENCE_THRESHOLD} 才能被视为可输出的结论。若信息仍不足，confidence 必须低于阈值。
-6. 输出语言：${outputLanguage(data)}。所有面向用户的文字都使用这个语言。
-7. 只输出一个 JSON 对象，不要 Markdown 代码围栏，不要额外文字。`;
+5. 如果用户可用时间明显少于任务实际所需，要指出应保留的最关键部分、可以后补的部分和取舍；不要只评价“时间不够”。
+6. confidence 0-100；只有 confidence >= ${CONFIDENCE_THRESHOLD} 才能被视为可输出的结论。若信息仍不足，confidence 必须低于阈值。
+7. 输出语言：${outputLanguage(data)}。所有面向用户的文字都使用这个语言。
+8. 只输出一个 JSON 对象，不要 Markdown 代码围栏，不要额外文字。`;
 
   const user = `${buildTaskContext(data, task)}
 
 ## 访谈记录
 ${buildAnswerBlock(session)}
+
+## 用户可用时间
+${session.availableMinutes ? formatMinutes(session.availableMinutes) : '未单独填写；从计划文本中判断'}
 
 ## 用户自己写的计划
 ${session.plan}
@@ -885,6 +891,110 @@ export function parsePlanEvaluation(content: string, fallbackFactors: EstimateFa
     risks: safeStringArray(parsed.risks),
     recommendations: safeStringArray(parsed.recommendations),
   };
+}
+
+function parseLearningPlan(
+  content: string,
+  data: AppData,
+  task: Task,
+  session: AiAssessmentSession,
+): AiLearningPlan {
+  const parsed = parseObject(content);
+  const available = Math.max(30, session.availableMinutes ?? task.estimatedMinutes);
+  const total = Math.max(available, task.estimatedMinutes, Math.round(Number(parsed.totalMinutes) || task.estimatedMinutes));
+  const rawPhases = Array.isArray(parsed.phases) ? parsed.phases : [];
+  const phases: AiLearningPlanPhase[] = rawPhases
+    .filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object')
+    .map((item) => ({
+      title: safeText(item.title, 100),
+      minutes: Math.max(15, Math.round(Number(item.minutes) || 0)),
+      focus: safeText(item.focus, 300),
+      outcome: safeText(item.outcome, 240),
+      critical: Boolean(item.critical),
+    }))
+    .filter((phase) => phase.title && phase.focus && phase.outcome)
+    .slice(0, 8);
+  if (phases.length === 0) throw new Error('AI 没有给出有效的学习阶段');
+  const rawMinimum = parsed.minimumPath && typeof parsed.minimumPath === 'object'
+    ? (parsed.minimumPath as Record<string, unknown>)
+    : {};
+  const minimumItems = safeStringArray(rawMinimum.items, 8, 260);
+  if (minimumItems.length === 0) throw new Error('AI 没有给出时间不足时的关键路径');
+  return {
+    summary: safeText(parsed.summary, 700) || '根据当前任务信息生成的基础学习计划。',
+    totalMinutes: Math.min(60 * 24 * 30, total),
+    availableMinutes: Math.min(60 * 24 * 30, available),
+    phases,
+    minimumPath: {
+      minutes: Math.min(available, Math.max(15, Math.round(Number(rawMinimum.minutes) || available))),
+      items: minimumItems,
+      tradeoffs: safeStringArray(rawMinimum.tradeoffs, 5, 240),
+    },
+    risks: safeStringArray(parsed.risks, 5, 240),
+    createdAt: new Date().toISOString(),
+    model: data.ai.model,
+  };
+}
+
+export function buildLearningPlanMessages(
+  data: AppData,
+  task: Task,
+  session: AiAssessmentSession,
+): { role: 'system' | 'user'; content: string }[] {
+  const available = Math.max(30, session.availableMinutes ?? task.estimatedMinutes);
+  const system = `你是「你只活一次」的学习计划编排员。现在不要提问，直接生成一份完整、可执行的学习计划。
+硬性要求：
+1. 先按任务的真实完成成本列出“完整计划”。即使任务预计需要 20 小时，而用户只有 4 小时，也必须保留完整的 20 小时学习路径，不能把完整计划压缩成 4 小时。
+2. 再单独给出“4 小时关键路径”（这里的 4 小时是用户填写的可用时间）：从完整计划中挑出最关键的阶段，说明保留什么、暂时舍弃什么、舍弃的后果是什么。
+3. 完整计划的阶段分钟数之和要接近任务成本；关键路径的分钟数要接近可用时间。
+4. 结合访谈中的真实水平、已有材料、卡点和完成标准；新手不要安排推导/复杂项目作为起点。
+5. 不提问，不写练习题，不替用户修改任务数据。
+6. 输出语言：${outputLanguage(data)}。
+7. 只输出一个 JSON 对象，不要 Markdown 代码围栏，不要额外文字。`;
+
+  const user = `${buildTaskContext(data, task)}
+
+## 访谈结论
+${buildAnswerBlock(session)}
+水平：${session.level ?? 'unknown'}
+覆盖度：${JSON.stringify(session.coverage ?? {})}
+任务预计成本：${formatMinutes(task.estimatedMinutes)}
+用户可用时间：${formatMinutes(available)}
+${session.plan ? `\n## 用户已写的计划\n${session.plan}` : ''}
+
+## 输出 JSON
+{
+  "summary": "不超过 220 字，说明这份计划为什么这样安排",
+  "totalMinutes": 完整计划总分钟数,
+  "phases": [
+    { "title": "阶段名", "minutes": 分钟数, "focus": "具体学什么/做什么", "outcome": "可验收产出", "critical": true }
+  ],
+  "minimumPath": {
+    "minutes": 关键路径分钟数,
+    "items": ["按顺序的关键动作，最多 8 条"],
+    "tradeoffs": ["暂时舍弃什么，以及舍弃的后果，最多 5 条"]
+  },
+  "risks": ["这份计划的主要风险，最多 5 条"]
+}`;
+
+  return [
+    { role: 'system', content: system },
+    { role: 'user', content: user },
+  ];
+}
+
+export async function runLearningPlan(
+  data: AppData,
+  task: Task,
+  session: AiAssessmentSession,
+  availableMinutes?: number,
+): Promise<AiLearningPlan> {
+  const next = {
+    ...session,
+    availableMinutes: availableMinutes ?? session.availableMinutes ?? task.estimatedMinutes,
+  };
+  const content = await completeJson(data, buildLearningPlanMessages(data, task, next), 3200);
+  return parseLearningPlan(content, data, task, next);
 }
 
 async function completeJson(

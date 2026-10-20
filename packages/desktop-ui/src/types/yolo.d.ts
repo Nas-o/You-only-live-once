@@ -77,6 +77,7 @@ interface YoloBridge {
   saveData: (data: unknown) => Promise<{ ok: boolean; path?: string; savedAt?: string; error?: string }>;
   dataPath: () => Promise<string>;
   exportData: (data: unknown) => Promise<YoloExportResult>;
+  exportText?: (filename: string, content: string) => Promise<YoloExportResult>;
   importData: () => Promise<YoloImportResult>;
   appInfo: () => Promise<YoloAppInfo>;
   openExternal: (url: string) => Promise<{ ok: boolean }>;

@@ -1,6 +1,6 @@
 {
   "name": "you-only-live-once",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "description": "你只活一次 —— 以终为始的任务旅程",
   "workspaces": [

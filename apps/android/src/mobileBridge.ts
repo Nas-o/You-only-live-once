@@ -351,6 +351,36 @@ async function exportData(data: unknown): Promise<YoloExportResult> {
   }
 }
 
+async function exportText(fileName: string, content: string): Promise<YoloExportResult> {
+  if (!native) {
+    const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = fileName;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    return { ok: true, path: fileName };
+  }
+  try {
+    const result = await Filesystem.writeFile({
+      path: fileName,
+      data: content,
+      directory: Directory.Cache,
+      encoding: Encoding.UTF8,
+    });
+    await Share.share({
+      title: fileName,
+      text: 'YOLO 学习计划',
+      files: [result.uri],
+      dialogTitle: '导出学习计划',
+    });
+    return { ok: true, path: fileName };
+  } catch (error) {
+    return { ok: false, error: String(error) };
+  }
+}
+
 async function importData(): Promise<YoloImportResult> {
   return new Promise((resolve) => {
     const input = document.createElement('input');
@@ -416,6 +446,7 @@ export function installMobileBridge(): void {
     saveData,
     dataPath: async () => (native ? 'Preferences: yolo-data-v1' : 'localStorage: yolo-data-v1'),
     exportData,
+    exportText,
     importData,
     appInfo,
     openExternal: async (url) => {
