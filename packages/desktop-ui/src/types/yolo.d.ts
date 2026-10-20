@@ -69,8 +69,28 @@ interface YoloAiBridge {
   complete: (input: YoloAiCompleteInput) => Promise<YoloAiCompleteResult>;
 }
 
+interface YoloUpdateInfo {
+  available: boolean;
+  currentVersion: string;
+  latestVersion: string;
+  name: string;
+  notes: string;
+  releaseUrl: string;
+  assetName: string;
+  assetUrl: string;
+  assetDigest?: string;
+  publishedAt?: string;
+  installable?: boolean;
+}
+
+interface YoloUpdatesBridge {
+  check: () => Promise<{ ok: boolean; info?: YoloUpdateInfo; error?: string }>;
+  install: (info: YoloUpdateInfo) => Promise<{ ok: boolean; error?: string }>;
+}
+
 interface YoloBridge {
   ai?: YoloAiBridge;
+  updates?: YoloUpdatesBridge;
   isDesktop: boolean;
   platform: string;
   loadData: () => Promise<YoloLoadResult>;

@@ -364,6 +364,70 @@ async function exportData(data: unknown): Promise<YoloExportResult> {
   }
 }
 
+async function parseVersionParts(value: string): Promise<number[]> {
+  return String(value).replace(/^v/i, '').split(/[.+-]/).slice(0, 3).map((item) => Number(item) || 0);
+}
+
+async function checkUpdates(): Promise<{ ok: boolean; info?: YoloUpdateInfo; error?: string }> {
+  try {
+    const currentInfo = await CapacitorApp.getInfo();
+    const response = await fetch('https://api.github.com/repos/Nas-o/You-only-live-once/releases/latest', {
+      headers: { Accept: 'application/vnd.github+json' },
+    });
+    if (!response.ok) throw new Error(`GitHub Releases 返回 ${response.status}`);
+    const release = (await response.json()) as {
+      tag_name?: string;
+      name?: string;
+      body?: string;
+      html_url?: string;
+      published_at?: string;
+      assets?: { name: string; browser_download_url: string; digest?: string }[];
+    };
+    const latest = String(release.tag_name || '').replace(/^v/i, '');
+    if (!latest) throw new Error('无法读取最新版本号');
+    const current = currentInfo.version;
+    const a = await parseVersionParts(latest);
+    const b = await parseVersionParts(current);
+    let available = false;
+    for (let i = 0; i < 3; i += 1) {
+      if ((a[i] || 0) !== (b[i] || 0)) {
+        available = (a[i] || 0) > (b[i] || 0);
+        break;
+      }
+    }
+    const asset = (release.assets || []).find((item) => item.name.endsWith('.apk')) ?? null;
+    return {
+      ok: true,
+      info: {
+        available,
+        currentVersion: current,
+        latestVersion: latest,
+        name: release.name || `v${latest}`,
+        notes: String(release.body || '').slice(0, 1200),
+        releaseUrl: release.html_url || 'https://github.com/Nas-o/You-only-live-once/releases',
+        assetName: asset?.name ?? '',
+        assetUrl: asset?.browser_download_url ?? release.html_url ?? '',
+        assetDigest: asset?.digest,
+        publishedAt: release.published_at,
+        installable: Boolean(asset) && Capacitor.getPlatform() === 'android',
+      },
+    };
+  } catch (error) {
+    return { ok: false, error: String(error) };
+  }
+}
+
+async function installUpdate(info: YoloUpdateInfo): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const url = info.installable && info.assetUrl ? info.assetUrl : info.releaseUrl;
+    if (native) await Browser.open({ url });
+    else window.open(url, '_blank', 'noopener,noreferrer');
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: String(error) };
+  }
+}
+
 async function exportText(fileName: string, content: string): Promise<YoloExportResult> {
   if (!native) {
     const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
@@ -460,6 +524,7 @@ export function installMobileBridge(): void {
     dataPath: async () => (native ? 'Preferences: yolo-data-v1' : 'localStorage: yolo-data-v1'),
     exportData,
     exportText,
+    updates: { check: checkUpdates, install: installUpdate },
     importData,
     appInfo,
     openExternal: async (url) => {

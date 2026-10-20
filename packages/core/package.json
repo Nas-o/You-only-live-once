@@ -1,6 +1,6 @@
 {
   "name": "@yolo/core",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": true,
   "type": "module",
   "description": "你只活一次 · 跨平台共享领域核心（任务、计时、调查报告、攀登奖励）",

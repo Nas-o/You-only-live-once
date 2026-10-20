@@ -24,6 +24,7 @@ import { GrowthStampOverlay } from './components/GrowthStampOverlay';
 import { useLanguageRuntime } from './lib/i18n';
 import { ToastHost } from './components/ui/ToastHost';
 import { GlobalConfirm } from './components/ui/ConfirmDialog';
+import { UpdatePrompt } from './components/UpdatePrompt';
 
 function BootScreen({ error }: { error: string | null }) {
   return (
@@ -126,6 +127,7 @@ export default function App() {
       <KnowledgePointModal />
       <FocusOverlay />
       <GlobalConfirm />
+      <UpdatePrompt />
       <GrowthStampOverlay />
       <ToastHost />
     </div>

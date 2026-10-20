@@ -7,6 +7,7 @@ const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const path = require('node:path');
 const { createAiBridge } = require('./ai.cjs');
+const { registerUpdateIpc } = require('./update.cjs');
 
 const isDev = Boolean(process.env.VITE_DEV_SERVER_URL);
 const isDemo = process.argv.includes('--demo');
@@ -185,6 +186,7 @@ function installCsp() {
 
 function registerIpc() {
   createAiBridge({ configRoot, safeStorage, ipcMain });
+  registerUpdateIpc();
   ipcMain.handle('data:load', () => loadData());
   ipcMain.handle('data:save', (_event, data) => saveData(data));
   ipcMain.handle('data:path', () => dataFile);

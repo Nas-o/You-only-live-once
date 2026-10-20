@@ -226,13 +226,26 @@ screenshots/           验收截图
 - 数据为单 JSON / Preferences，v1 未加密；敏感信息不要写进报告。
 
 
+## 自动更新
+
+从 **v0.1.9** 开始，客户端启动后会自动检查 GitHub Releases：
+
+- 发现新版本时弹出提示，可选择「下载并更新」「稍后」或「跳过这个版本」
+- Windows 便携版：下载 ZIP、校验 SHA-256、退出后自动替换并重启
+- Linux AppImage：下载新 AppImage 后自动替换并重启
+- macOS ZIP：下载后替换 `.app` 并重启
+- Android：打开新版 APK 下载，覆盖安装即可保留数据
+- 更新包都会校验 GitHub Release 提供的 SHA-256
+
+注意：**v0.1.9 之前的版本本身没有更新检查器**，需要最后手动安装一次 v0.1.9；从 v0.1.9 开始后续版本都能收到更新提示。
+
 ## 发布 Release
 
 推荐用 tag 触发 `.github/workflows/release.yml`：
 
 ```bash
-git tag -a v0.1.8 -m "YOLO v0.1.8"
-git push origin v0.1.8
+git tag -a v0.1.9 -m "YOLO v0.1.9"
+git push origin v0.1.9
 ```
 
 Actions 会并行构建 Linux、Windows、macOS、Android、iOS，并把以下文件挂到 GitHub Release：

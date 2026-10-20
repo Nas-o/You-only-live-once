@@ -14,6 +14,10 @@ contextBridge.exposeInMainWorld('yolo', {
   openDataFolder: () => ipcRenderer.invoke('app:open-data-folder'),
   quit: () => ipcRenderer.invoke('app:quit'),
   minimize: () => ipcRenderer.invoke('window:minimize'),
+  updates: {
+    check: () => ipcRenderer.invoke('update:check'),
+    install: (info) => ipcRenderer.invoke('update:install', info),
+  },
   ai: {
     secureGetKey: () => ipcRenderer.invoke('ai:secure-get'),
     secureSetKey: (value) => ipcRenderer.invoke('ai:secure-set', value),
