@@ -1,5 +1,5 @@
 /**
- * 桌面端更新：检查 GitHub Releases，并在 Windows 便携版 / Linux AppImage / macOS ZIP
+ * 桌面端更新：检查 GitHub Releases，并在 Windows 便携版 / Linux AppImage
  * 上尝试自动替换当前程序。所有下载都会校验 GitHub Release 的 sha256 digest。
  */
 const { app, ipcMain, shell } = require('electron');
@@ -29,7 +29,6 @@ function assetFor(platform, arch) {
   const suffix = arch === 'arm64' ? 'arm64' : arch === 'x64' ? 'x64' : arch;
   if (platform === 'win32') return `YouOnlyLiveOnce-${'{version}'}-win-${suffix}-portable.zip`;
   if (platform === 'linux') return `YouOnlyLiveOnce-${'{version}'}-${arch === 'arm64' ? 'arm64' : 'x86_64'}.AppImage`;
-  if (platform === 'darwin') return `YouOnlyLiveOnce-${'{version}'}-mac-${suffix}.zip`;
   return '';
 }
 
@@ -61,7 +60,7 @@ async function checkForUpdates() {
     assetUrl: asset?.browser_download_url ?? release.html_url,
     assetDigest: asset?.digest ?? '',
     publishedAt: release.published_at,
-    installable: Boolean(asset) && ['win32', 'linux', 'darwin'].includes(process.platform),
+    installable: Boolean(asset) && ['win32', 'linux'].includes(process.platform),
   };
 }
 
@@ -138,30 +137,6 @@ async function installLinux(info) {
   return { ok: true };
 }
 
-async function installMac(info) {
-  const root = await fsp.mkdtemp(path.join(os.tmpdir(), 'yolo-update-'));
-  const zip = path.join(root, 'update.zip');
-  await download(info.assetUrl, zip, info.assetDigest);
-  const extract = path.join(root, 'extract');
-  const result = spawnSync('ditto', ['-x', '-k', zip, extract]);
-  if (result.status !== 0) throw new Error('解压 macOS 更新包失败');
-  let entries = [];
-  try {
-    entries = fs.readdirSync(extract).filter((name) => name.endsWith('.app'));
-  } catch {
-    entries = [];
-  }
-  if (!entries[0]) throw new Error('更新包里找不到 .app');
-  const newApp = path.join(extract, entries[0]);
-  const currentApp = path.resolve(path.dirname(process.execPath), '..', '..');
-  const helper = path.join(root, 'apply-update.sh');
-  const script = `#!/bin/sh\nsleep 3\nold="$1"\nnew="$2"\nrm -rf "$old.old"\nmv "$old" "$old.old"\nmv "$new" "$old"\nxattr -dr com.apple.quarantine "$old" >/dev/null 2>&1 || true\nopen "$old"\nrm -rf "$old.old"\n`;
-  await fsp.writeFile(helper, script, 'utf8');
-  await fsp.chmod(helper, 0o755);
-  launchDetached('/bin/sh', [helper, currentApp, newApp]);
-  app.quit();
-  return { ok: true };
-}
 
 function registerUpdateIpc() {
   ipcMain.handle('update:check', async () => {
@@ -177,7 +152,6 @@ function registerUpdateIpc() {
       if (!info || !info.assetUrl) throw new Error('没有可用的更新包');
       if (process.platform === 'win32') return await installWindows(info);
       if (process.platform === 'linux') return await installLinux(info);
-      if (process.platform === 'darwin') return await installMac(info);
       await shell.openExternal(info.assetUrl);
       return { ok: true };
     } catch (error) {

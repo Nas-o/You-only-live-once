@@ -27,5 +27,3 @@ apps/android/android/local.properties
 .tmp-*/
 .tmp-*.html
 .tmp-*.mjs
-apps/macos/release/
-apps/ios/release/

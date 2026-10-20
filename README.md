@@ -14,9 +14,7 @@
 | --- | --- | --- |
 | Linux | x64 / arm64 | AppImage、deb |
 | Windows | x64 / arm64 | 便携版 ZIP |
-| macOS | Intel / Apple Silicon | DMG、ZIP（未签名） |
 | Android | arm64 / universal | Debug APK |
-| iOS | arm64 | 未签名 IPA（需自签安装） |
 
 ## 它解决什么
 
@@ -105,14 +103,6 @@ npm run start:windows
 npm run start:demo:windows
 ```
 
-macOS：
-
-```bash
-npm run dev:macos
-npm run start:macos
-npm run package:macos        # Intel + Apple Silicon
-```
-
 Android：
 
 ```bash
@@ -120,12 +110,6 @@ npm run dev:android      # 移动 Web 预览
 npm run build:android    # 构建 Web 资源
 npm run sync:android     # 同步到 Capacitor 原生工程
 npm run package:android  # 生成 debug APK（使用固定 debug keystore，可覆盖升级）
-```
-
-iOS（需要 macOS + Xcode + CocoaPods）：
-
-```bash
-npm run package:ios          # 生成未签名 IPA
 ```
 
 详细 Android 环境说明见 [`apps/android/README.md`](apps/android/README.md)。
@@ -147,9 +131,7 @@ npm run package:ios          # 生成未签名 IPA
 | Windows x64 | `npm run package:windows` | 便携版 ZIP |
 | Windows arm64 | `npm run package:windows:portable:arm64` | 便携版 ZIP |
 | Windows 安装器 | `npm run package:windows:installer` | NSIS，需要 Windows 或 Wine |
-| macOS | `npm run package:macos` | Intel + Apple Silicon DMG / ZIP |
 | Android | `npm run package:android` | Universal Debug APK |
-| iOS | `npm run package:ios` | 未签名 IPA |
 
 产物默认在 `apps/<platform>/release/`；SHA256 见 [`SHA256SUMS.txt`](SHA256SUMS.txt)。
 
@@ -180,7 +162,7 @@ npm run screenshots            # 逐页截图验收
 - 反复低质量回答或达到上限仍不足时，不再无限追问，直接给出一份完整基础学习计划。
 - 计划同时保留完整路径和“时间不足时的关键路径”：例如任务需要 20 小时，你只有 4 小时，会保留 20 小时全貌，再列出 4 小时最关键的部分和取舍。
 - 可只凭当前任务和访谈答案重新生成计划，不重新问问题；重新开始访谈或重新生成计划前都会弹窗说明后果并确认。
-- 学习计划可导出为 Markdown 文件（macOS/Windows/Linux 可直接保存，Android/iOS 走系统分享）。
+- 学习计划可导出为 Markdown 文件（Linux/Windows 可直接保存，Android 走系统分享）。
 - 用户明确说“新手/零基础”后会锁定 beginner 水平，后续只问入门问题，不再追问推导过什么、做过哪些项目。
 - 用户先写自己的计划，AI 只评估，不代写、不出练习题、不自动改数据。
 - 置信度只作为内部门槛，不在界面展示。
@@ -191,9 +173,7 @@ npm run screenshots            # 逐页截图验收
 ```text
 Linux:   $XDG_CONFIG_HOME/yolo-linux/yolo-data.json
 Windows: %APPDATA%\yolo-windows\yolo-data.json
-macOS:   ~/Library/Application Support/yolo-macos/yolo-data.json
 Android: Capacitor Preferences（yolo-data-v1）
-iOS:     Capacitor Preferences（yolo-data-v1）
 ```
 
 桌面端保存前写 `yolo-data.backup.json`；各端 JSON 模型一致，可互相导入。数据只在本机，没有后端、账号、云同步或埋点。
@@ -205,9 +185,7 @@ packages/core/         纯 TS 领域核心：任务、报告、计时、奖励�
 packages/desktop-ui/   共享界面、zustand 状态机、AI 客户端、i18n、皮肤资产
 apps/linux/            Electron Linux 外壳
 apps/windows/          Electron Windows 外壳
-apps/macos/            Electron macOS 外壳（Intel / Apple Silicon）
 apps/android/          Capacitor Android 外壳与移动桥
-apps/ios/              Capacitor iOS 工程与未签名 IPA 构建
 scripts/               截图、交互回归、打包校验
 docs/                  架构与路线
 screenshots/           验收截图
@@ -219,9 +197,8 @@ screenshots/           验收截图
 
 - Linux x64 / arm64：已构建 AppImage / deb。
 - Windows x64 / arm64：便携版已构建，尚未在真实 Windows 机器上验收 DPI、IME 与睡眠恢复；未代码签名。
-- macOS Intel / Apple Silicon：DMG / ZIP 未签名，首次打开需右键或系统设置放行。
 - Android：Universal Debug APK；使用仓库内固定 debug keystore，连续版本可覆盖安装，但这不是上架签名；上架需 release keystore。
-- iOS：未签名 IPA，需 AltStore / Sideloadly 等工具用自己的 Apple ID 重签；没有 Apple Developer 签名时不能直接安装或上架。iOS 的 AI Key 目前使用 Preferences，而不是 Keychain。
+- macOS / iOS 支持已在 v0.2.0 取消；仓库不再包含对应工程、构建任务与发布产物。
 - 完成提示音为预留开关，当前版本静音。
 - 数据为单 JSON / Preferences，v1 未加密；敏感信息不要写进报告。
 
@@ -233,7 +210,6 @@ screenshots/           验收截图
 - 发现新版本时弹出提示，可选择「下载并更新」「稍后」或「跳过这个版本」
 - Windows 便携版：下载 ZIP、校验 SHA-256、退出后自动替换并重启
 - Linux AppImage：下载新 AppImage 后自动替换并重启
-- macOS ZIP：下载后替换 `.app` 并重启
 - Android：打开新版 APK 下载，覆盖安装即可保留数据
 - 更新包都会校验 GitHub Release 提供的 SHA-256
 
@@ -244,18 +220,16 @@ screenshots/           验收截图
 推荐用 tag 触发 `.github/workflows/release.yml`：
 
 ```bash
-git tag -a v0.1.9 -m "YOLO v0.1.9"
-git push origin v0.1.9
+git tag -a v0.2.0 -m "YOLO v0.2.0"
+git push origin v0.2.0
 ```
 
-Actions 会并行构建 Linux、Windows、macOS、Android、iOS，并把以下文件挂到 GitHub Release：
+Actions 会并行构建 Linux、Windows、Android，并把以下文件挂到 GitHub Release：
 
 ```text
 Linux x64 / arm64:   AppImage + deb
 Windows x64 / arm64: portable ZIP
-macOS Intel / arm64: DMG + ZIP
 Android:             universal debug APK
-iOS:                 unsigned IPA
 SHA256SUMS.txt
 ```
 

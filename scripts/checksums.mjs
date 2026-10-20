@@ -11,8 +11,6 @@ const groups = [
   { dir: 'apps/linux/release', match: /\.(AppImage|deb)$/ },
   { dir: 'apps/windows/release', match: /-portable\.zip$/ },
   { dir: 'apps/android/release', match: /\.apk$/ },
-  { dir: 'apps/macos/release', match: /\.(dmg|zip)$/ },
-  { dir: 'apps/ios/release', match: /\.ipa$/ },
 ];
 
 const targets = [];

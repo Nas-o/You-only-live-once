@@ -88,58 +88,9 @@ jobs:
           name: android
           path: apps/android/release/*.apk
 
-  macos:
-    runs-on: macos-14
-    timeout-minutes: 35
-    env:
-      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-
-      - run: npm ci
-
-      - name: Package macOS x64 + arm64
-        run: npm run package:macos
-
-      - name: Upload macOS assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos
-          path: |
-            apps/macos/release/*.dmg
-            apps/macos/release/*.zip
-
-  ios:
-    runs-on: macos-14
-    timeout-minutes: 35
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-
-      - run: npm ci
-
-      - name: Build unsigned IPA
-        run: npm run package:ios
-
-      - name: Upload iOS asset
-        uses: actions/upload-artifact@v4
-        with:
-          name: ios
-          path: apps/ios/release/*.ipa
 
   release:
-    needs: [linux-windows-android, macos, ios]
+    needs: [linux-windows-android]
     runs-on: ubuntu-22.04
 
     steps:
@@ -152,12 +103,10 @@ jobs:
 
       - name: Place assets into release directories
         run: |
-          mkdir -p apps/linux/release apps/windows/release apps/android/release apps/macos/release apps/ios/release
+          mkdir -p apps/linux/release apps/windows/release apps/android/release
           cp -v artifacts/linux/* apps/linux/release/ 2>/dev/null || true
           cp -v artifacts/windows/* apps/windows/release/ 2>/dev/null || true
           cp -v artifacts/android/* apps/android/release/ 2>/dev/null || true
-          cp -v artifacts/macos/* apps/macos/release/ 2>/dev/null || true
-          cp -v artifacts/ios/* apps/ios/release/ 2>/dev/null || true
 
       - name: Write checksums
         run: node scripts/checksums.mjs
@@ -174,7 +123,4 @@ jobs:
             apps/linux/release/*.deb
             apps/windows/release/*-portable.zip
             apps/android/release/*.apk
-            apps/macos/release/*.dmg
-            apps/macos/release/*.zip
-            apps/ios/release/*.ipa
             SHA256SUMS.txt

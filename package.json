@@ -1,14 +1,12 @@
 {
   "name": "you-only-live-once",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": true,
   "description": "你只活一次 —— 以终为始的任务旅程",
   "workspaces": [
     "packages/*",
     "apps/linux",
     "apps/windows",
-    "apps/macos",
-    "apps/ios",
     "apps/android"
   ],
   "scripts": {
@@ -17,7 +15,7 @@
     "start": "npm run start -w @yolo/linux",
     "start:demo": "npm run start:demo -w @yolo/linux",
     "test": "npm run test -w @yolo/core",
-    "typecheck": "npm run typecheck -w @yolo/core && npm run typecheck -w @yolo/desktop-ui && npm run typecheck -w @yolo/linux && npm run typecheck -w @yolo/windows && npm run typecheck -w @yolo/macos && npm run typecheck -w @yolo/ios && npm run typecheck -w @yolo/android",
+    "typecheck": "npm run typecheck -w @yolo/core && npm run typecheck -w @yolo/desktop-ui && npm run typecheck -w @yolo/linux && npm run typecheck -w @yolo/windows && npm run typecheck -w @yolo/android",
     "screenshots": "node scripts/screenshot.mjs",
     "verify": "npm run typecheck && npm run test && npm run build:all",
     "test:ui": "node scripts/interaction-test.mjs",
@@ -32,7 +30,7 @@
     "typecheck:windows": "npm run typecheck -w @yolo/windows",
     "package:windows": "npm run package:portable -w @yolo/windows",
     "package:windows:dir": "npm run package:dir -w @yolo/windows",
-    "build:all": "npm run build -w @yolo/linux && npm run build -w @yolo/windows && npm run build -w @yolo/macos && npm run build -w @yolo/ios && npm run build -w @yolo/android",
+    "build:all": "npm run build -w @yolo/linux && npm run build -w @yolo/windows && npm run build -w @yolo/android",
     "package:windows:portable": "npm run package:portable -w @yolo/windows",
     "package:windows:installer": "npm run package -w @yolo/windows",
     "verify:windows:preview": "node scripts/verify-windows-preview.mjs",
@@ -48,21 +46,8 @@
     "test:ai": "node scripts/ai-mock-test.mjs",
     "test:language": "node scripts/language-test.mjs",
     "test:theme-editor": "node scripts/theme-editor-test.mjs",
-    "dev:macos": "npm run dev -w @yolo/macos",
-    "build:macos": "npm run build -w @yolo/macos",
-    "start:macos": "npm run start -w @yolo/macos",
-    "start:demo:macos": "npm run start:demo -w @yolo/macos",
-    "typecheck:macos": "npm run typecheck -w @yolo/macos",
-    "package:macos": "npm run package -w @yolo/macos",
-    "package:macos:x64": "npm run package:x64 -w @yolo/macos",
-    "package:macos:arm64": "npm run package:arm64 -w @yolo/macos",
     "package:linux:arm64": "npm run package:arm64 -w @yolo/linux",
-    "package:windows:portable:arm64": "npm run package:portable:arm64 -w @yolo/windows",
-    "dev:ios": "npm run dev -w @yolo/ios",
-    "build:ios": "npm run build -w @yolo/ios",
-    "typecheck:ios": "npm run typecheck -w @yolo/ios",
-    "sync:ios": "npm run cap:sync -w @yolo/ios",
-    "package:ios": "npm run package -w @yolo/ios"
+    "package:windows:portable:arm64": "npm run package:portable:arm64 -w @yolo/windows"
   },
   "engines": {
     "node": ">=20"
